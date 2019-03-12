@@ -7,28 +7,28 @@ pub fn build_colouriser() -> impl Fn(&Ray, &Config) -> Colour {
 }
 
 fn colour(ray: &Ray, config: &Config) -> Colour {
-    let maybe_hit_t = config.volumes
+    let maybe_hit_result = config.volumes
         .iter()
         .filter_map(|volume| {
-            let maybe_hit_t = volume.hit(&ray, 0.0, core::f64::MAX);
-            match maybe_hit_t {
-                Some(hit_t) => Some((hit_t, volume)),
+            let maybe_hit_distance = volume.hit(&ray, 0.001, core::f64::MAX);
+            match maybe_hit_distance {
+                Some(hit_distance) => Some((hit_distance, volume)),
                 None => None,
             }
         })
-        .min_by(|(hit_t_a, _), (hit_t_b, _)| {
+        .min_by(|(distance_a, _), (distance_b, _)| {
             // Should never get a NaN here. Panic if we do
-            hit_t_a.partial_cmp(hit_t_b).unwrap()
-        });
+            distance_a.partial_cmp(distance_b).unwrap()
+        })
+        .into_iter()
+        .filter_map(|(distance, volume)| {
+            volume.scatter(&ray, distance)
+        })
+        .last();
 
-    match maybe_hit_t {
-        Some((hit_t, volume)) => {
-            let surface_normal = volume.surface_normal(&ray, hit_t);
-            0.5 * Colour {
-                r: surface_normal.x + 1.0,
-                g: surface_normal.y + 1.0,
-                b: surface_normal.z + 1.0,
-            }
+    match maybe_hit_result {
+        Some(scatter) => {
+            scatter.attenuation * colour(&scatter.ray, &config)
         },
         None => {
             let unit_direction = ray.direction().unit_vector();

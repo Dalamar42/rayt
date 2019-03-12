@@ -9,6 +9,7 @@ pub fn build_image<T>(colouriser: T, config: &Config) -> Image
     let pixels: Vec<Colour> = config.camera
         .iter(&config)
         .map(|rays| colour_with_anti_aliasing(&colouriser, rays, &config))
+        .map(|colour| colour.gamma_2())
         .collect();
 
     Image{pixels, num_rows: config.height, num_cols: config.width}

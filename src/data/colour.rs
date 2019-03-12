@@ -23,6 +23,14 @@ impl Colour {
         assert!(0.0 <= self.b && self.b <= 1.0);
         return (255.99 * &self.b) as u8
     }
+
+    pub fn gamma_2(self) -> Colour {
+        Colour {
+            r: self.r.sqrt(),
+            g: self.g.sqrt(),
+            b: self.b.sqrt(),
+        }
+    }
 }
 
 impl Sum<Colour> for Colour {

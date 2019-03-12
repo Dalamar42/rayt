@@ -9,7 +9,11 @@ pub struct Vector {
 
 impl Vector {
     pub fn len(&self) -> f64 {
-        (&self.x * &self.x + &self.y * &self.y + &self.z * &self.z).sqrt()
+        (&self).len_squared().sqrt()
+    }
+
+    pub fn len_squared(&self) -> f64 {
+        &self.x * &self.x + &self.y * &self.y + &self.z * &self.z
     }
 
     pub fn unit_vector(&self) -> Vector {

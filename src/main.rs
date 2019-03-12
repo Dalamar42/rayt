@@ -7,6 +7,7 @@ mod io;
 mod data;
 mod view;
 mod volumes;
+mod materials;
 mod config;
 mod colouriser;
 mod imager;

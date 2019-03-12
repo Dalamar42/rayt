@@ -11,6 +11,10 @@ pub struct Ray {
 }
 
 impl Ray {
+    pub fn new(a: Vector, b: Vector) -> Ray {
+        Ray {a, b}
+    }
+
     pub fn origin(&self) -> &Vector {
         &self.a
     }
