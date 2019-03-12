@@ -4,3 +4,6 @@ version = "0.1.0"
 authors = ["Thomas Maroulis <thomasmaroulis@gmail.com>"]
 
 [dependencies]
+assert_approx_eq = "1.1.0"
+itertools = "0.8.0"
+rand = "0.6.5"
