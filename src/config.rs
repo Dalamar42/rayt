@@ -3,6 +3,7 @@ use volumes::Hitable;
 use data::vector::Vector;
 use volumes::*;
 use materials::Material;
+use data::colour::Colour;
 
 pub struct Config {
     pub width: u64,
@@ -26,12 +27,22 @@ pub fn build_config() -> Config {
         Box::from(Sphere {
             centre: Vector {x: 0.0, y: 0.0, z: -1.0},
             radius: 0.5,
-            material: Material::Lambertian {albedo: 0.5},
+            material: Material::Lambertian {albedo: Colour {r: 0.8, g: 0.3, b: 0.3}},
+        }),
+        Box::from(Sphere {
+            centre: Vector {x: 1.0, y: 0.0, z: -1.0},
+            radius: 0.5,
+            material: Material::Metal {albedo: Colour {r: 0.8, g: 0.8, b: 0.8}},
+        }),
+        Box::from(Sphere {
+            centre: Vector {x: -1.0, y: 0.0, z: -1.0},
+            radius: 0.5,
+            material: Material::Metal {albedo: Colour {r: 0.8, g: 0.6, b: 0.2}},
         }),
         Box::from(Sphere {
             centre: Vector {x: 0.0, y: -100.5, z: -1.0},
             radius: 100.0,
-            material: Material::Lambertian {albedo: 0.5},
+            material: Material::Lambertian {albedo: Colour {r: 0.8, g: 0.8, b: 0.0}},
         }),
     ];
 

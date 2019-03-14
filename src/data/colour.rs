@@ -51,6 +51,14 @@ fn add_colours(lhs: &Colour, rhs: &Colour) -> Colour {
     }
 }
 
+fn mul_colours(lhs: &Colour, rhs: &Colour) -> Colour {
+    Colour {
+        r: lhs.r * rhs.r,
+        g: lhs.g * rhs.g,
+        b: lhs.b * rhs.b,
+    }
+}
+
 fn add_colour_and_scalar(colour: &Colour, scalar: f64) -> Colour {
     Colour {
         r: colour.r + scalar,
@@ -104,6 +112,38 @@ impl ops::Add<Colour> for Colour {
 
     fn add(self, rhs: Colour) -> Colour {
         add_colours(&self, &rhs)
+    }
+}
+
+impl ops::Mul<&Colour> for &Colour {
+    type Output = Colour;
+
+    fn mul(self, rhs: &Colour) -> Colour {
+        mul_colours(self, rhs)
+    }
+}
+
+impl ops::Mul<Colour> for &Colour {
+    type Output = Colour;
+
+    fn mul(self, rhs: Colour) -> Colour {
+        mul_colours(self, &rhs)
+    }
+}
+
+impl ops::Mul<&Colour> for Colour {
+    type Output = Colour;
+
+    fn mul(self, rhs: &Colour) -> Colour {
+        mul_colours(&self, rhs)
+    }
+}
+
+impl ops::Mul<Colour> for Colour {
+    type Output = Colour;
+
+    fn mul(self, rhs: Colour) -> Colour {
+        mul_colours(&self, &rhs)
     }
 }
 
@@ -224,6 +264,19 @@ mod tests {
         assert_eq!(&colour_a + colour_b.clone(), expected_result);
         assert_eq!(colour_a.clone() + &colour_b, expected_result);
         assert_eq!(&colour_a + &colour_b, expected_result);
+    }
+
+    #[test]
+    fn test_mul_colours() {
+        let colour_a = Colour {r: 1.0, g: 1.5, b: 2.0};
+        let colour_b = Colour {r: -1.0, g: 0.5, b: 0.0};
+
+        let expected_result = Colour {r: -1.0, g: 0.75, b: 0.0};
+
+        assert_eq!(colour_a.clone() * colour_b.clone(), expected_result);
+        assert_eq!(&colour_a * colour_b.clone(), expected_result);
+        assert_eq!(colour_a.clone() * &colour_b, expected_result);
+        assert_eq!(&colour_a * &colour_b, expected_result);
     }
 
     #[test]

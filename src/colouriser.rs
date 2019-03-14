@@ -3,10 +3,14 @@ use config::Config;
 use data::colour::Colour;
 
 pub fn build_colouriser() -> impl Fn(&Ray, &Config) -> Colour {
-    colour
+    |ray, config| colour(&ray, &config, 0)
 }
 
-fn colour(ray: &Ray, config: &Config) -> Colour {
+fn colour(ray: &Ray, config: &Config, depth: u64) -> Colour {
+    if depth >= 50 {
+        return Colour {r: 0.0, g: 0.0, b: 0.0}
+    }
+
     let maybe_hit_result = config.volumes
         .iter()
         .filter_map(|volume| {
@@ -28,7 +32,7 @@ fn colour(ray: &Ray, config: &Config) -> Colour {
 
     match maybe_hit_result {
         Some(scatter) => {
-            scatter.attenuation * colour(&scatter.ray, &config)
+            scatter.attenuation * colour(&scatter.ray, &config, depth + 1)
         },
         None => {
             let unit_direction = ray.direction().unit_vector();

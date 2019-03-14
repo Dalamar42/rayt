@@ -1,27 +1,29 @@
 use view::Ray;
 use data::vector::Vector;
 use rand::prelude::*;
+use data::colour::Colour;
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Clone)]
 pub enum Material {
-    Lambertian {albedo: f64},
+    Lambertian {albedo: Colour},
+    Metal {albedo: Colour},
 }
 
 #[derive(Debug)]
 pub struct ScatterResult {
     pub ray: Ray,
-    pub attenuation: f64,
+    pub attenuation: Colour,
 }
 
 pub fn scatter_lambertian(
-    albedo: f64, hit_point: &Vector, surface_normal: &Vector,
+    albedo: &Colour, hit_point: &Vector, surface_normal: &Vector,
 ) -> Option<ScatterResult> {
     let diffuse = random_point_in_unit_sphere();
     let target = hit_point + surface_normal + diffuse;
 
     let ray = Ray::new(hit_point.clone(), target);
 
-    Some(ScatterResult { ray, attenuation: albedo })
+    Some(ScatterResult { ray, attenuation: albedo.clone() })
 }
 
 fn random_point_in_unit_sphere() -> Vector {
@@ -34,4 +36,12 @@ fn random_point_in_unit_sphere() -> Vector {
             return point
         }
     }
+}
+
+pub fn scatter_metal(
+    albedo: &Colour, hit_point: &Vector, reflected: &Vector,
+) -> Option<ScatterResult> {
+    let ray = Ray::new(hit_point.clone(), reflected.clone());
+
+    Some(ScatterResult { ray, attenuation: albedo.clone() })
 }

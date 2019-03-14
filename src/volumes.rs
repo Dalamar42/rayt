@@ -1,11 +1,13 @@
 use data::vector::Vector;
 use view::Ray;
-use materials::{Material, ScatterResult, scatter_lambertian};
+use materials::{Material, ScatterResult, scatter_lambertian, scatter_metal};
 
 pub trait Hitable {
     fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<f64>;
 
     fn surface_normal(&self, ray: &Ray, hit_t: f64) -> Vector;
+
+    fn reflect(&self, ray: &Ray, hit_t: f64) -> Vector;
 
     fn material(&self) -> Material;
 
@@ -15,7 +17,13 @@ pub trait Hitable {
                 let hit_point = &ray.point(distance);
                 let surface_normal = &self.surface_normal(&ray, distance);
 
-                scatter_lambertian(albedo.clone(), &hit_point, &surface_normal)
+                scatter_lambertian(&albedo, &hit_point, &surface_normal)
+            },
+            Material::Metal { albedo } => {
+                let hit_point = &ray.point(distance);
+                let reflected = &self.reflect(&ray, distance);
+
+                scatter_metal(&albedo, &hit_point, &reflected)
             },
         }
     }
@@ -56,6 +64,15 @@ impl Hitable for Sphere {
 
     fn surface_normal(&self, ray: &Ray, hit_t: f64) -> Vector {
         (ray.point(hit_t) - &self.centre).unit_vector()
+    }
+
+    fn reflect(&self, ray: &Ray, hit_t: f64) -> Vector {
+        let v = ray.direction().unit_vector();
+        let n = self.surface_normal(&ray, hit_t);
+
+        let b = Vector::dot(&v, &n) * n;
+
+        v - 2.0 * b
     }
 
     fn material(&self) -> Material {
