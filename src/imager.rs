@@ -9,8 +9,9 @@ pub fn build_image<T: Sync>(colouriser: T, config: &Config, progress_bar: &Progr
     where T: Fn(&Ray, &Config) -> Colour
 {
     let pixels: Vec<Colour> = config.camera
-        .rays(&config)
+        .pixels(&config)
         .par_iter()
+        .map(|(row, col)| config.camera.rays(*row, *col, &config))
         .map(|rays| colour(&colouriser, &rays, &config, &progress_bar))
         .collect();
 

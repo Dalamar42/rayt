@@ -46,16 +46,17 @@ impl Camera {
         Camera { origin, lower_left_corner, horizontal, vertical }
     }
 
-    pub fn rays(&self, config: &Config) -> Vec<Vec<Ray>> {
+    pub fn pixels(&self, config: &Config) -> Vec<(u64, u64)> {
         let height = (&config).height;
         let width = (&config).width;
 
-        iproduct!((0..height).rev(), 0..width)
-            .map(move |(row, col)| (&self).anti_aliasing_rays(row, col, height, width))
-            .collect()
+        iproduct!((0..height).rev(), 0..width).collect()
     }
 
-    fn anti_aliasing_rays(&self, row: u64, col: u64, height: u64, width: u64) -> Vec<Ray> {
+    pub fn rays(&self, row: u64, col: u64, config: &Config) -> Vec<Ray> {
+        let height = (&config).height;
+        let width = (&config).width;
+
         (0..ANTI_ALIASING_FACTOR)
             .map(|_| {
                 let mut rng = rand::thread_rng();
