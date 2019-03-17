@@ -46,12 +46,13 @@ impl Camera {
         Camera { origin, lower_left_corner, horizontal, vertical }
     }
 
-    pub fn iter<'a>(&'a self, config: &Config) -> impl Iterator<Item=Vec<Ray>> + 'a {
+    pub fn rays(&self, config: &Config) -> Vec<Vec<Ray>> {
         let height = (&config).height;
         let width = (&config).width;
 
         iproduct!((0..height).rev(), 0..width)
             .map(move |(row, col)| (&self).anti_aliasing_rays(row, col, height, width))
+            .collect()
     }
 
     fn anti_aliasing_rays(&self, row: u64, col: u64, height: u64, width: u64) -> Vec<Ray> {

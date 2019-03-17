@@ -10,7 +10,7 @@ pub struct ScatterResult {
     pub attenuation: Colour,
 }
 
-pub trait Material {
+pub trait Material: Sync {
     fn scatter(
         &self, geometry: &Box<Geometry>, ray: &Ray, distance: f64,
     ) -> Option<ScatterResult>;
