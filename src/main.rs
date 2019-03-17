@@ -6,7 +6,7 @@ extern crate rand;
 mod io;
 mod data;
 mod view;
-mod volumes;
+mod world;
 mod config;
 mod colouriser;
 mod imager;

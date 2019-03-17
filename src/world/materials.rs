@@ -2,7 +2,7 @@ use view::Ray;
 use data::vector::Vector;
 use rand::prelude::*;
 use data::colour::Colour;
-use volumes::geometry::Geometry;
+use world::geometry::Geometry;
 
 pub trait Material {
     fn scatter(

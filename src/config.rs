@@ -1,15 +1,15 @@
 use view::Camera;
 use data::vector::Vector;
 use data::colour::Colour;
-use volumes::volume::Volume;
-use volumes::geometry::Sphere;
-use volumes::materials::{Lambertian, Metal};
+use world::entity::Entity;
+use world::geometry::Sphere;
+use world::materials::{Lambertian, Metal};
 
 pub struct Config {
     pub width: u64,
     pub height: u64,
     pub camera: Camera,
-    pub volumes: Vec<Volume>,
+    pub volumes: Vec<Entity>,
 }
 
 pub fn build_config() -> Config {
@@ -23,8 +23,8 @@ pub fn build_config() -> Config {
 
     let camera = Camera::new(origin, lower_left_corner, horizontal, vertical);
 
-    let volumes: Vec<Volume> = vec![
-        Volume {
+    let volumes: Vec<Entity> = vec![
+        Entity {
             geometry: Box::from(Sphere {
                 centre: Vector {x: 0.0, y: 0.0, z: -1.0},
                 radius: 0.5,
@@ -33,7 +33,7 @@ pub fn build_config() -> Config {
                 albedo: Colour {r: 0.8, g: 0.3, b: 0.3},
             }),
         },
-        Volume {
+        Entity {
             geometry: Box::from(Sphere {
                 centre: Vector { x: -1.0, y: 0.0, z: -1.0 },
                 radius: 0.5,
@@ -43,7 +43,7 @@ pub fn build_config() -> Config {
                 fuzz: 0.3,
             }),
         },
-        Volume {
+        Entity {
             geometry: Box::from(Sphere {
                 centre: Vector { x: 1.0, y: 0.0, z: -1.0 },
                 radius: 0.5,
@@ -53,7 +53,7 @@ pub fn build_config() -> Config {
                 fuzz: 1.0,
             }),
         },
-        Volume {
+        Entity {
             geometry: Box::from(Sphere {
                 centre: Vector {x: 0.0, y: -100.5, z: -1.0},
                 radius: 100.0,
