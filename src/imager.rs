@@ -3,25 +3,30 @@ use config::Config;
 use data::image::Image;
 use data::colour::Colour;
 use rayon::prelude::*;
+use indicatif::ProgressBar;
 
-pub fn build_image<T: Sync>(colouriser: T, config: &Config) -> Image
+pub fn build_image<T: Sync>(colouriser: T, config: &Config, progress_bar: &ProgressBar) -> Image
     where T: Fn(&Ray, &Config) -> Colour
 {
     let pixels: Vec<Colour> = config.camera
         .rays(&config)
         .par_iter()
-        .map(|rays| colour_with_anti_aliasing(&colouriser, &rays, &config))
-        .map(|colour| colour.gamma_2())
+        .map(|rays| colour(&colouriser, &rays, &config, &progress_bar))
         .collect();
+
+    progress_bar.finish();
 
     Image{pixels, num_rows: config.height, num_cols: config.width}
 }
 
-fn colour_with_anti_aliasing<T>(colouriser: &T, rays: &Vec<Ray>, config: &Config) -> Colour
+fn colour<T>(colouriser: &T, rays: &Vec<Ray>, config: &Config, progress_bar: &ProgressBar) -> Colour
     where T: Fn(&Ray, &Config) -> Colour
 {
     let colour_sum: Colour = rays.iter()
         .map(|ray| colouriser(&ray, &config))
         .sum();
+
+    progress_bar.inc(1);
+
     colour_sum / (rays.len() as f64)
 }
