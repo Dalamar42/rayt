@@ -5,8 +5,6 @@ pub trait Geometry {
     fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<f64>;
 
     fn surface_normal(&self, ray: &Ray, hit_t: f64) -> Vector;
-
-    fn reflect(&self, ray: &Ray, hit_t: f64) -> Vector;
 }
 
 #[derive(Debug)]
@@ -43,15 +41,68 @@ impl Geometry for Sphere {
     }
 
     fn surface_normal(&self, ray: &Ray, hit_t: f64) -> Vector {
-        (ray.point(hit_t) - &self.centre).unit_vector()
+        // We divide by radius instead of taking the unit vector so that a negative
+        // radius sphere will have a surface normal that points inward
+        (ray.point(hit_t) - &self.centre) / self.radius
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use assert_approx_eq::assert_approx_eq;
+
+    #[test]
+    fn test_sphere_hit() {
+        let sphere = Sphere { centre: Vector { x: 0.0, y: 0.0, z: 0.0 }, radius: 1.0 };
+        let ray = Ray::new(
+            Vector { x: -2.0, y: 0.0, z: 0.0 },
+            Vector { x: 1.0, y: 0.0, z: 0.0 },
+        );
+
+        let hit_distance = sphere.hit(&ray, 0.0, core::f64::MAX).unwrap();
+
+        assert_approx_eq!(hit_distance, 1.0);
     }
 
-    fn reflect(&self, ray: &Ray, hit_t: f64) -> Vector {
-        let v = ray.direction().unit_vector();
-        let n = self.surface_normal(&ray, hit_t);
+    #[test]
+    fn test_neg_radius_sphere_hit() {
+        let sphere = Sphere { centre: Vector { x: 0.0, y: 0.0, z: 0.0 }, radius: -1.0 };
+        let ray = Ray::new(
+            Vector { x: -2.0, y: 0.0, z: 0.0 },
+            Vector { x: 1.0, y: 0.0, z: 0.0 },
+        );
 
-        let b = Vector::dot(&v, &n) * n;
+        let hit_distance = sphere.hit(&ray, 0.0, core::f64::MAX).unwrap();
 
-        v - 2.0 * b
+        assert_approx_eq!(hit_distance, 1.0);
+    }
+
+    #[test]
+    fn test_sphere_surface_normal() {
+        let sphere = Sphere { centre: Vector { x: 0.0, y: 0.0, z: 0.0 }, radius: 1.0 };
+        let ray = Ray::new(
+            Vector { x: -2.0, y: 0.0, z: 0.0 },
+            Vector { x: 1.0, y: 0.0, z: 0.0 },
+        );
+
+        let hit_distance = sphere.hit(&ray, 0.0, core::f64::MAX).unwrap();
+        let surface_normal = sphere.surface_normal(&ray, hit_distance);
+
+        assert_eq!(surface_normal, Vector {x: -1.0, y: 0.0, z: 0.0});
+    }
+
+    #[test]
+    fn test_neg_radius_sphere_surface_normal() {
+        let sphere = Sphere { centre: Vector { x: 0.0, y: 0.0, z: 0.0 }, radius: -1.0 };
+        let ray = Ray::new(
+            Vector { x: -2.0, y: 0.0, z: 0.0 },
+            Vector { x: 1.0, y: 0.0, z: 0.0 },
+        );
+
+        let hit_distance = sphere.hit(&ray, 0.0, core::f64::MAX).unwrap();
+        let surface_normal = sphere.surface_normal(&ray, hit_distance);
+
+        assert_eq!(surface_normal, Vector {x: 1.0, y: 0.0, z: 0.0});
     }
 }

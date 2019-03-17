@@ -46,6 +46,14 @@ fn subtract_vectors(lhs: &Vector, rhs: &Vector) -> Vector {
     }
 }
 
+fn neg_vector(vector: &Vector) -> Vector {
+    Vector {
+        x: -vector.x,
+        y: -vector.y,
+        z: -vector.z,
+    }
+}
+
 fn add_vector_and_scalar(lhs: &Vector, rhs: f64) -> Vector {
     Vector {
         x: lhs.x + rhs,
@@ -59,6 +67,14 @@ fn mul_vector_and_scalar(lhs: &Vector, rhs: f64) -> Vector {
         x: lhs.x * rhs,
         y: lhs.y * rhs,
         z: lhs.z * rhs,
+    }
+}
+
+fn div_vector_and_scalar(lhs: &Vector, rhs: f64) -> Vector {
+    Vector {
+        x: lhs.x / rhs,
+        y: lhs.y / rhs,
+        z: lhs.z / rhs,
     }
 }
 
@@ -126,6 +142,22 @@ impl ops::Sub<Vector> for Vector {
     }
 }
 
+impl ops::Neg for &Vector {
+    type Output = Vector;
+
+    fn neg(self) -> Self::Output {
+        neg_vector(&self)
+    }
+}
+
+impl ops::Neg for Vector {
+    type Output = Vector;
+
+    fn neg(self) -> Self::Output {
+        neg_vector(&self)
+    }
+}
+
 impl ops::Add<f64> for &Vector {
     type Output = Vector;
 
@@ -190,6 +222,22 @@ impl ops::Mul<Vector> for f64 {
     }
 }
 
+impl ops::Div<f64> for Vector {
+    type Output = Vector;
+
+    fn div(self, rhs: f64) -> Vector {
+        div_vector_and_scalar(&self, rhs)
+    }
+}
+
+impl ops::Div<f64> for &Vector {
+    type Output = Vector;
+
+    fn div(self, rhs: f64) -> Vector {
+        div_vector_and_scalar(&self, rhs)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -238,6 +286,16 @@ mod tests {
     }
 
     #[test]
+    fn test_neg_vector() {
+        let vector = Vector {x: 1.0, y: 1.5, z: 2.0};
+
+        let expected_result = Vector {x: -1.0, y: -1.5, z: -2.0};
+
+        assert_eq!(-vector.clone(), expected_result);
+        assert_eq!(-&vector, expected_result);
+    }
+
+    #[test]
     fn test_add_vector_and_scalar() {
         let vector = Vector {x: 1.0, y: 1.5, z: 2.0};
         let scalar = 2.0;
@@ -261,6 +319,17 @@ mod tests {
         assert_eq!(&vector * scalar, expected_result);
         assert_eq!(scalar * vector.clone(), expected_result);
         assert_eq!(scalar * &vector, expected_result);
+    }
+
+    #[test]
+    fn test_div_vector_and_scalar() {
+        let vector = Vector {x: 1.0, y: 1.5, z: 2.0};
+        let scalar = 2.0;
+
+        let expected_result = Vector {x: 0.5, y: 0.75, z: 1.0};
+
+        assert_eq!(vector.clone() / scalar, expected_result);
+        assert_eq!(&vector / scalar, expected_result);
     }
 
     #[test]

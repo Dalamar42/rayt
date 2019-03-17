@@ -3,7 +3,7 @@ use data::vector::Vector;
 use data::colour::Colour;
 use world::entity::Entity;
 use world::geometry::Sphere;
-use world::materials::{Lambertian, Metal};
+use world::materials::{Lambertian, Metal, Dielectric};
 
 pub struct Config {
     pub width: u64,
@@ -30,27 +30,7 @@ pub fn build_config() -> Config {
                 radius: 0.5,
             }),
             material: Box::from(Lambertian {
-                albedo: Colour {r: 0.8, g: 0.3, b: 0.3},
-            }),
-        },
-        Entity {
-            geometry: Box::from(Sphere {
-                centre: Vector { x: -1.0, y: 0.0, z: -1.0 },
-                radius: 0.5,
-            }),
-            material: Box::from(Metal {
-                albedo: Colour { r: 0.8, g: 0.8, b: 0.8 },
-                fuzz: 0.3,
-            }),
-        },
-        Entity {
-            geometry: Box::from(Sphere {
-                centre: Vector { x: 1.0, y: 0.0, z: -1.0 },
-                radius: 0.5,
-            }),
-            material: Box::from(Metal {
-                albedo: Colour {r: 0.8, g: 0.6, b: 0.2},
-                fuzz: 1.0,
+                albedo: Colour {r: 0.1, g: 0.2, b: 0.5},
             }),
         },
         Entity {
@@ -60,6 +40,25 @@ pub fn build_config() -> Config {
             }),
             material: Box::from(Lambertian {
                 albedo: Colour {r: 0.8, g: 0.8, b: 0.0},
+            }),
+        },
+        Entity {
+            geometry: Box::from(Sphere {
+                centre: Vector { x: 1.0, y: 0.0, z: -1.0 },
+                radius: 0.5,
+            }),
+            material: Box::from(Metal {
+                albedo: Colour {r: 0.8, g: 0.6, b: 0.2},
+                fuzz: 0.1,
+            }),
+        },
+        Entity {
+            geometry: Box::from(Sphere {
+                centre: Vector { x: -1.0, y: 0.0, z: -1.0 },
+                radius: -0.45,
+            }),
+            material: Box::from(Dielectric{
+                refractive_index: 1.5,
             }),
         },
     ];
