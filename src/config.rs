@@ -172,7 +172,7 @@ fn build_book_cover_world() -> World {
                                     g: 0.5 * (1.0 + rng.gen::<f64>()),
                                     b: 0.5 * (1.0 + rng.gen::<f64>()),
                                 },
-                                fuzz: 0.5 * (1.0 + rng.gen::<f64>()),
+                                fuzz: 0.5 * rng.gen::<f64>(),
                             }),
                         }
                     );
