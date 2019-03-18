@@ -1,6 +1,7 @@
 use config::Config;
 use rand::prelude::*;
 use data::vector::Vector;
+use std::f64::consts::PI;
 
 const ANTI_ALIASING_FACTOR: u64 = 100;
 
@@ -38,11 +39,27 @@ pub struct Camera {
 
 impl Camera {
     pub fn new(
-        origin: Vector,
-        lower_left_corner: Vector,
-        horizontal: Vector,
-        vertical: Vector
+        look_from: &Vector,
+        look_at: &Vector,
+        view_up: &Vector,
+        vertical_fov: f64,
+        aspect: f64,
     ) -> Camera {
+        let theta = vertical_fov * PI / 180.0;
+        let vector_to_plane = look_from - look_at;
+
+        let half_height = f64::tan(theta / 2.0) * vector_to_plane.len();
+        let half_width = aspect * half_height;
+
+        let w = vector_to_plane.unit_vector();
+        let u = Vector::cross(view_up, &w).unit_vector();
+        let v = Vector::cross(&w, &u);
+
+        let origin = look_from.clone();
+        let lower_left_corner = &origin - half_width * &u - half_height * &v - &w;
+        let horizontal = 2.0 * half_width * &u;
+        let vertical = 2.0 * half_height * &v;
+
         Camera { origin, lower_left_corner, horizontal, vertical }
     }
 

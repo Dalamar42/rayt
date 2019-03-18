@@ -28,6 +28,14 @@ impl Vector {
     pub fn dot(lhs: &Vector, rhs: &Vector) -> f64 {
         lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z
     }
+
+    pub fn cross(lhs: &Vector, rhs: &Vector) -> Vector {
+        Vector {
+            x: lhs.y * rhs.z - lhs.z * rhs.y,
+            y: -(lhs.x * rhs.z - lhs.z * rhs.x),
+            z: lhs.x * rhs.y - lhs.y * rhs.x,
+        }
+    }
 }
 
 fn add_vectors(lhs: &Vector, rhs: &Vector) -> Vector {
@@ -340,5 +348,15 @@ mod tests {
         let expected_result = -0.25;
 
         assert_approx_eq!(Vector::dot(&vector_a, &vector_b), expected_result);
+    }
+
+    #[test]
+    fn test_vectors_cross_product() {
+        let vector_a = Vector {x: 2.0, y: 3.0, z: 4.0};
+        let vector_b = Vector {x: 5.0, y: 6.0, z: 7.0};
+
+        let expected_result = Vector {x: -3.0, y: 6.0, z: -3.0};
+
+        assert_eq!(Vector::cross(&vector_a, &vector_b), expected_result);
     }
 }
