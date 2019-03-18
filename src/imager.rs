@@ -13,6 +13,7 @@ pub fn build_image<T: Sync>(colouriser: T, config: &Config, progress_bar: &Progr
         .par_iter()
         .map(|(row, col)| config.camera.rays(*row, *col, &config))
         .map(|rays| colour(&colouriser, &rays, &config, &progress_bar))
+        .map(|colour| colour.gamma_2())
         .collect();
 
     progress_bar.finish();
