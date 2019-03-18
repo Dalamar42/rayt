@@ -5,7 +5,6 @@ use world::entity::Entity;
 use world::geometry::Sphere;
 use world::materials::{Lambertian, Metal, Dielectric};
 use world::World;
-use std::f64::consts::PI;
 
 pub struct Config {
     pub width: u64,
@@ -19,11 +18,12 @@ pub fn build_config() -> Config {
     let height = 100;
 
     let camera = Camera::new(
-        &Vector {x: -2.0, y: 2.0, z: 1.0},
+        &Vector {x: 3.0, y: 3.0, z: 2.0},
         &Vector {x: 0.0, y: 0.0, z: -1.0},
         &Vector {x: 0.0, y: 1.0, z: 0.0},
-        30.0,
+        20.0,
         (width / height) as f64,
+        2.0,
     );
     let world = build_world_a();
 

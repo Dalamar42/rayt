@@ -35,6 +35,10 @@ pub struct Camera {
     lower_left_corner: Vector,
     horizontal: Vector,
     vertical: Vector,
+    u: Vector,
+    v: Vector,
+    w: Vector,
+    lens_radius: f64,
 }
 
 impl Camera {
@@ -44,11 +48,15 @@ impl Camera {
         view_up: &Vector,
         vertical_fov: f64,
         aspect: f64,
+        aperture: f64,
     ) -> Camera {
+        let lens_radius = aperture / 2.0;
+
         let theta = vertical_fov * PI / 180.0;
         let vector_to_plane = look_from - look_at;
+        let focus_distance = vector_to_plane.len();
 
-        let half_height = f64::tan(theta / 2.0) * vector_to_plane.len();
+        let half_height = f64::tan(theta / 2.0) * focus_distance;
         let half_width = aspect * half_height;
 
         let w = vector_to_plane.unit_vector();
@@ -56,11 +64,20 @@ impl Camera {
         let v = Vector::cross(&w, &u);
 
         let origin = look_from.clone();
-        let lower_left_corner = &origin - half_width * &u - half_height * &v - &w;
+        let lower_left_corner = &origin - half_width * &u - half_height * &v - focus_distance * &w;
         let horizontal = 2.0 * half_width * &u;
         let vertical = 2.0 * half_height * &v;
 
-        Camera { origin, lower_left_corner, horizontal, vertical }
+        Camera {
+            origin,
+            lower_left_corner,
+            horizontal,
+            vertical,
+            u,
+            v,
+            w,
+            lens_radius,
+        }
     }
 
     pub fn pixels(&self, config: &Config) -> Vec<(u64, u64)> {
@@ -89,12 +106,27 @@ impl Camera {
     }
 
     fn ray(&self, h: f64, v: f64) -> Ray {
+        let rd = self.lens_radius * random_point_in_unit_disk();
+        let lens_offset = &self.u * rd.x + &self.v * rd.y;
         Ray {
-            a: (&self).origin.clone(),
+            a: &self.origin + &lens_offset,
             b: &self.lower_left_corner +
                 h * &self.horizontal +
                 v * &self.vertical -
-                &self.origin,
+                &self.origin -
+                &lens_offset,
+        }
+    }
+}
+
+fn random_point_in_unit_disk() -> Vector {
+    let mut rng = rand::thread_rng();
+    let centre = Vector {x: 1.0, y: 1.0, z: 0.0};
+
+    loop {
+        let point = 2.0 * Vector {x: rng.gen(), y: rng.gen(), z: 0.0} - &centre;
+        if Vector::dot(&point, &point) < 1.0 {
+            return point
         }
     }
 }

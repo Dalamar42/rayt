@@ -18,10 +18,10 @@ pub trait Material: Sync {
 
 fn random_point_in_unit_sphere() -> Vector {
     let mut rng = rand::thread_rng();
-    let unit_vector = Vector {x: 1.0, y: 1.0, z: 1.0};
+    let centre = Vector {x: 1.0, y: 1.0, z: 1.0};
 
     loop {
-        let point = 2.0 * Vector {x: rng.gen(), y: rng.gen(), z: rng.gen()} - &unit_vector;
+        let point = 2.0 * Vector {x: rng.gen(), y: rng.gen(), z: rng.gen()} - &centre;
         if point.len_squared() < 1.0 {
             return point
         }
