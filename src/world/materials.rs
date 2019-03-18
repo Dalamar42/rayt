@@ -73,7 +73,7 @@ impl Material for Lambertian {
         let diffuse = random_point_in_unit_sphere();
         let target = hit_point + surface_normal + diffuse;
 
-        let ray = Ray::new(hit_point.clone(), target);
+        let ray = Ray::new(hit_point.clone(), target - hit_point);
 
         Some(ScatterResult { ray, attenuation: self.albedo.clone() })
     }
