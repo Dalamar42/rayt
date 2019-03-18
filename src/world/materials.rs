@@ -99,6 +99,10 @@ impl Material for Metal {
             reflected + self.fuzz * random_point_in_unit_sphere(),
         );
 
+        if Vector::dot(&ray.direction(), &surface_normal) <= 0.0 {
+            return None
+        }
+
         Some(ScatterResult { ray, attenuation: self.albedo.clone() })
     }
 }
