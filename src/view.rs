@@ -49,17 +49,15 @@ impl Camera {
         vertical_fov: f64,
         aspect: f64,
         aperture: f64,
+        focus_distance: f64,
     ) -> Camera {
         let lens_radius = aperture / 2.0;
 
         let theta = vertical_fov * PI / 180.0;
-        let vector_to_plane = look_from - look_at;
-        let focus_distance = vector_to_plane.len();
-
         let half_height = f64::tan(theta / 2.0) * focus_distance;
         let half_width = aspect * half_height;
 
-        let w = vector_to_plane.unit_vector();
+        let w = (look_from - look_at).unit_vector();
         let u = Vector::cross(view_up, &w).unit_vector();
         let v = Vector::cross(&w, &u);
 
