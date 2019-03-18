@@ -11,7 +11,7 @@ fn colour(ray: &Ray, config: &Config, depth: u64) -> Colour {
         return Colour {r: 0.0, g: 0.0, b: 0.0}
     }
 
-    let maybe_hit_result = config.volumes
+    let maybe_hit_result = config.world.volumes
         .iter()
         .filter_map(|volume| {
             let maybe_hit_distance = volume.hit(&ray, 0.001, core::f64::MAX);
