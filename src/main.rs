@@ -5,6 +5,8 @@ extern crate rand;
 extern crate rayon;
 extern crate indicatif;
 extern crate console;
+#[macro_use] extern crate clap;
+#[macro_use] extern crate simple_error;
 
 mod io;
 mod data;
@@ -13,6 +15,7 @@ mod world;
 mod config;
 mod colouriser;
 mod imager;
+mod cli;
 
 use config::{build_config, Config};
 use imager::build_image;
@@ -20,12 +23,34 @@ use colouriser::build_colouriser;
 use indicatif::{ProgressBar, ProgressStyle, HumanDuration};
 use std::time::Instant;
 use console::style;
+use cli::{get_cli_config, CliCommand};
+use std::error::Error;
+use std::process;
 
 const NUM_OF_THREADS: usize = 4;
 const PROGRESS_BAR_STYLE: &str =
     "[{elapsed_precise}] [{bar:60.cyan/blue}] {percent}% ({eta})";
 
 fn main() {
+    if let Err(e) = run() {
+        eprintln!("Application error: {}", e);
+        process::exit(1);
+    }
+}
+
+fn run() -> Result<(), Box<Error>> {
+    let cli_config = get_cli_config()?;
+
+    match cli_config.command {
+        CliCommand::RENDER => {
+            render()?;
+        }
+    };
+
+    Ok(())
+}
+
+fn render() -> Result<(), Box<Error>> {
     rayon::ThreadPoolBuilder::new().num_threads(NUM_OF_THREADS).build_global().unwrap();
 
     let started = Instant::now();
@@ -36,9 +61,11 @@ fn main() {
     let test_image = build_image(colouriser, &config, &progress_bar(&config));
 
     println!("{} Printing image...", style("[2/2]").bold().dim());
-    io::write_image_as_ppm(test_image).expect("Error");
+    io::write_image_as_ppm(test_image)?;
 
     println!("Done in {}", HumanDuration(started.elapsed()));
+
+    Ok(())
 }
 
 fn progress_bar(config: &Config) -> ProgressBar {
