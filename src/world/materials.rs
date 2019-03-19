@@ -116,10 +116,10 @@ pub struct Dielectric {
     pub refractive_index: f64,
 }
 
-fn reflectivity_schlick_approx(cosine: f64, refractive_index: f64) -> f64 {
-    let r0 = (1.0 - refractive_index) / (1.0 + refractive_index);
+fn reflectivity_schlick_approx(cosine: f64, n_i: f64, n_t: f64) -> f64 {
+    let r0 = (n_i - n_t) / (n_i + n_t);
     let r0 = r0 * r0;
-    r0 + (1.0 - r0) * (1.0 - cosine).powi(5)
+    r0 + (1.0 - r0) * f64::powi(1.0 - cosine, 5)
 }
 
 impl Material for Dielectric {
@@ -142,8 +142,8 @@ impl Material for Dielectric {
             (1.0, REFRACTIVE_INDEX_OF_AIR, self.refractive_index)
         };
 
-        let cosine = - sign * n_i * uvn;
-        let reflect_prob = reflectivity_schlick_approx(cosine, n_i);
+        let cosine = - sign * uvn;
+        let reflect_prob = reflectivity_schlick_approx(cosine, n_i, n_t);
         let reflect_rand: f64 = rng.gen();
         let should_reflect = reflect_rand < reflect_prob;
 
