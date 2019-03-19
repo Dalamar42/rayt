@@ -1,0 +1,6335 @@
+---
+aspect: 1.5
+camera:
+  look_from:
+    x: 13.0
+    y: 2.0
+    z: 3.0
+  look_at:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  view_up:
+    x: 0.0
+    y: 1.0
+    z: 0.0
+  vertical_fov: 20.0
+  aspect: 1.5
+  aperture: 0.1
+  focus_distance: 10.0
+world:
+  volumes:
+    - geometry:
+        type: Sphere
+        centre:
+          x: 0.0
+          y: -1000.0
+          z: 0.0
+        radius: 1000.0
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.5
+          g: 0.5
+          b: 0.5
+    - geometry:
+        type: Sphere
+        centre:
+          x: 0.0
+          y: 1.0
+          z: 0.0
+        radius: 1.0
+      material:
+        type: Dielectric
+        refractive_index: 1.5
+    - geometry:
+        type: Sphere
+        centre:
+          x: -4.0
+          y: 1.0
+          z: 0.0
+        radius: 1.0
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.4
+          g: 0.2
+          b: 0.1
+    - geometry:
+        type: Sphere
+        centre:
+          x: 4.0
+          y: 1.0
+          z: 0.0
+        radius: 1.0
+      material:
+        type: Metal
+        albedo:
+          r: 0.7
+          g: 0.6
+          b: 0.5
+        fuzz: 0.0
+    - geometry:
+        type: Sphere
+        centre:
+          x: -10.925218974774346
+          y: 0.2
+          z: -10.252332677328886
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.3618536424896107
+          g: 0.19681753238211789
+          b: 0.04758405027354229
+    - geometry:
+        type: Sphere
+        centre:
+          x: -10.927097923728665
+          y: 0.2
+          z: -9.200795066365212
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.007579337153793549
+          g: 0.1865216614859822
+          b: 0.0033711388363517546
+    - geometry:
+        type: Sphere
+        centre:
+          x: -10.63253717144698
+          y: 0.2
+          z: -8.46161847337497
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.3536483873207108
+          g: 0.522580189641796
+          b: 0.4892134474058709
+    - geometry:
+        type: Sphere
+        centre:
+          x: -10.800845963054332
+          y: 0.2
+          z: -7.42607817282231
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.5703826460585273
+          g: 0.041479372332295
+          b: 0.42747069050583205
+    - geometry:
+        type: Sphere
+        centre:
+          x: -10.75632465832923
+          y: 0.2
+          z: -6.125619096958056
+        radius: 0.2
+      material:
+        type: Dielectric
+        refractive_index: 1.5
+    - geometry:
+        type: Sphere
+        centre:
+          x: -10.7848242413786
+          y: 0.2
+          z: -5.249155679271022
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.4181588685759575
+          g: 0.3754335080897473
+          b: 0.8967850471004227
+    - geometry:
+        type: Sphere
+        centre:
+          x: -10.950268020954943
+          y: 0.2
+          z: -4.789275813683639
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.3857941654581826
+          g: 0.08143700684616655
+          b: 0.3095805153294974
+    - geometry:
+        type: Sphere
+        centre:
+          x: -10.761686157554918
+          y: 0.2
+          z: -3.8414082777329026
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.028877330331772936
+          g: 0.38790919445660745
+          b: 0.15670654848274355
+    - geometry:
+        type: Sphere
+        centre:
+          x: -10.66692784874367
+          y: 0.2
+          z: -2.2995004556686489
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.20840907894672876
+          g: 0.6005025149947113
+          b: 0.0612551269997453
+    - geometry:
+        type: Sphere
+        centre:
+          x: -10.714489610961144
+          y: 0.2
+          z: -1.3855899138400614
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.050373559264599378
+          g: 0.5257081852030733
+          b: 0.016960062144559627
+    - geometry:
+        type: Sphere
+        centre:
+          x: -10.662259125901095
+          y: 0.2
+          z: -0.6800658030992268
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.1331479726026902
+          g: 0.16891386074592086
+          b: 0.23298639476486197
+    - geometry:
+        type: Sphere
+        centre:
+          x: -10.177274438118238
+          y: 0.2
+          z: 0.22354290288444507
+        radius: 0.2
+      material:
+        type: Dielectric
+        refractive_index: 1.5
+    - geometry:
+        type: Sphere
+        centre:
+          x: -10.651576034090516
+          y: 0.2
+          z: 1.791992308700144
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.6239937312733535
+          g: 0.3578190597587433
+          b: 0.054837440877146769
+    - geometry:
+        type: Sphere
+        centre:
+          x: -10.152289219018549
+          y: 0.2
+          z: 2.876449924162826
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.9567249312544164
+          g: 0.7927739518585653
+          b: 0.893759633034318
+        fuzz: 0.22717241368787684
+    - geometry:
+        type: Sphere
+        centre:
+          x: -10.314504059029276
+          y: 0.2
+          z: 3.4631969656004895
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.28065184007076146
+          g: 0.007349886687865257
+          b: 0.15562497526807254
+    - geometry:
+        type: Sphere
+        centre:
+          x: -10.919386282881069
+          y: 0.2
+          z: 4.2910017219268259
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.3668933175889829
+          g: 0.8214153802991674
+          b: 0.10245386460598274
+    - geometry:
+        type: Sphere
+        centre:
+          x: -10.146931518704913
+          y: 0.2
+          z: 5.5228689538945698
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.8147100316703624
+          g: 0.737083116432242
+          b: 0.636360064932215
+        fuzz: 0.38357098818605325
+    - geometry:
+        type: Sphere
+        centre:
+          x: -10.427527774414417
+          y: 0.2
+          z: 6.8304045066185019
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.16765068791990435
+          g: 0.5795429739724465
+          b: 0.08878965519453046
+    - geometry:
+        type: Sphere
+        centre:
+          x: -10.358980667285707
+          y: 0.2
+          z: 7.3253424134050439
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.12019931834244908
+          g: 0.17847984382350252
+          b: 0.1170841879090254
+    - geometry:
+        type: Sphere
+        centre:
+          x: -10.64443721203114
+          y: 0.2
+          z: 8.816088481661913
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.17317073785028923
+          g: 0.6838165241757926
+          b: 0.07861784875154356
+    - geometry:
+        type: Sphere
+        centre:
+          x: -10.614358389841847
+          y: 0.2
+          z: 9.113912445805765
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.44400049308274017
+          g: 0.024482238885298034
+          b: 0.1452478465459713
+    - geometry:
+        type: Sphere
+        centre:
+          x: -10.410915399183626
+          y: 0.2
+          z: 10.29218650729653
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.015841172040345035
+          g: 0.2841474564144958
+          b: 0.12502234094959079
+    - geometry:
+        type: Sphere
+        centre:
+          x: -9.623453188592976
+          y: 0.2
+          z: -10.57002315055154
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.18731427532789544
+          g: 0.10247996482636461
+          b: 0.3286455112857983
+    - geometry:
+        type: Sphere
+        centre:
+          x: -9.3294904615004
+          y: 0.2
+          z: -9.296965198879683
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.17333415442772005
+          g: 0.31254364440609946
+          b: 0.09325408053718663
+    - geometry:
+        type: Sphere
+        centre:
+          x: -9.112417896464598
+          y: 0.2
+          z: -8.349229756413659
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.05507973533988235
+          g: 0.5496786637185879
+          b: 0.2743861229142276
+    - geometry:
+        type: Sphere
+        centre:
+          x: -9.72214211251503
+          y: 0.2
+          z: -7.547946422412501
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.6421107662521798
+          g: 0.04384213301643135
+          b: 0.19162500126060254
+    - geometry:
+        type: Sphere
+        centre:
+          x: -9.376724025860059
+          y: 0.2
+          z: -6.902764930067255
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.6627002194325959
+          g: 0.3213967271748948
+          b: 0.351487899329194
+    - geometry:
+        type: Sphere
+        centre:
+          x: -9.651165004988897
+          y: 0.2
+          z: -5.6116544738714249
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.0765904045819745
+          g: 0.06699698619257544
+          b: 0.49135914101809838
+    - geometry:
+        type: Sphere
+        centre:
+          x: -9.146875003127113
+          y: 0.2
+          z: -4.311515351885958
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.07220486823241954
+          g: 0.18930640526083596
+          b: 0.42137492227152575
+    - geometry:
+        type: Sphere
+        centre:
+          x: -9.264100443834904
+          y: 0.2
+          z: -3.161900606438336
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.5002403521707977
+          g: 0.024709643112385876
+          b: 0.03765671415046153
+    - geometry:
+        type: Sphere
+        centre:
+          x: -9.874795942843882
+          y: 0.2
+          z: -2.533115718136051
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.6738706241343231
+          g: 0.753683002646794
+          b: 0.6027680897454856
+        fuzz: 0.026540599894999407
+    - geometry:
+        type: Sphere
+        centre:
+          x: -9.796206633897145
+          y: 0.2
+          z: -1.1461551356886229
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.05789375346001416
+          g: 0.049786172673535498
+          b: 0.03983872905283216
+    - geometry:
+        type: Sphere
+        centre:
+          x: -9.181146423679922
+          y: 0.2
+          z: -0.4867446214348945
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.19578001591750447
+          g: 0.4031093118245569
+          b: 0.1946202853944426
+    - geometry:
+        type: Sphere
+        centre:
+          x: -9.712044215342243
+          y: 0.2
+          z: 0.33850915043066989
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.004585802633744646
+          g: 0.33409410737333297
+          b: 0.4961953064945837
+    - geometry:
+        type: Sphere
+        centre:
+          x: -9.988970056335484
+          y: 0.2
+          z: 1.518709926374548
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.5408697298410249
+          g: 0.9595035461830146
+          b: 0.8568400179003655
+        fuzz: 0.07132176134929896
+    - geometry:
+        type: Sphere
+        centre:
+          x: -9.86203968341396
+          y: 0.2
+          z: 2.647764020501702
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.07306723762900039
+          g: 0.2696838780054186
+          b: 0.2009002591036611
+    - geometry:
+        type: Sphere
+        centre:
+          x: -9.680291021063415
+          y: 0.2
+          z: 3.110937619716989
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.6865722262131291
+          g: 0.5149016499182026
+          b: 0.8093015728233881
+        fuzz: 0.3131537612335851
+    - geometry:
+        type: Sphere
+        centre:
+          x: -9.67926567405455
+          y: 0.2
+          z: 4.218588357247502
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.3603964279184933
+          g: 0.0644757164125805
+          b: 0.3635996305618587
+    - geometry:
+        type: Sphere
+        centre:
+          x: -9.505487855924873
+          y: 0.2
+          z: 5.476034451000242
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.7142137201275147
+          g: 0.32455922612055068
+          b: 0.019105113453403115
+    - geometry:
+        type: Sphere
+        centre:
+          x: -9.738267260210556
+          y: 0.2
+          z: 6.305369267655741
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.05524843871694724
+          g: 0.1838424139219523
+          b: 0.060903301033239858
+    - geometry:
+        type: Sphere
+        centre:
+          x: -9.259968415636799
+          y: 0.2
+          z: 7.634911011400551
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.6529128170018199
+          g: 0.6734515182639467
+          b: 0.06882460656275097
+    - geometry:
+        type: Sphere
+        centre:
+          x: -9.591025893373072
+          y: 0.2
+          z: 8.251106152056993
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.16547860697357964
+          g: 0.2820299646156078
+          b: 0.36784810839079387
+    - geometry:
+        type: Sphere
+        centre:
+          x: -9.46999965004658
+          y: 0.2
+          z: 9.827145336543927
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.02463985167991839
+          g: 0.022515081712022008
+          b: 0.1589154146858481
+    - geometry:
+        type: Sphere
+        centre:
+          x: -9.562406520586116
+          y: 0.2
+          z: 10.116240835496964
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.6736563742176414
+          g: 0.11165386091368872
+          b: 0.15194978676736763
+    - geometry:
+        type: Sphere
+        centre:
+          x: -8.84544777012871
+          y: 0.2
+          z: -10.82638159203027
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.27086690957309547
+          g: 0.035159987288524516
+          b: 0.5283246965393288
+    - geometry:
+        type: Sphere
+        centre:
+          x: -8.4374219754834
+          y: 0.2
+          z: -9.37351054032262
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.3048831919597381
+          g: 0.2724331003443126
+          b: 0.5480979737005547
+    - geometry:
+        type: Sphere
+        centre:
+          x: -8.883079726889447
+          y: 0.2
+          z: -8.386793732531875
+        radius: 0.2
+      material:
+        type: Dielectric
+        refractive_index: 1.5
+    - geometry:
+        type: Sphere
+        centre:
+          x: -8.841851897533859
+          y: 0.2
+          z: -7.2144127686203129
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.11889484441114184
+          g: 0.16998547981773716
+          b: 0.15745118833789063
+    - geometry:
+        type: Sphere
+        centre:
+          x: -8.9634133433084
+          y: 0.2
+          z: -6.995984434068147
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.45176891450618059
+          g: 0.06888886045678562
+          b: 0.06381930309523273
+    - geometry:
+        type: Sphere
+        centre:
+          x: -8.863124324796546
+          y: 0.2
+          z: -5.3269330763967279
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.5691805466435285
+          g: 0.8222249454531743
+          b: 0.5940363666466118
+        fuzz: 0.10771811282021798
+    - geometry:
+        type: Sphere
+        centre:
+          x: -8.70961217495172
+          y: 0.2
+          z: -4.810584188295269
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.057525400205944588
+          g: 0.019024604937630524
+          b: 0.5395578339873737
+    - geometry:
+        type: Sphere
+        centre:
+          x: -8.79854762704485
+          y: 0.2
+          z: -3.6074395690496559
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.6155470006845953
+          g: 0.7316439830553985
+          b: 0.7666639021869268
+        fuzz: 0.2770918091340759
+    - geometry:
+        type: Sphere
+        centre:
+          x: -8.42749196330331
+          y: 0.2
+          z: -2.7075146099067295
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.3720456946499894
+          g: 0.7050502537320987
+          b: 0.3075855519929704
+    - geometry:
+        type: Sphere
+        centre:
+          x: -8.931176579186566
+          y: 0.2
+          z: -1.819508210883328
+        radius: 0.2
+      material:
+        type: Dielectric
+        refractive_index: 1.5
+    - geometry:
+        type: Sphere
+        centre:
+          x: -8.963901232380597
+          y: 0.2
+          z: -0.15794234830394605
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.9488078985574441
+          g: 0.5226504008751289
+          b: 0.5732660237478591
+        fuzz: 0.2362031146426905
+    - geometry:
+        type: Sphere
+        centre:
+          x: -8.155806704592506
+          y: 0.2
+          z: 0.47180464170104538
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.3605871428066695
+          g: 0.058624740351034907
+          b: 0.04432932145848221
+    - geometry:
+        type: Sphere
+        centre:
+          x: -8.518884484164076
+          y: 0.2
+          z: 1.0495842805927605
+        radius: 0.2
+      material:
+        type: Dielectric
+        refractive_index: 1.5
+    - geometry:
+        type: Sphere
+        centre:
+          x: -8.227782014597235
+          y: 0.2
+          z: 2.647832076295419
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.02632969810023157
+          g: 0.16376052023459509
+          b: 0.12090461694977499
+    - geometry:
+        type: Sphere
+        centre:
+          x: -8.177914503267824
+          y: 0.2
+          z: 3.6521661219902157
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.05998370756947858
+          g: 0.09444291450223384
+          b: 0.24340573711224534
+    - geometry:
+        type: Sphere
+        centre:
+          x: -8.910087068424656
+          y: 0.2
+          z: 4.063338259331412
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.6479220511051403
+          g: 0.44412081627425517
+          b: 0.06328410498364275
+    - geometry:
+        type: Sphere
+        centre:
+          x: -8.943977820800705
+          y: 0.2
+          z: 5.54279815585671
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.14848256305922193
+          g: 0.2326572680979313
+          b: 0.7074132623661421
+    - geometry:
+        type: Sphere
+        centre:
+          x: -8.71360206050591
+          y: 0.2
+          z: 6.516099418905341
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.46717757517186417
+          g: 0.5924906163414572
+          b: 0.4433646065429124
+    - geometry:
+        type: Sphere
+        centre:
+          x: -8.224454268024028
+          y: 0.2
+          z: 7.371507571533357
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.08849003240122418
+          g: 0.827048583973025
+          b: 0.00145567484819986
+    - geometry:
+        type: Sphere
+        centre:
+          x: -8.655903387610377
+          y: 0.2
+          z: 8.406318453203057
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.10641090781291182
+          g: 0.0987294823801826
+          b: 0.012839270595309942
+    - geometry:
+        type: Sphere
+        centre:
+          x: -8.621333579923279
+          y: 0.2
+          z: 9.629902768003513
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.16580716493785359
+          g: 0.8002681675264497
+          b: 0.18566810953269795
+    - geometry:
+        type: Sphere
+        centre:
+          x: -8.395083336989467
+          y: 0.2
+          z: 10.44746091691619
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.029636698571343029
+          g: 0.48568610629160915
+          b: 0.6181468846488752
+    - geometry:
+        type: Sphere
+        centre:
+          x: -7.4222207070686478
+          y: 0.2
+          z: -10.92945070644328
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.33399171147433179
+          g: 0.016864180222804924
+          b: 0.009733340254765395
+    - geometry:
+        type: Sphere
+        centre:
+          x: -7.773121155307714
+          y: 0.2
+          z: -9.122534890317434
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.014136630977012722
+          g: 0.7095373291692002
+          b: 0.244641119665214
+    - geometry:
+        type: Sphere
+        centre:
+          x: -7.8336760618509209
+          y: 0.2
+          z: -8.982958725814477
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.6080296519944815
+          g: 0.865258859400365
+          b: 0.9465400471099039
+        fuzz: 0.3101318833560366
+    - geometry:
+        type: Sphere
+        centre:
+          x: -7.1545888754904809
+          y: 0.2
+          z: -7.634832190228129
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.00479024515648337
+          g: 0.06308057578597636
+          b: 0.23273507977791683
+    - geometry:
+        type: Sphere
+        centre:
+          x: -7.44418482935828
+          y: 0.2
+          z: -6.3526939252532019
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.37639246063642209
+          g: 0.44611448148734009
+          b: 0.08974866451368886
+    - geometry:
+        type: Sphere
+        centre:
+          x: -7.475616856427869
+          y: 0.2
+          z: -5.949994777343384
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.5998853008290046
+          g: 0.005711187374215325
+          b: 0.6670119808411932
+    - geometry:
+        type: Sphere
+        centre:
+          x: -7.6011734675111
+          y: 0.2
+          z: -4.993515990563369
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.38100920046216849
+          g: 0.4493616999260313
+          b: 0.2884964577139575
+    - geometry:
+        type: Sphere
+        centre:
+          x: -7.350164282145172
+          y: 0.2
+          z: -3.217005559754776
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.15967364693796858
+          g: 0.14743037495039019
+          b: 0.0689422713719802
+    - geometry:
+        type: Sphere
+        centre:
+          x: -7.670829621966956
+          y: 0.2
+          z: -2.396072233675315
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.21056359566374509
+          g: 0.022235650139269693
+          b: 0.21879762593583999
+    - geometry:
+        type: Sphere
+        centre:
+          x: -7.972897926059028
+          y: 0.2
+          z: -1.8445629451695196
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.3274024254581319
+          g: 0.23661366099310394
+          b: 0.06400970127237943
+    - geometry:
+        type: Sphere
+        centre:
+          x: -7.72279011751253
+          y: 0.2
+          z: -0.4001499730768525
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.6458071793784846
+          g: 0.11946939046136745
+          b: 0.30564448257286527
+    - geometry:
+        type: Sphere
+        centre:
+          x: -7.604955387316166
+          y: 0.2
+          z: 0.4169416982933673
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.09440878263178386
+          g: 0.40985155226182937
+          b: 0.17574008146338727
+    - geometry:
+        type: Sphere
+        centre:
+          x: -7.563554069134249
+          y: 0.2
+          z: 1.029428011311889
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.9471347361794216
+          g: 0.6684879358891993
+          b: 0.718791669422655
+        fuzz: 0.40608484707218059
+    - geometry:
+        type: Sphere
+        centre:
+          x: -7.841519518950304
+          y: 0.2
+          z: 2.7664465561859199
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.8225829300952261
+          g: 0.5330853906613289
+          b: 0.9153643951893136
+        fuzz: 0.4956617781565712
+    - geometry:
+        type: Sphere
+        centre:
+          x: -7.398886287298489
+          y: 0.2
+          z: 3.758279261538495
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.5080586961627754
+          g: 0.6473600782324529
+          b: 0.6561175484895285
+        fuzz: 0.32218568470819389
+    - geometry:
+        type: Sphere
+        centre:
+          x: -7.380976572203572
+          y: 0.2
+          z: 4.7179625477815929
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.004944545140898582
+          g: 0.32412111325611006
+          b: 0.05265851059890746
+    - geometry:
+        type: Sphere
+        centre:
+          x: -7.683885545867673
+          y: 0.2
+          z: 5.679841073898393
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.270876819024265
+          g: 0.07979523199096346
+          b: 0.800536364611358
+    - geometry:
+        type: Sphere
+        centre:
+          x: -7.112503985504376
+          y: 0.2
+          z: 6.5507934503576659
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.07381817399046406
+          g: 0.2898795911109832
+          b: 0.1996785510060054
+    - geometry:
+        type: Sphere
+        centre:
+          x: -7.195740623661412
+          y: 0.2
+          z: 7.207187027740725
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.2816968371574277
+          g: 0.2444532570541415
+          b: 0.3806863000781969
+    - geometry:
+        type: Sphere
+        centre:
+          x: -7.1167290677017489
+          y: 0.2
+          z: 8.394210963366776
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.07076402875236962
+          g: 0.28976628007431656
+          b: 0.2330593891660317
+    - geometry:
+        type: Sphere
+        centre:
+          x: -7.418312769476429
+          y: 0.2
+          z: 9.692778101145171
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.3355701447329642
+          g: 0.05090765319995169
+          b: 0.6723084793539711
+    - geometry:
+        type: Sphere
+        centre:
+          x: -7.646405372697351
+          y: 0.2
+          z: 10.357925693088971
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.9666942568961727
+          g: 0.9772754151277467
+          b: 0.9255137929008407
+        fuzz: 0.2031039162139604
+    - geometry:
+        type: Sphere
+        centre:
+          x: -6.64668898788882
+          y: 0.2
+          z: -10.982141537554734
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.1919948636141744
+          g: 0.6259776891171464
+          b: 0.46226135816387478
+    - geometry:
+        type: Sphere
+        centre:
+          x: -6.243758043630418
+          y: 0.2
+          z: -9.970530498240981
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.015462543470109575
+          g: 0.17312939950351817
+          b: 0.28585108268090389
+    - geometry:
+        type: Sphere
+        centre:
+          x: -6.758389863497078
+          y: 0.2
+          z: -8.778094815006457
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.046156380301470328
+          g: 0.012922489079640434
+          b: 0.43140376761148976
+    - geometry:
+        type: Sphere
+        centre:
+          x: -6.895264506029138
+          y: 0.2
+          z: -7.598618388229379
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.39254361339786367
+          g: 0.340274315748146
+          b: 0.2952219331282603
+    - geometry:
+        type: Sphere
+        centre:
+          x: -6.474073551924152
+          y: 0.2
+          z: -6.597845211140339
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.018460340600654849
+          g: 0.062156522364763638
+          b: 0.04913602557915179
+    - geometry:
+        type: Sphere
+        centre:
+          x: -6.589854448315295
+          y: 0.2
+          z: -5.200424871825374
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.02310995315746544
+          g: 0.2764508189240293
+          b: 0.17231253642975864
+    - geometry:
+        type: Sphere
+        centre:
+          x: -6.884740936254323
+          y: 0.2
+          z: -4.184831938799043
+        radius: 0.2
+      material:
+        type: Dielectric
+        refractive_index: 1.5
+    - geometry:
+        type: Sphere
+        centre:
+          x: -6.165304211958421
+          y: 0.2
+          z: -3.42226776620188
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.0007867066607786538
+          g: 0.06834574476944593
+          b: 0.16747309433324285
+    - geometry:
+        type: Sphere
+        centre:
+          x: -6.404271310349618
+          y: 0.2
+          z: -2.4136957958019868
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.2815118481238767
+          g: 0.19917671272290256
+          b: 0.04532941752043641
+    - geometry:
+        type: Sphere
+        centre:
+          x: -6.665202485461946
+          y: 0.2
+          z: -1.7271120241744229
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.40242852232962869
+          g: 0.2370940223654853
+          b: 0.2196041975276834
+    - geometry:
+        type: Sphere
+        centre:
+          x: -6.509450791378863
+          y: 0.2
+          z: -0.914116520579283
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.37808058314995027
+          g: 0.3097773547116452
+          b: 0.6056233550772522
+    - geometry:
+        type: Sphere
+        centre:
+          x: -6.509330698591835
+          y: 0.2
+          z: 0.47632103500177799
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.08241376378473756
+          g: 0.048633258602109419
+          b: 0.07182288712979314
+    - geometry:
+        type: Sphere
+        centre:
+          x: -6.154038813934831
+          y: 0.2
+          z: 1.088043832413419
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.9961030512326932
+          g: 0.67810535624269
+          b: 0.9326387971918573
+        fuzz: 0.30403273945182798
+    - geometry:
+        type: Sphere
+        centre:
+          x: -6.911261664889984
+          y: 0.2
+          z: 2.0667590866451279
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.3953050043256262
+          g: 0.06703342844239906
+          b: 0.6214341292372007
+    - geometry:
+        type: Sphere
+        centre:
+          x: -6.688192004410081
+          y: 0.2
+          z: 3.067167008321029
+        radius: 0.2
+      material:
+        type: Dielectric
+        refractive_index: 1.5
+    - geometry:
+        type: Sphere
+        centre:
+          x: -6.411452688983123
+          y: 0.2
+          z: 4.87691486094357
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.20987824355604826
+          g: 0.44871695350302878
+          b: 0.7668074386642489
+    - geometry:
+        type: Sphere
+        centre:
+          x: -6.843817045991105
+          y: 0.2
+          z: 5.436163155310385
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.2920797982301027
+          g: 0.2610542652676598
+          b: 0.10693526186873889
+    - geometry:
+        type: Sphere
+        centre:
+          x: -6.934299283199525
+          y: 0.2
+          z: 6.114778492144094
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.9363745758260293
+          g: 0.14959104187398435
+          b: 0.43403602041743136
+    - geometry:
+        type: Sphere
+        centre:
+          x: -6.319049119221491
+          y: 0.2
+          z: 7.398505988601505
+        radius: 0.2
+      material:
+        type: Dielectric
+        refractive_index: 1.5
+    - geometry:
+        type: Sphere
+        centre:
+          x: -6.492841731100808
+          y: 0.2
+          z: 8.012960662202389
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.03793477590121628
+          g: 0.24315441265819247
+          b: 0.12761907718701705
+    - geometry:
+        type: Sphere
+        centre:
+          x: -6.1245745030501299
+          y: 0.2
+          z: 9.822347210171044
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.752502880903933
+          g: 0.2649496588661668
+          b: 0.024238284895005653
+    - geometry:
+        type: Sphere
+        centre:
+          x: -6.826057310921767
+          y: 0.2
+          z: 10.673949763297593
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.08329287466882785
+          g: 0.24336519854715914
+          b: 0.07031030261537709
+    - geometry:
+        type: Sphere
+        centre:
+          x: -5.983138275918748
+          y: 0.2
+          z: -10.145694102172993
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.08942312798083488
+          g: 0.23547501275805278
+          b: 0.10105761037905195
+    - geometry:
+        type: Sphere
+        centre:
+          x: -5.474695233909457
+          y: 0.2
+          z: -9.879582634886552
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.2459909538529038
+          g: 0.16448303467025084
+          b: 0.13774541312522813
+    - geometry:
+        type: Sphere
+        centre:
+          x: -5.924581361120735
+          y: 0.2
+          z: -8.560435409343278
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.7498105724566107
+          g: 0.9589420819828481
+          b: 0.812049077049632
+        fuzz: 0.4630374172952422
+    - geometry:
+        type: Sphere
+        centre:
+          x: -5.373669840148677
+          y: 0.2
+          z: -7.69817103834069
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.3571796770083819
+          g: 0.31421571383760357
+          b: 0.5739818604551031
+    - geometry:
+        type: Sphere
+        centre:
+          x: -5.314070665737803
+          y: 0.2
+          z: -6.472705438350479
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.12664707558706307
+          g: 0.5278286063447863
+          b: 0.10346633471335708
+    - geometry:
+        type: Sphere
+        centre:
+          x: -5.650404828966266
+          y: 0.2
+          z: -5.671263415713684
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.030033506628677828
+          g: 0.36684714602172965
+          b: 0.14606738973383674
+    - geometry:
+        type: Sphere
+        centre:
+          x: -5.497321909987502
+          y: 0.2
+          z: -4.783839884689175
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.2192319823304836
+          g: 0.3427607778400042
+          b: 0.3203599094705145
+    - geometry:
+        type: Sphere
+        centre:
+          x: -5.674246610742228
+          y: 0.2
+          z: -3.791377585106475
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.06681459176370809
+          g: 0.4094177287329477
+          b: 0.557988337259171
+    - geometry:
+        type: Sphere
+        centre:
+          x: -5.270517515464243
+          y: 0.2
+          z: -2.633694958260951
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.22507508325774504
+          g: 0.6610124808814849
+          b: 0.4530291627775092
+    - geometry:
+        type: Sphere
+        centre:
+          x: -5.3598341450543149
+          y: 0.2
+          z: -1.473741243571741
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.1319346188607279
+          g: 0.2239913093174158
+          b: 0.07095287356486946
+    - geometry:
+        type: Sphere
+        centre:
+          x: -5.825607206166646
+          y: 0.2
+          z: -0.7418322197892008
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.12031962621208846
+          g: 0.25846468349882126
+          b: 0.05439996007693107
+    - geometry:
+        type: Sphere
+        centre:
+          x: -5.286390760760829
+          y: 0.2
+          z: 0.021799259545125819
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.044506592010246929
+          g: 0.48572235735977967
+          b: 0.15909558966798213
+    - geometry:
+        type: Sphere
+        centre:
+          x: -5.96586689530485
+          y: 0.2
+          z: 1.3440635631459473
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.18851111477739056
+          g: 0.39651312912576289
+          b: 0.21928840264572747
+    - geometry:
+        type: Sphere
+        centre:
+          x: -5.721255044800982
+          y: 0.2
+          z: 2.4772049651802905
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.6372785241565452
+          g: 0.23070908847629033
+          b: 0.004268366579626466
+    - geometry:
+        type: Sphere
+        centre:
+          x: -5.445374471960716
+          y: 0.2
+          z: 3.6230393424561866
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.0037491264343310966
+          g: 0.5319549278851415
+          b: 0.26464739538766365
+    - geometry:
+        type: Sphere
+        centre:
+          x: -5.790327825118791
+          y: 0.2
+          z: 4.011385365673622
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.5155129091929662
+          g: 0.027098671528805297
+          b: 0.22441301057595018
+    - geometry:
+        type: Sphere
+        centre:
+          x: -5.4439553333801309
+          y: 0.2
+          z: 5.74905548307453
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.4543252337199386
+          g: 0.1461458273380872
+          b: 0.6042423519749297
+    - geometry:
+        type: Sphere
+        centre:
+          x: -5.422049611001094
+          y: 0.2
+          z: 6.112739744391573
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.8543682099106217
+          g: 0.6990236438329944
+          b: 0.5040950777459493
+        fuzz: 0.22355956576052267
+    - geometry:
+        type: Sphere
+        centre:
+          x: -5.115729945731515
+          y: 0.2
+          z: 7.571096488680112
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.32839596460484918
+          g: 0.228585957162873
+          b: 0.8559295774526929
+    - geometry:
+        type: Sphere
+        centre:
+          x: -5.619986725754981
+          y: 0.2
+          z: 8.71868849268899
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.5691999369681376
+          g: 0.7266931185014713
+          b: 0.8469679703970932
+        fuzz: 0.21848735223264538
+    - geometry:
+        type: Sphere
+        centre:
+          x: -5.101679857816661
+          y: 0.2
+          z: 9.338662783779377
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.49825702112859246
+          g: 0.3083090232202955
+          b: 0.2980444167760673
+    - geometry:
+        type: Sphere
+        centre:
+          x: -5.505438092355129
+          y: 0.2
+          z: 10.48848790143367
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.052300129410892567
+          g: 0.5360687235723967
+          b: 0.737821437331241
+    - geometry:
+        type: Sphere
+        centre:
+          x: -4.102227647158289
+          y: 0.2
+          z: -10.259519347848656
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.04192996223387031
+          g: 0.12868989558192665
+          b: 0.5212090821708021
+    - geometry:
+        type: Sphere
+        centre:
+          x: -4.318610076541146
+          y: 0.2
+          z: -9.214832577679069
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.5596983375074427
+          g: 0.12556551973909073
+          b: 0.42828781526017337
+    - geometry:
+        type: Sphere
+        centre:
+          x: -4.220214925455531
+          y: 0.2
+          z: -8.285115868554913
+        radius: 0.2
+      material:
+        type: Dielectric
+        refractive_index: 1.5
+    - geometry:
+        type: Sphere
+        centre:
+          x: -4.774449086946336
+          y: 0.2
+          z: -7.1037293304485129
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.9009367820220892
+          g: 0.05400679101576177
+          b: 0.4138697180684375
+    - geometry:
+        type: Sphere
+        centre:
+          x: -4.229464710875883
+          y: 0.2
+          z: -6.230614959781811
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.43775001952959177
+          g: 0.6562947851509051
+          b: 0.004314666796361891
+    - geometry:
+        type: Sphere
+        centre:
+          x: -4.378322162656504
+          y: 0.2
+          z: -5.925237988838216
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.41753274608957166
+          g: 0.40206774049570317
+          b: 0.5776694691778599
+    - geometry:
+        type: Sphere
+        centre:
+          x: -4.355145649379798
+          y: 0.2
+          z: -4.938907451465125
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.14889835841801708
+          g: 0.4926172765229262
+          b: 0.5459716960734371
+    - geometry:
+        type: Sphere
+        centre:
+          x: -4.700022687389244
+          y: 0.2
+          z: -3.889017067709467
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.16433776393401465
+          g: 0.05188780862301002
+          b: 0.18387396987493039
+    - geometry:
+        type: Sphere
+        centre:
+          x: -4.190112053117011
+          y: 0.2
+          z: -2.3357289435793149
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.5438430419091327
+          g: 0.9661678438786432
+          b: 0.8621365230641478
+        fuzz: 0.34025155940767878
+    - geometry:
+        type: Sphere
+        centre:
+          x: -4.6744391869013459
+          y: 0.2
+          z: -1.45653476362116
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.837488485812494
+          g: 0.6073298178502089
+          b: 0.5997518834599808
+        fuzz: 0.10739171046159518
+    - geometry:
+        type: Sphere
+        centre:
+          x: -4.378359898447027
+          y: 0.2
+          z: -0.12862358156582899
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.024647546477622425
+          g: 0.5269879152275827
+          b: 0.31226686450552867
+    - geometry:
+        type: Sphere
+        centre:
+          x: -4.5108406283870778
+          y: 0.2
+          z: 0.693467497345513
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.020570577057541306
+          g: 0.16033165487366528
+          b: 0.6514905034860227
+    - geometry:
+        type: Sphere
+        centre:
+          x: -4.90404412023808
+          y: 0.2
+          z: 1.7909257105784425
+        radius: 0.2
+      material:
+        type: Dielectric
+        refractive_index: 1.5
+    - geometry:
+        type: Sphere
+        centre:
+          x: -4.662385800358787
+          y: 0.2
+          z: 2.8939746520118265
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.9583817899020399
+          g: 0.14946307847512814
+          b: 0.09979191243247905
+    - geometry:
+        type: Sphere
+        centre:
+          x: -4.637628503116463
+          y: 0.2
+          z: 3.1188237112250429
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.05059513055043717
+          g: 0.357860464584587
+          b: 0.13045185299881069
+    - geometry:
+        type: Sphere
+        centre:
+          x: -4.31944899972584
+          y: 0.2
+          z: 4.566918366872032
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.0314696973879315
+          g: 0.304131930337775
+          b: 0.2703951491184838
+    - geometry:
+        type: Sphere
+        centre:
+          x: -4.326455665824407
+          y: 0.2
+          z: 5.4442581612931779
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.59829981652468
+          g: 0.07865993881345389
+          b: 0.02086329948484935
+    - geometry:
+        type: Sphere
+        centre:
+          x: -4.293545819959208
+          y: 0.2
+          z: 6.349742375261087
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.16696220914616556
+          g: 0.3154179606943283
+          b: 0.524354232160935
+    - geometry:
+        type: Sphere
+        centre:
+          x: -4.824080120419532
+          y: 0.2
+          z: 7.023144757695531
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.4464677913951092
+          g: 0.48714292950430818
+          b: 0.0699211108343531
+    - geometry:
+        type: Sphere
+        centre:
+          x: -4.864599105083282
+          y: 0.2
+          z: 8.770281004403545
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.23601504121803799
+          g: 0.1726291758363399
+          b: 0.11816986466161168
+    - geometry:
+        type: Sphere
+        centre:
+          x: -4.1139645628374998
+          y: 0.2
+          z: 9.1501852424053
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.430798143461136
+          g: 0.06125664548281326
+          b: 0.04422557695012544
+    - geometry:
+        type: Sphere
+        centre:
+          x: -4.412095029864526
+          y: 0.2
+          z: 10.300294292156906
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.044711212468835057
+          g: 0.4025957793746667
+          b: 0.4882978633223055
+    - geometry:
+        type: Sphere
+        centre:
+          x: -3.954458102781788
+          y: 0.2
+          z: -10.213985733512337
+        radius: 0.2
+      material:
+        type: Dielectric
+        refractive_index: 1.5
+    - geometry:
+        type: Sphere
+        centre:
+          x: -3.6494188827939828
+          y: 0.2
+          z: -9.867312767942089
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.24528307515339127
+          g: 0.12967972251280439
+          b: 0.12557854771312849
+    - geometry:
+        type: Sphere
+        centre:
+          x: -3.5429204921364945
+          y: 0.2
+          z: -8.839432328806752
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.08514850845247471
+          g: 0.42794646815758399
+          b: 0.04853307099605606
+    - geometry:
+        type: Sphere
+        centre:
+          x: -3.392937519136513
+          y: 0.2
+          z: -7.319773396994759
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.2690180022055667
+          g: 0.2926904191682965
+          b: 0.05986097757904189
+    - geometry:
+        type: Sphere
+        centre:
+          x: -3.6922269248030834
+          y: 0.2
+          z: -6.724927183477962
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.835220041504686
+          g: 0.7410899922300578
+          b: 0.7544924289408918
+        fuzz: 0.3000321358492615
+    - geometry:
+        type: Sphere
+        centre:
+          x: -3.4588212615031614
+          y: 0.2
+          z: -5.476230132703517
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.5109271311758956
+          g: 0.030314119242171174
+          b: 0.5907575739668944
+    - geometry:
+        type: Sphere
+        centre:
+          x: -3.5884862729811917
+          y: 0.2
+          z: -4.315660009936833
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.9716733276666104
+          g: 0.4953486609895435
+          b: 0.378458818819943
+    - geometry:
+        type: Sphere
+        centre:
+          x: -3.8107758950939036
+          y: 0.2
+          z: -3.317685397667656
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.0015971520388389678
+          g: 0.08476505224737519
+          b: 0.14589673707722543
+    - geometry:
+        type: Sphere
+        centre:
+          x: -3.747076106360133
+          y: 0.2
+          z: -2.654359906084186
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.05954084629607062
+          g: 0.2462265930057501
+          b: 0.1328790837537732
+    - geometry:
+        type: Sphere
+        centre:
+          x: -3.3273152865371555
+          y: 0.2
+          z: -1.2090153388076855
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.28196008290920229
+          g: 0.043667969805483018
+          b: 0.007595122599227054
+    - geometry:
+        type: Sphere
+        centre:
+          x: -3.549135610222992
+          y: 0.2
+          z: -0.1619592152483582
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.007213417632396167
+          g: 0.5688572836150629
+          b: 0.7813770514680566
+    - geometry:
+        type: Sphere
+        centre:
+          x: -3.924041340162821
+          y: 0.2
+          z: 0.502183656523472
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.03287404640656734
+          g: 0.04849599793926505
+          b: 0.27579399470091439
+    - geometry:
+        type: Sphere
+        centre:
+          x: -3.9410076069900628
+          y: 0.2
+          z: 1.1915675853943158
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.25505054699405657
+          g: 0.02757650403679712
+          b: 0.5661932689922821
+    - geometry:
+        type: Sphere
+        centre:
+          x: -3.7383236748742107
+          y: 0.2
+          z: 2.498840566513597
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.12271631770930239
+          g: 0.01592443588668946
+          b: 0.004659192600377357
+    - geometry:
+        type: Sphere
+        centre:
+          x: -3.8991084429272617
+          y: 0.2
+          z: 3.433047861120715
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.5548195710750541
+          g: 0.01741958798752878
+          b: 0.26387968304299527
+    - geometry:
+        type: Sphere
+        centre:
+          x: -3.5988685996322875
+          y: 0.2
+          z: 4.441361737089154
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.04548413601061675
+          g: 0.03725037525843173
+          b: 0.010674120192661384
+    - geometry:
+        type: Sphere
+        centre:
+          x: -3.2512890902581494
+          y: 0.2
+          z: 5.857389358817381
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.24325799048037834
+          g: 0.11365049945923959
+          b: 0.6486947765733155
+    - geometry:
+        type: Sphere
+        centre:
+          x: -3.709347430842335
+          y: 0.2
+          z: 6.4783189224232269
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.9448666269667077
+          g: 0.8402869487982867
+          b: 0.7502877252681688
+        fuzz: 0.4129740622616494
+    - geometry:
+        type: Sphere
+        centre:
+          x: -3.731202569088098
+          y: 0.2
+          z: 7.873940352308979
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.1325072293736637
+          g: 0.029592953963362976
+          b: 0.5629791127969017
+    - geometry:
+        type: Sphere
+        centre:
+          x: -3.5970096203080397
+          y: 0.2
+          z: 8.342903619076028
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.00014097082146878595
+          g: 0.12787163387516674
+          b: 0.009216063149319698
+    - geometry:
+        type: Sphere
+        centre:
+          x: -3.6229190332486587
+          y: 0.2
+          z: 9.37399254249484
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.002488323246226483
+          g: 0.296310751928998
+          b: 0.18405124570375268
+    - geometry:
+        type: Sphere
+        centre:
+          x: -3.5664115003331546
+          y: 0.2
+          z: 10.187149355590435
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.05256613058514264
+          g: 0.24518445541236306
+          b: 0.06474692335068302
+    - geometry:
+        type: Sphere
+        centre:
+          x: -2.700780372281156
+          y: 0.2
+          z: -10.131891447108505
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.9113194889864689
+          g: 0.3191091366116917
+          b: 0.14977203351390329
+    - geometry:
+        type: Sphere
+        centre:
+          x: -2.1097798706051269
+          y: 0.2
+          z: -9.207066500750804
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.014863026075522144
+          g: 0.051427443772663058
+          b: 0.5118381184017193
+    - geometry:
+        type: Sphere
+        centre:
+          x: -2.269978701401317
+          y: 0.2
+          z: -8.939460049341335
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.05432202248367246
+          g: 0.029793832868395724
+          b: 0.6222033055928148
+    - geometry:
+        type: Sphere
+        centre:
+          x: -2.958800957779108
+          y: 0.2
+          z: -7.714846696959156
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.6894711847466635
+          g: 0.8669253269947912
+          b: 0.8123715718143365
+        fuzz: 0.08175768135552447
+    - geometry:
+        type: Sphere
+        centre:
+          x: -2.467752121759667
+          y: 0.2
+          z: -6.356885485179582
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.6512242605558396
+          g: 0.7629349919879764
+          b: 0.7845564875807942
+        fuzz: 0.40658421824912868
+    - geometry:
+        type: Sphere
+        centre:
+          x: -2.122838810669112
+          y: 0.2
+          z: -5.315450108898798
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.5686377983278967
+          g: 0.3277755462635748
+          b: 0.041128179141179787
+    - geometry:
+        type: Sphere
+        centre:
+          x: -2.1768028891964099
+          y: 0.2
+          z: -4.7908848271919679
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.038356722492650919
+          g: 0.27225335474061509
+          b: 0.06142725017940906
+    - geometry:
+        type: Sphere
+        centre:
+          x: -2.845349564879299
+          y: 0.2
+          z: -3.4681649576799384
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.13106688961564157
+          g: 0.15596398427587733
+          b: 0.0491081104286822
+    - geometry:
+        type: Sphere
+        centre:
+          x: -2.2565479391771907
+          y: 0.2
+          z: -2.4261598594405089
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.9486015381680122
+          g: 0.7569826538586864
+          b: 0.6539431592961365
+        fuzz: 0.34229316736132539
+    - geometry:
+        type: Sphere
+        centre:
+          x: -2.898967854158843
+          y: 0.2
+          z: -1.9182527964490373
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.2988601214009949
+          g: 0.19701806810176637
+          b: 0.4359100835952435
+    - geometry:
+        type: Sphere
+        centre:
+          x: -2.5173513609668056
+          y: 0.2
+          z: -0.32534241346577599
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.000039417641879495799
+          g: 0.7548491014923162
+          b: 0.20238581010716548
+    - geometry:
+        type: Sphere
+        centre:
+          x: -2.5155981290186126
+          y: 0.2
+          z: 0.11648814912758214
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.723629804172274
+          g: 0.6413631002414175
+          b: 0.7089290420125162
+        fuzz: 0.4965330176907716
+    - geometry:
+        type: Sphere
+        centre:
+          x: -2.57862710140225
+          y: 0.2
+          z: 1.6658381903410036
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.24167038592864174
+          g: 0.381541519379714
+          b: 0.3686980564597776
+    - geometry:
+        type: Sphere
+        centre:
+          x: -2.7141662759123799
+          y: 0.2
+          z: 2.2717227236781065
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.7819774310771956
+          g: 0.7516301520029047
+          b: 0.5352867625509459
+        fuzz: 0.02910627419699502
+    - geometry:
+        type: Sphere
+        centre:
+          x: -2.825607918938805
+          y: 0.2
+          z: 3.4075152000605257
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.17556151859229347
+          g: 0.43382664204056817
+          b: 0.44524023343550858
+    - geometry:
+        type: Sphere
+        centre:
+          x: -2.2433704322308705
+          y: 0.2
+          z: 4.692335541633497
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.6773373008570306
+          g: 0.019334425055526639
+          b: 0.3478333308084395
+    - geometry:
+        type: Sphere
+        centre:
+          x: -2.1933691781676889
+          y: 0.2
+          z: 5.588043137005891
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.3520848719078469
+          g: 0.004212979648659567
+          b: 0.48089984260245019
+    - geometry:
+        type: Sphere
+        centre:
+          x: -2.45491217647248
+          y: 0.2
+          z: 6.649651718742708
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.641075495499318
+          g: 0.46309927748756798
+          b: 0.30250503700786565
+    - geometry:
+        type: Sphere
+        centre:
+          x: -2.312733672170538
+          y: 0.2
+          z: 7.770744210774422
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.7313805080208731
+          g: 0.9598054834062493
+          b: 0.9950946811353945
+        fuzz: 0.32206331688674386
+    - geometry:
+        type: Sphere
+        centre:
+          x: -2.6976906001770777
+          y: 0.2
+          z: 8.785772053785675
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.015121145536889041
+          g: 0.08458878889735584
+          b: 0.7772147391298522
+    - geometry:
+        type: Sphere
+        centre:
+          x: -2.2959127312539659
+          y: 0.2
+          z: 9.808265920965046
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.045000894066503416
+          g: 0.04641076655450994
+          b: 0.33050885611636907
+    - geometry:
+        type: Sphere
+        centre:
+          x: -2.729157165457839
+          y: 0.2
+          z: 10.022414898772654
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.5205031341688265
+          g: 0.908694502811826
+          b: 0.779798900734461
+        fuzz: 0.36277614478215539
+    - geometry:
+        type: Sphere
+        centre:
+          x: -1.9757175750643168
+          y: 0.2
+          z: -10.70472537069919
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.6747474433030629
+          g: 0.6952359880334159
+          b: 0.5710878683573304
+        fuzz: 0.3148148036829969
+    - geometry:
+        type: Sphere
+        centre:
+          x: -1.583214416094395
+          y: 0.2
+          z: -9.60659864635195
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.5725895840167691
+          g: 0.7674926390076922
+          b: 0.2881806184539567
+    - geometry:
+        type: Sphere
+        centre:
+          x: -1.57110772297979
+          y: 0.2
+          z: -8.285861018618224
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.018069351722240488
+          g: 0.33101518062938009
+          b: 0.4658701459512768
+    - geometry:
+        type: Sphere
+        centre:
+          x: -1.3617515143679964
+          y: 0.2
+          z: -7.883157021651758
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.6361684525103176
+          g: 0.34736843320386098
+          b: 0.04456513035742609
+    - geometry:
+        type: Sphere
+        centre:
+          x: -1.8740142821956965
+          y: 0.2
+          z: -6.418044787047995
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.062358241071754878
+          g: 0.20324294874256797
+          b: 0.16323348375160705
+    - geometry:
+        type: Sphere
+        centre:
+          x: -1.9002894934947395
+          y: 0.2
+          z: -5.737469394092709
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.49885809332276717
+          g: 0.06842794371513635
+          b: 0.375220347401477
+    - geometry:
+        type: Sphere
+        centre:
+          x: -1.9394770596503093
+          y: 0.2
+          z: -4.1844676627581969
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.2277540204112604
+          g: 0.24726733802051416
+          b: 0.6314513710567159
+    - geometry:
+        type: Sphere
+        centre:
+          x: -1.5019016780770836
+          y: 0.2
+          z: -3.6821012628253819
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.4615281659050977
+          g: 0.1265700668926455
+          b: 0.00886404102357935
+    - geometry:
+        type: Sphere
+        centre:
+          x: -1.162397108961196
+          y: 0.2
+          z: -2.304325484347977
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.27498433778168315
+          g: 0.13600906934657748
+          b: 0.09692156010489955
+    - geometry:
+        type: Sphere
+        centre:
+          x: -1.8060420988820956
+          y: 0.2
+          z: -1.7325720027632954
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.42953626587076346
+          g: 0.24004160221336613
+          b: 0.8370438011259911
+    - geometry:
+        type: Sphere
+        centre:
+          x: -1.4844689653854673
+          y: 0.2
+          z: -0.9651371720436587
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.0005781802030367178
+          g: 0.48448623158121487
+          b: 0.8336952592362856
+    - geometry:
+        type: Sphere
+        centre:
+          x: -1.1687715337142458
+          y: 0.2
+          z: 0.003565462046827872
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.5642405061572117
+          g: 0.5510516659804744
+          b: 0.05692866664030855
+    - geometry:
+        type: Sphere
+        centre:
+          x: -1.9905134111324104
+          y: 0.2
+          z: 1.0144464785411452
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.5813039441352446
+          g: 0.9738549051805759
+          b: 0.7601045228090096
+        fuzz: 0.38391191170051489
+    - geometry:
+        type: Sphere
+        centre:
+          x: -1.1142911164544427
+          y: 0.2
+          z: 2.515153009314578
+        radius: 0.2
+      material:
+        type: Dielectric
+        refractive_index: 1.5
+    - geometry:
+        type: Sphere
+        centre:
+          x: -1.7709661345277464
+          y: 0.2
+          z: 3.2903755324113219
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.020817108681695865
+          g: 0.25721225153588397
+          b: 0.011879050522221876
+    - geometry:
+        type: Sphere
+        centre:
+          x: -1.6239740525184999
+          y: 0.2
+          z: 4.142932893153173
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.6117293974049439
+          g: 0.7967769791574826
+          b: 0.6833447827796695
+        fuzz: 0.1356484470025991
+    - geometry:
+        type: Sphere
+        centre:
+          x: -1.1060051590001717
+          y: 0.2
+          z: 5.449510756471567
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.616563559121533
+          g: 0.6705801236016655
+          b: 0.8122841782053176
+        fuzz: 0.43160089168574919
+    - geometry:
+        type: Sphere
+        centre:
+          x: -1.2657885656334207
+          y: 0.2
+          z: 6.818179766153333
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.03376065149886996
+          g: 0.37612092053949378
+          b: 0.06850210629522559
+    - geometry:
+        type: Sphere
+        centre:
+          x: -1.9746860007512067
+          y: 0.2
+          z: 7.07656827339775
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.5706522179698162
+          g: 0.041062512148101
+          b: 0.3614549128805544
+    - geometry:
+        type: Sphere
+        centre:
+          x: -1.6365595203289139
+          y: 0.2
+          z: 8.757127590314962
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.13242965744853928
+          g: 0.0033121086241477898
+          b: 0.3942290193557147
+    - geometry:
+        type: Sphere
+        centre:
+          x: -1.738906206917724
+          y: 0.2
+          z: 9.158833666408775
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.45199235668536677
+          g: 0.28008670648432495
+          b: 0.0795822793367898
+    - geometry:
+        type: Sphere
+        centre:
+          x: -1.5033855569553798
+          y: 0.2
+          z: 10.14547486877514
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.14911030450584643
+          g: 0.21560098551467297
+          b: 0.025725549977398365
+    - geometry:
+        type: Sphere
+        centre:
+          x: -0.16615901710713733
+          y: 0.2
+          z: -10.524922439385185
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.1139842069099651
+          g: 0.013627980222403866
+          b: 0.08071285045992613
+    - geometry:
+        type: Sphere
+        centre:
+          x: -0.38860373523871308
+          y: 0.2
+          z: -9.249577987258855
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.3226802263806856
+          g: 0.2839430468362997
+          b: 0.2005444141652446
+    - geometry:
+        type: Sphere
+        centre:
+          x: -0.437935937856198
+          y: 0.2
+          z: -8.480854097705804
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.08227699392583081
+          g: 0.04863530705300452
+          b: 0.17043799200124364
+    - geometry:
+        type: Sphere
+        centre:
+          x: -0.7310172187145949
+          y: 0.2
+          z: -7.440542500414699
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.19103097696352329
+          g: 0.6789642610936572
+          b: 0.11334116196836269
+    - geometry:
+        type: Sphere
+        centre:
+          x: -0.9441946773699254
+          y: 0.2
+          z: -6.720063176029021
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.5413328482448284
+          g: 0.669824203480808
+          b: 0.7609021149649952
+        fuzz: 0.09107706245487118
+    - geometry:
+        type: Sphere
+        centre:
+          x: -0.1926487638238774
+          y: 0.2
+          z: -5.729453193873482
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.5663571949139421
+          g: 0.5657393872486596
+          b: 0.8912659647790708
+        fuzz: 0.2646091984512837
+    - geometry:
+        type: Sphere
+        centre:
+          x: -0.7958995789973284
+          y: 0.2
+          z: -4.589616416821261
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.0018478792275543096
+          g: 0.3778041934602012
+          b: 0.4684441371674167
+    - geometry:
+        type: Sphere
+        centre:
+          x: -0.2389531482591114
+          y: 0.2
+          z: -3.86912958125071
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.387352782298174
+          g: 0.5470171902163802
+          b: 0.14418903086236105
+    - geometry:
+        type: Sphere
+        centre:
+          x: -0.796681814715408
+          y: 0.2
+          z: -2.3151324425941999
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.2571230562530008
+          g: 0.3999907959584322
+          b: 0.13415215746359125
+    - geometry:
+        type: Sphere
+        centre:
+          x: -0.5923686017535212
+          y: 0.2
+          z: -1.6293316705490553
+        radius: 0.2
+      material:
+        type: Dielectric
+        refractive_index: 1.5
+    - geometry:
+        type: Sphere
+        centre:
+          x: -0.7552531487178513
+          y: 0.2
+          z: -0.10325752163763258
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.831383676563888
+          g: 0.794364318773926
+          b: 0.7782200160872377
+        fuzz: 0.27770635000093138
+    - geometry:
+        type: Sphere
+        centre:
+          x: -0.5586247533278194
+          y: 0.2
+          z: 0.8735381369286378
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.38337744265146175
+          g: 0.8519145504047065
+          b: 0.5221733646432022
+    - geometry:
+        type: Sphere
+        centre:
+          x: -0.8879164778504849
+          y: 0.2
+          z: 1.5556264991968796
+        radius: 0.2
+      material:
+        type: Dielectric
+        refractive_index: 1.5
+    - geometry:
+        type: Sphere
+        centre:
+          x: -0.43740543545145385
+          y: 0.2
+          z: 2.441217536100269
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.6686066563427012
+          g: 0.743913552069693
+          b: 0.5264339249318661
+        fuzz: 0.19613207178858645
+    - geometry:
+        type: Sphere
+        centre:
+          x: -0.17198240511793595
+          y: 0.2
+          z: 3.1862172623405167
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.39331849806637106
+          g: 0.09724460340234521
+          b: 0.3561390404852294
+    - geometry:
+        type: Sphere
+        centre:
+          x: -0.30694047785100289
+          y: 0.2
+          z: 4.6979752924605429
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.7886741658388015
+          g: 0.16704455976595604
+          b: 0.29600136965168857
+    - geometry:
+        type: Sphere
+        centre:
+          x: -0.1277975867489487
+          y: 0.2
+          z: 5.443683950289703
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.3297890120445934
+          g: 0.5080659035307692
+          b: 0.1835087388713354
+    - geometry:
+        type: Sphere
+        centre:
+          x: -0.4969888538909263
+          y: 0.2
+          z: 6.803080691412569
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.22994139656376509
+          g: 0.31096048280231938
+          b: 0.07591686213002093
+    - geometry:
+        type: Sphere
+        centre:
+          x: -0.7546883780806734
+          y: 0.2
+          z: 7.84554341267121
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.5577975301356403
+          g: 0.07418400927442623
+          b: 0.2120744072189476
+    - geometry:
+        type: Sphere
+        centre:
+          x: -0.4691797102760591
+          y: 0.2
+          z: 8.022809547477646
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.16859175899529764
+          g: 0.021518743768446356
+          b: 0.34699889511162576
+    - geometry:
+        type: Sphere
+        centre:
+          x: -0.6846698834773135
+          y: 0.2
+          z: 9.292066487764087
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.11715096301832685
+          g: 0.009856489803358139
+          b: 0.0877793528988019
+    - geometry:
+        type: Sphere
+        centre:
+          x: -0.9363924949498342
+          y: 0.2
+          z: 10.33177647892921
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.10758008749424976
+          g: 0.03121321819810501
+          b: 0.02991452438612027
+    - geometry:
+        type: Sphere
+        centre:
+          x: 0.1855715763205253
+          y: 0.2
+          z: -10.264984759004946
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.08470736379784309
+          g: 0.7679077584536501
+          b: 0.44692199601723339
+    - geometry:
+        type: Sphere
+        centre:
+          x: 0.6436598035548982
+          y: 0.2
+          z: -9.842332920331775
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.4407179406712022
+          g: 0.6479726752151532
+          b: 0.010273745617741916
+    - geometry:
+        type: Sphere
+        centre:
+          x: 0.5058223518390468
+          y: 0.2
+          z: -8.53804296211795
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.05167607262066789
+          g: 0.02156896844955972
+          b: 0.023575688129694348
+    - geometry:
+        type: Sphere
+        centre:
+          x: 0.18712532705236799
+          y: 0.2
+          z: -7.344108510867592
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.7186207111286213
+          g: 0.3947496334160118
+          b: 0.04788223336073742
+    - geometry:
+        type: Sphere
+        centre:
+          x: 0.5806005595249744
+          y: 0.2
+          z: -6.220719220563785
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.45063145647627209
+          g: 0.058890512044269077
+          b: 0.011101999831384125
+    - geometry:
+        type: Sphere
+        centre:
+          x: 0.36932784543267035
+          y: 0.2
+          z: -5.607410058411106
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.38366311992982707
+          g: 0.38206643005329968
+          b: 0.25574914023188657
+    - geometry:
+        type: Sphere
+        centre:
+          x: 0.024151952096602305
+          y: 0.2
+          z: -4.917414752484165
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.06244210847798034
+          g: 0.4070201312636498
+          b: 0.17469102553066236
+    - geometry:
+        type: Sphere
+        centre:
+          x: 0.6038954181356863
+          y: 0.2
+          z: -3.8661838812397866
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.47724635108835986
+          g: 0.007771052043804664
+          b: 0.29172855591582477
+    - geometry:
+        type: Sphere
+        centre:
+          x: 0.6022105662217319
+          y: 0.2
+          z: -2.235347970008705
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.4590682804182639
+          g: 0.5329350262149463
+          b: 0.15916373730425099
+    - geometry:
+        type: Sphere
+        centre:
+          x: 0.051999938351253629
+          y: 0.2
+          z: -1.7672338907961889
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.406707771810296
+          g: 0.002040037426324688
+          b: 0.03793600678177364
+    - geometry:
+        type: Sphere
+        centre:
+          x: 0.1310271599602677
+          y: 0.2
+          z: -0.9898198019456846
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.37362590745235299
+          g: 0.35988101148867598
+          b: 0.31923184324671408
+    - geometry:
+        type: Sphere
+        centre:
+          x: 0.498596034995056
+          y: 0.2
+          z: 0.2921192847537112
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.5255891856392156
+          g: 0.06131946001783355
+          b: 0.20661253360009586
+    - geometry:
+        type: Sphere
+        centre:
+          x: 0.43339978656632596
+          y: 0.2
+          z: 1.6525615471019979
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.17268924203166256
+          g: 0.1645766468908051
+          b: 0.3539401828875016
+    - geometry:
+        type: Sphere
+        centre:
+          x: 0.19067981538918467
+          y: 0.2
+          z: 2.5004601614208634
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.08183484290373405
+          g: 0.364564992051518
+          b: 0.03066546334197786
+    - geometry:
+        type: Sphere
+        centre:
+          x: 0.27809353981207948
+          y: 0.2
+          z: 3.3341064053653235
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.008084730650737157
+          g: 0.2759683660277341
+          b: 0.6848393778314951
+    - geometry:
+        type: Sphere
+        centre:
+          x: 0.7546840475909434
+          y: 0.2
+          z: 4.616056843259072
+        radius: 0.2
+      material:
+        type: Dielectric
+        refractive_index: 1.5
+    - geometry:
+        type: Sphere
+        centre:
+          x: 0.8812104155599914
+          y: 0.2
+          z: 5.284869624587732
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.3436872676306856
+          g: 0.16984848223701549
+          b: 0.18150046130735984
+    - geometry:
+        type: Sphere
+        centre:
+          x: 0.3093681490510841
+          y: 0.2
+          z: 6.810632794386509
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.32184843911442836
+          g: 0.3275725509844863
+          b: 0.5410587255252282
+    - geometry:
+        type: Sphere
+        centre:
+          x: 0.14317371692889187
+          y: 0.2
+          z: 7.479914798417696
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.1847189492615965
+          g: 0.33634954879412518
+          b: 0.7796406485104503
+    - geometry:
+        type: Sphere
+        centre:
+          x: 0.6091593202627973
+          y: 0.2
+          z: 8.40461407293683
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.3034686999012487
+          g: 0.12799030612916627
+          b: 0.5536094110774428
+    - geometry:
+        type: Sphere
+        centre:
+          x: 0.8612195824069199
+          y: 0.2
+          z: 9.899326563349908
+        radius: 0.2
+      material:
+        type: Dielectric
+        refractive_index: 1.5
+    - geometry:
+        type: Sphere
+        centre:
+          x: 0.8295794023121036
+          y: 0.2
+          z: 10.346463735015892
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.14132632507819807
+          g: 0.06874264605188893
+          b: 0.08338930950233144
+    - geometry:
+        type: Sphere
+        centre:
+          x: 1.8928729874980282
+          y: 0.2
+          z: -10.402460681065547
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.35221244668588166
+          g: 0.13335639139930945
+          b: 0.046320390320055398
+    - geometry:
+        type: Sphere
+        centre:
+          x: 1.1909979675224567
+          y: 0.2
+          z: -9.838808419559582
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.28732570033330148
+          g: 0.09419923212488075
+          b: 0.00290870764125572
+    - geometry:
+        type: Sphere
+        centre:
+          x: 1.2792029479035799
+          y: 0.2
+          z: -8.550013295461378
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.83566088379352
+          g: 0.9042397978059
+          b: 0.946113120610774
+        fuzz: 0.4627956240905217
+    - geometry:
+        type: Sphere
+        centre:
+          x: 1.759518503849311
+          y: 0.2
+          z: -7.286913323136565
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.07704247789244936
+          g: 0.1134642581626932
+          b: 0.5459452504433326
+    - geometry:
+        type: Sphere
+        centre:
+          x: 1.0565083425669333
+          y: 0.2
+          z: -6.316544725761775
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.714683134925414
+          g: 0.09199467170988143
+          b: 0.11710499822086548
+    - geometry:
+        type: Sphere
+        centre:
+          x: 1.609562331150169
+          y: 0.2
+          z: -5.308299594924962
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.36708459938432549
+          g: 0.2900686987696435
+          b: 0.0968188764100525
+    - geometry:
+        type: Sphere
+        centre:
+          x: 1.544858217906076
+          y: 0.2
+          z: -4.91442793890471
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.3963305829815525
+          g: 0.09081590388553707
+          b: 0.0886936571301379
+    - geometry:
+        type: Sphere
+        centre:
+          x: 1.342008742234822
+          y: 0.2
+          z: -3.4331548966057099
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.6772219182054299
+          g: 0.9849443130245452
+          b: 0.8521929104320969
+        fuzz: 0.016921740680617138
+    - geometry:
+        type: Sphere
+        centre:
+          x: 1.1886856832445903
+          y: 0.2
+          z: -2.5913894692150629
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.17057342586250497
+          g: 0.12117359044586633
+          b: 0.4931893059617015
+    - geometry:
+        type: Sphere
+        centre:
+          x: 1.6475228686781863
+          y: 0.2
+          z: -1.257002238137877
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.4148148708022667
+          g: 0.36736961771976459
+          b: 0.6482234684482579
+    - geometry:
+        type: Sphere
+        centre:
+          x: 1.4479980534337196
+          y: 0.2
+          z: -0.7385874628353641
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.43964410149183427
+          g: 0.0223766468135769
+          b: 0.0008615512303339318
+    - geometry:
+        type: Sphere
+        centre:
+          x: 1.0697052213258025
+          y: 0.2
+          z: 0.2518177761482133
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.5610672823731315
+          g: 0.9492991999506564
+          b: 0.5939927054581504
+        fuzz: 0.37952040044003929
+    - geometry:
+        type: Sphere
+        centre:
+          x: 1.11979585394915
+          y: 0.2
+          z: 1.7030869830336229
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.27880673567315025
+          g: 0.16371438519664856
+          b: 0.1497247310052841
+    - geometry:
+        type: Sphere
+        centre:
+          x: 1.4235545644095944
+          y: 0.2
+          z: 2.8295595828922277
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.5545112261511004
+          g: 0.04559289193594525
+          b: 0.060211267074254389
+    - geometry:
+        type: Sphere
+        centre:
+          x: 1.0212368842308326
+          y: 0.2
+          z: 3.252216424172825
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.2212714053879597
+          g: 0.09085818011938046
+          b: 0.6174626848842811
+    - geometry:
+        type: Sphere
+        centre:
+          x: 1.719614075150961
+          y: 0.2
+          z: 4.107127915692884
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.44951729924141606
+          g: 0.5146108183018566
+          b: 0.6879381914612226
+    - geometry:
+        type: Sphere
+        centre:
+          x: 1.3627908677790253
+          y: 0.2
+          z: 5.2358053651509099
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.06408743164937256
+          g: 0.20663193524796057
+          b: 0.012468934691818123
+    - geometry:
+        type: Sphere
+        centre:
+          x: 1.1315394773634533
+          y: 0.2
+          z: 6.039211657852206
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.08455735497247796
+          g: 0.2382026492621024
+          b: 0.4816441985424126
+    - geometry:
+        type: Sphere
+        centre:
+          x: 1.4960514502423439
+          y: 0.2
+          z: 7.193904787993213
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.22565896837355674
+          g: 0.6383736691163463
+          b: 0.5412336557689593
+    - geometry:
+        type: Sphere
+        centre:
+          x: 1.5692837763976356
+          y: 0.2
+          z: 8.866583904569435
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.09485458062645674
+          g: 0.4461514781778313
+          b: 0.000023182829648828225
+    - geometry:
+        type: Sphere
+        centre:
+          x: 1.1513342434669328
+          y: 0.2
+          z: 9.072803420586851
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.03969566263838176
+          g: 0.07051732347402093
+          b: 0.23400881151486639
+    - geometry:
+        type: Sphere
+        centre:
+          x: 1.345472736834846
+          y: 0.2
+          z: 10.688275483424116
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.638849902867724
+          g: 0.8979950688206353
+          b: 0.5098509840482544
+        fuzz: 0.3518544223795081
+    - geometry:
+        type: Sphere
+        centre:
+          x: 2.400031367778325
+          y: 0.2
+          z: -10.606583781855797
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.8973413347595627
+          g: 0.87670407277516
+          b: 0.9544662252706995
+        fuzz: 0.037736229657770407
+    - geometry:
+        type: Sphere
+        centre:
+          x: 2.443448569421429
+          y: 0.2
+          z: -9.7256759602614
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.27399948530004605
+          g: 0.6667404102600764
+          b: 0.2318047409223154
+    - geometry:
+        type: Sphere
+        centre:
+          x: 2.099722586721926
+          y: 0.2
+          z: -8.238321308610855
+        radius: 0.2
+      material:
+        type: Dielectric
+        refractive_index: 1.5
+    - geometry:
+        type: Sphere
+        centre:
+          x: 2.2630534145160157
+          y: 0.2
+          z: -7.343722091470151
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.7931195700339264
+          g: 0.7663118197126497
+          b: 0.6635123954179666
+        fuzz: 0.47721010327524279
+    - geometry:
+        type: Sphere
+        centre:
+          x: 2.013761543841223
+          y: 0.2
+          z: -6.175235347720874
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.26167770425390649
+          g: 0.526371374819566
+          b: 0.5865684626911626
+    - geometry:
+        type: Sphere
+        centre:
+          x: 2.318058502934753
+          y: 0.2
+          z: -5.6395081824791479
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.6853608271881716
+          g: 0.14338000663090698
+          b: 0.13688643820840575
+    - geometry:
+        type: Sphere
+        centre:
+          x: 2.0194364299240536
+          y: 0.2
+          z: -4.268320020562074
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.6219740501138682
+          g: 0.22424339814899858
+          b: 0.8887731402408995
+    - geometry:
+        type: Sphere
+        centre:
+          x: 2.1525274015018445
+          y: 0.2
+          z: -3.5897166680714025
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.3302331862126338
+          g: 0.286543199567815
+          b: 0.11674047290083287
+    - geometry:
+        type: Sphere
+        centre:
+          x: 2.4103797571987708
+          y: 0.2
+          z: -2.364592827616394
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.3326908935953296
+          g: 0.6205784529969475
+          b: 0.016483496902599649
+    - geometry:
+        type: Sphere
+        centre:
+          x: 2.193355084018324
+          y: 0.2
+          z: -1.922555743619627
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.12477070090919396
+          g: 0.08639546116741723
+          b: 0.4147071729061383
+    - geometry:
+        type: Sphere
+        centre:
+          x: 2.607628505352827
+          y: 0.2
+          z: -0.8014858318957363
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.03643088738146561
+          g: 0.18520794808477485
+          b: 0.14993725829201924
+    - geometry:
+        type: Sphere
+        centre:
+          x: 2.777126896169381
+          y: 0.2
+          z: 0.1183217472128011
+        radius: 0.2
+      material:
+        type: Dielectric
+        refractive_index: 1.5
+    - geometry:
+        type: Sphere
+        centre:
+          x: 2.448386928117199
+          y: 0.2
+          z: 1.212829880703292
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.07026447608429376
+          g: 0.2135072016069365
+          b: 0.12733171801287278
+    - geometry:
+        type: Sphere
+        centre:
+          x: 2.848663155543746
+          y: 0.2
+          z: 2.282271520460958
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.06805934124239986
+          g: 0.5480671439948479
+          b: 0.12676253395106602
+    - geometry:
+        type: Sphere
+        centre:
+          x: 2.034482667080001
+          y: 0.2
+          z: 3.7712062999208695
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.44256586675091338
+          g: 0.36921505465367907
+          b: 0.0506022478170909
+    - geometry:
+        type: Sphere
+        centre:
+          x: 2.185110220379325
+          y: 0.2
+          z: 4.626793617199153
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.09942855119689988
+          g: 0.03973408894527031
+          b: 0.05136768923202296
+    - geometry:
+        type: Sphere
+        centre:
+          x: 2.7865941719742
+          y: 0.2
+          z: 5.00026293263902
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.5970261221190267
+          g: 0.27751148249395665
+          b: 0.5745651271174803
+    - geometry:
+        type: Sphere
+        centre:
+          x: 2.508399039229155
+          y: 0.2
+          z: 6.8314360365142419
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.06156006328842475
+          g: 0.03830337192626902
+          b: 0.183371960661311
+    - geometry:
+        type: Sphere
+        centre:
+          x: 2.4172858030059318
+          y: 0.2
+          z: 7.542705365353259
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.5042115690859574
+          g: 0.9866374484644366
+          b: 0.6514887889762231
+        fuzz: 0.2047261405558765
+    - geometry:
+        type: Sphere
+        centre:
+          x: 2.3567137438504135
+          y: 0.2
+          z: 8.569480999875104
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.5485195390159525
+          g: 0.06354981646599305
+          b: 0.0654620224691531
+    - geometry:
+        type: Sphere
+        centre:
+          x: 2.5036877838158886
+          y: 0.2
+          z: 9.15308309759679
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.24750050117730977
+          g: 0.39022752440677108
+          b: 0.17801678754089488
+    - geometry:
+        type: Sphere
+        centre:
+          x: 2.8123113533740637
+          y: 0.2
+          z: 10.653602740218908
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.7008726818128859
+          g: 0.8520284610773945
+          b: 0.5092270029569137
+        fuzz: 0.006276794666266572
+    - geometry:
+        type: Sphere
+        centre:
+          x: 3.5482844536668
+          y: 0.2
+          z: -10.2855759972435
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.03285777645135517
+          g: 0.16929314755031703
+          b: 0.011230185013237342
+    - geometry:
+        type: Sphere
+        centre:
+          x: 3.6703890385198525
+          y: 0.2
+          z: -9.685907346086483
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.3096508706431742
+          g: 0.19242655933759399
+          b: 0.3330879836595824
+    - geometry:
+        type: Sphere
+        centre:
+          x: 3.810686036182016
+          y: 0.2
+          z: -8.277694945529897
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.548571591737678
+          g: 0.16309699675073159
+          b: 0.2814949127967698
+    - geometry:
+        type: Sphere
+        centre:
+          x: 3.603240351649333
+          y: 0.2
+          z: -7.656566094145623
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.2614307840670472
+          g: 0.48346302270874888
+          b: 0.230573207643292
+    - geometry:
+        type: Sphere
+        centre:
+          x: 3.627866573917171
+          y: 0.2
+          z: -6.247516595511126
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.4188919546991973
+          g: 0.0035353405244257817
+          b: 0.097005339106511
+    - geometry:
+        type: Sphere
+        centre:
+          x: 3.278252821315315
+          y: 0.2
+          z: -5.791922785803889
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.39071829459591747
+          g: 0.12396561482762775
+          b: 0.4816148864095654
+    - geometry:
+        type: Sphere
+        centre:
+          x: 3.2311478565513007
+          y: 0.2
+          z: -4.933066810350586
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.5128177643955115
+          g: 0.404520475578567
+          b: 0.01823508410710977
+    - geometry:
+        type: Sphere
+        centre:
+          x: 3.6346503301877925
+          y: 0.2
+          z: -3.1682001594937749
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.20935997697807194
+          g: 0.2879690876680903
+          b: 0.016128828280881404
+    - geometry:
+        type: Sphere
+        centre:
+          x: 3.268417919208077
+          y: 0.2
+          z: -2.993902105801571
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.07096067632113727
+          g: 0.15031684820515696
+          b: 0.11673587419181748
+    - geometry:
+        type: Sphere
+        centre:
+          x: 3.599150026017681
+          y: 0.2
+          z: -1.3541986398278155
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.22498949609356914
+          g: 0.21999351794629855
+          b: 0.0499923244068375
+    - geometry:
+        type: Sphere
+        centre:
+          x: 3.043097370654171
+          y: 0.2
+          z: 0.47341472935733017
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.20347258434983443
+          g: 0.36066413156964408
+          b: 0.011341660489649412
+    - geometry:
+        type: Sphere
+        centre:
+          x: 3.519935014908155
+          y: 0.2
+          z: 1.2103183410003502
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.47046672813104919
+          g: 0.6475077942585938
+          b: 0.38534143281801888
+    - geometry:
+        type: Sphere
+        centre:
+          x: 3.2627317480034438
+          y: 0.2
+          z: 2.4179831883460087
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.2748434367438582
+          g: 0.38010138919022209
+          b: 0.16939473420838256
+    - geometry:
+        type: Sphere
+        centre:
+          x: 3.0567152574036355
+          y: 0.2
+          z: 3.331325809478867
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.03716535011964345
+          g: 0.08368318094033645
+          b: 0.03623830501721031
+    - geometry:
+        type: Sphere
+        centre:
+          x: 3.446614752600689
+          y: 0.2
+          z: 4.417163970613808
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.9005159992101137
+          g: 0.2621484637284163
+          b: 0.4576860263182067
+    - geometry:
+        type: Sphere
+        centre:
+          x: 3.532575950170799
+          y: 0.2
+          z: 5.531654304331707
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.15403339142982526
+          g: 0.03227137738639516
+          b: 0.6191392345487381
+    - geometry:
+        type: Sphere
+        centre:
+          x: 3.888503806768335
+          y: 0.2
+          z: 6.026006588305974
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.03356179454408347
+          g: 0.23488988000587858
+          b: 0.8086806650940913
+    - geometry:
+        type: Sphere
+        centre:
+          x: 3.4780605322938964
+          y: 0.2
+          z: 7.1497901208992229
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.055725055175168968
+          g: 0.47313687110107119
+          b: 0.025108306727357048
+    - geometry:
+        type: Sphere
+        centre:
+          x: 3.1913892417450646
+          y: 0.2
+          z: 8.296959042718349
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.009778081808545262
+          g: 0.04238868715783739
+          b: 0.7176672436195286
+    - geometry:
+        type: Sphere
+        centre:
+          x: 3.015950541772646
+          y: 0.2
+          z: 9.073811063254582
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.8284051133595777
+          g: 0.01150969267880595
+          b: 0.9163557082584721
+    - geometry:
+        type: Sphere
+        centre:
+          x: 3.277217737555863
+          y: 0.2
+          z: 10.002927303927832
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.8058058654405864
+          g: 0.010426078760188857
+          b: 0.07323269493029418
+    - geometry:
+        type: Sphere
+        centre:
+          x: 4.0130100009435509
+          y: 0.2
+          z: -10.406963221443443
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.6346001646052141
+          g: 0.1509637810928019
+          b: 0.03014860658974764
+    - geometry:
+        type: Sphere
+        centre:
+          x: 4.047964088885028
+          y: 0.2
+          z: -9.41020586681168
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.07384327788675752
+          g: 0.04149360574027943
+          b: 0.7248969621810141
+    - geometry:
+        type: Sphere
+        centre:
+          x: 4.09181614994277
+          y: 0.2
+          z: -8.84863039826333
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.5464843624415592
+          g: 0.031796660048702549
+          b: 0.06048706609608327
+    - geometry:
+        type: Sphere
+        centre:
+          x: 4.549732637486383
+          y: 0.2
+          z: -7.242774307562007
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.835863706664941
+          g: 0.5076904825205464
+          b: 0.9871006842588336
+        fuzz: 0.3751914582378668
+    - geometry:
+        type: Sphere
+        centre:
+          x: 4.5464558229865779
+          y: 0.2
+          z: -6.885529857905008
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.67656401680699
+          g: 0.005195244867608126
+          b: 0.0005596638495983041
+    - geometry:
+        type: Sphere
+        centre:
+          x: 4.631086340600323
+          y: 0.2
+          z: -5.367017863464161
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.4916314265204098
+          g: 0.7044511184864135
+          b: 0.06742293439537822
+    - geometry:
+        type: Sphere
+        centre:
+          x: 4.443601039107789
+          y: 0.2
+          z: -4.990273423346517
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.08478120479264989
+          g: 0.09179359053790935
+          b: 0.08280122005123546
+    - geometry:
+        type: Sphere
+        centre:
+          x: 4.596187786297995
+          y: 0.2
+          z: -3.3692318163947156
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.21642454273489124
+          g: 0.2429683744945551
+          b: 0.06339547921962681
+    - geometry:
+        type: Sphere
+        centre:
+          x: 4.377862719234275
+          y: 0.2
+          z: -2.9330940981537929
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.011682403497329493
+          g: 0.03317992472245952
+          b: 0.17351855177961698
+    - geometry:
+        type: Sphere
+        centre:
+          x: 4.267515542019484
+          y: 0.2
+          z: -1.800066741577689
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.030401848862927028
+          g: 0.1283554104165452
+          b: 0.3603730011794934
+    - geometry:
+        type: Sphere
+        centre:
+          x: 4.196399212885453
+          y: 0.2
+          z: 1.0438499996552436
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.0587863186920548
+          g: 0.30541602680281057
+          b: 0.12619617028072764
+    - geometry:
+        type: Sphere
+        centre:
+          x: 4.637000400223124
+          y: 0.2
+          z: 2.20060777400154
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.03399416357481374
+          g: 0.019164703397046104
+          b: 0.09867382158913139
+    - geometry:
+        type: Sphere
+        centre:
+          x: 4.324901018010951
+          y: 0.2
+          z: 3.410280151875963
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.7145567208598258
+          g: 0.6233518277445505
+          b: 0.2285682245522175
+    - geometry:
+        type: Sphere
+        centre:
+          x: 4.443559557799152
+          y: 0.2
+          z: 4.170116821001239
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.39848938277527359
+          g: 0.07238620850902976
+          b: 0.33199530155524756
+    - geometry:
+        type: Sphere
+        centre:
+          x: 4.865094944233349
+          y: 0.2
+          z: 5.777411134129511
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.032103494067977789
+          g: 0.32729085815783645
+          b: 0.07465696076104124
+    - geometry:
+        type: Sphere
+        centre:
+          x: 4.277078422875594
+          y: 0.2
+          z: 6.693304305592827
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.6558680525687104
+          g: 0.5918119112148605
+          b: 0.533295639594703
+        fuzz: 0.28272373798215535
+    - geometry:
+        type: Sphere
+        centre:
+          x: 4.541019908513751
+          y: 0.2
+          z: 7.835296773256517
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.05838927913663512
+          g: 0.04602422666588874
+          b: 0.06034659057719519
+    - geometry:
+        type: Sphere
+        centre:
+          x: 4.794337682957019
+          y: 0.2
+          z: 8.742088981360148
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.2970441185903841
+          g: 0.358302390801199
+          b: 0.08991621979464833
+    - geometry:
+        type: Sphere
+        centre:
+          x: 4.494050145504752
+          y: 0.2
+          z: 9.112446285805778
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.1632190955544415
+          g: 0.013812487929954456
+          b: 0.7896173725269681
+    - geometry:
+        type: Sphere
+        centre:
+          x: 4.188455999030752
+          y: 0.2
+          z: 10.599815811077934
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.05266856608633906
+          g: 0.012230958321838322
+          b: 0.10551739423493321
+    - geometry:
+        type: Sphere
+        centre:
+          x: 5.035306555465137
+          y: 0.2
+          z: -10.265863942365446
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.17662931506809929
+          g: 0.13648815757429584
+          b: 0.35809924606043055
+    - geometry:
+        type: Sphere
+        centre:
+          x: 5.31043615830445
+          y: 0.2
+          z: -9.302802620055934
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.15611267604555388
+          g: 0.24865155025385067
+          b: 0.3619915978840357
+    - geometry:
+        type: Sphere
+        centre:
+          x: 5.265762941793888
+          y: 0.2
+          z: -8.36029939417464
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.3694789779650923
+          g: 0.1884919827345414
+          b: 0.11646534630060784
+    - geometry:
+        type: Sphere
+        centre:
+          x: 5.135840799312353
+          y: 0.2
+          z: -7.1478992748310878
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.6703281646739382
+          g: 0.059768690344450908
+          b: 0.0038085286498225586
+    - geometry:
+        type: Sphere
+        centre:
+          x: 5.092760209741913
+          y: 0.2
+          z: -6.563191052470027
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.05491981257285151
+          g: 0.071786696491629
+          b: 0.6849575721267103
+    - geometry:
+        type: Sphere
+        centre:
+          x: 5.40707926883718
+          y: 0.2
+          z: -5.419233176243769
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.08628897938354013
+          g: 0.0660527862782148
+          b: 0.06803156450624003
+    - geometry:
+        type: Sphere
+        centre:
+          x: 5.450493550377497
+          y: 0.2
+          z: -4.780158919838797
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.4310195076611554
+          g: 0.01858666774172787
+          b: 0.10299803511440325
+    - geometry:
+        type: Sphere
+        centre:
+          x: 5.580215181946989
+          y: 0.2
+          z: -3.5393543837107437
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.025175479696057477
+          g: 0.16700446466545325
+          b: 0.18727728256828864
+    - geometry:
+        type: Sphere
+        centre:
+          x: 5.832145265879499
+          y: 0.2
+          z: -2.7049395756108867
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.5751514494884955
+          g: 0.9471295195935696
+          b: 0.7000257091446471
+        fuzz: 0.08762671807236694
+    - geometry:
+        type: Sphere
+        centre:
+          x: 5.114909036500605
+          y: 0.2
+          z: -1.983951237498957
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.6564674941346617
+          g: 0.07213023126223099
+          b: 0.010972368989736225
+    - geometry:
+        type: Sphere
+        centre:
+          x: 5.679865742144777
+          y: 0.2
+          z: -0.7706413507031866
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.13957485988215904
+          g: 0.0782582002290152
+          b: 0.007747469775511716
+    - geometry:
+        type: Sphere
+        centre:
+          x: 5.4407186499039679
+          y: 0.2
+          z: 0.18008333821158066
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.23033430081540769
+          g: 0.5167795128695576
+          b: 0.0012199962673991965
+    - geometry:
+        type: Sphere
+        centre:
+          x: 5.296339391854144
+          y: 0.2
+          z: 1.2421984869864762
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.938806299549052
+          g: 0.6179734119356697
+          b: 0.8176506128175203
+        fuzz: 0.38748134854194596
+    - geometry:
+        type: Sphere
+        centre:
+          x: 5.131677833385649
+          y: 0.2
+          z: 2.445432365209445
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.2950697427749397
+          g: 0.24865537166896974
+          b: 0.05348156587567163
+    - geometry:
+        type: Sphere
+        centre:
+          x: 5.614823251853162
+          y: 0.2
+          z: 3.5948624023175865
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.2087819536479144
+          g: 0.0023997404741706218
+          b: 0.6929456135855777
+    - geometry:
+        type: Sphere
+        centre:
+          x: 5.456622793046493
+          y: 0.2
+          z: 4.502811609417895
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.06686284330229844
+          g: 0.4972802175139482
+          b: 0.35392481348265589
+    - geometry:
+        type: Sphere
+        centre:
+          x: 5.001560253333124
+          y: 0.2
+          z: 5.330865387469989
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.016214177577916327
+          g: 0.0032383555034934724
+          b: 0.06597325917194019
+    - geometry:
+        type: Sphere
+        centre:
+          x: 5.00464949690103
+          y: 0.2
+          z: 6.721864230581667
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.2928843669818274
+          g: 0.5732525542854977
+          b: 0.03580002353584523
+    - geometry:
+        type: Sphere
+        centre:
+          x: 5.312302433934591
+          y: 0.2
+          z: 7.575521905022877
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.35356680026316436
+          g: 0.6815106616594893
+          b: 0.06517636556793069
+    - geometry:
+        type: Sphere
+        centre:
+          x: 5.445724469501871
+          y: 0.2
+          z: 8.318068707460192
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.4389107961339254
+          g: 0.09459711937371591
+          b: 0.03370771842534318
+    - geometry:
+        type: Sphere
+        centre:
+          x: 5.699736485141797
+          y: 0.2
+          z: 9.459436489288589
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.12063784482146245
+          g: 0.3679713025529963
+          b: 0.42366925582638378
+    - geometry:
+        type: Sphere
+        centre:
+          x: 5.368330812916395
+          y: 0.2
+          z: 10.695554634272506
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.4409978273279757
+          g: 0.1215979280679417
+          b: 0.1927847399833491
+    - geometry:
+        type: Sphere
+        centre:
+          x: 6.189041684702864
+          y: 0.2
+          z: -10.662670683313355
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.32851952124770447
+          g: 0.12448780532403633
+          b: 0.41616833008535217
+    - geometry:
+        type: Sphere
+        centre:
+          x: 6.799374909589458
+          y: 0.2
+          z: -9.216994793324771
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.1536892149517824
+          g: 0.038932658460981057
+          b: 0.2665009001410899
+    - geometry:
+        type: Sphere
+        centre:
+          x: 6.1368628040634169
+          y: 0.2
+          z: -8.703131809297665
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.3650099034194237
+          g: 0.008926650234240209
+          b: 0.019691271009933975
+    - geometry:
+        type: Sphere
+        centre:
+          x: 6.028376479495256
+          y: 0.2
+          z: -7.911071695709412
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.004545721471962874
+          g: 0.291396216169099
+          b: 0.01891414919276006
+    - geometry:
+        type: Sphere
+        centre:
+          x: 6.195353009342126
+          y: 0.2
+          z: -6.366653100580807
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.00843334127474886
+          g: 0.3920637891071344
+          b: 0.021679206783299995
+    - geometry:
+        type: Sphere
+        centre:
+          x: 6.056345443510642
+          y: 0.2
+          z: -5.462999632876739
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.07080351593966333
+          g: 0.7606966919683408
+          b: 0.24221564724530166
+    - geometry:
+        type: Sphere
+        centre:
+          x: 6.055759552192843
+          y: 0.2
+          z: -4.756350996755078
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.39751063582132137
+          g: 0.18652679474566767
+          b: 0.04856330844811739
+    - geometry:
+        type: Sphere
+        centre:
+          x: 6.523262294401557
+          y: 0.2
+          z: -3.271992233733571
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.06300221473186478
+          g: 0.13311284954603076
+          b: 0.15763005565597136
+    - geometry:
+        type: Sphere
+        centre:
+          x: 6.723071189213669
+          y: 0.2
+          z: -2.989579194758344
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.1856935620579706
+          g: 0.26490017628421488
+          b: 0.059845374064456908
+    - geometry:
+        type: Sphere
+        centre:
+          x: 6.585342827755068
+          y: 0.2
+          z: -1.61057791789165
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.5183599050687189
+          g: 0.13932996568508955
+          b: 0.6741889914751716
+    - geometry:
+        type: Sphere
+        centre:
+          x: 6.142451700884221
+          y: 0.2
+          z: -0.5488387982838079
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.23422810691311325
+          g: 0.9615358182652286
+          b: 0.027656928541270045
+    - geometry:
+        type: Sphere
+        centre:
+          x: 6.593674080381741
+          y: 0.2
+          z: 0.8195951946214631
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.08742373535725194
+          g: 0.04045191583560112
+          b: 0.45904637112492038
+    - geometry:
+        type: Sphere
+        centre:
+          x: 6.420521697987855
+          y: 0.2
+          z: 1.6895946852597153
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.28947375325884808
+          g: 0.22764722142170003
+          b: 0.0007619428880153148
+    - geometry:
+        type: Sphere
+        centre:
+          x: 6.220980485391316
+          y: 0.2
+          z: 2.4652776941506455
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.030445421968754925
+          g: 0.22299797628024824
+          b: 0.08719701849858944
+    - geometry:
+        type: Sphere
+        centre:
+          x: 6.121598184357041
+          y: 0.2
+          z: 3.0112861795535847
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.5585741963951749
+          g: 0.6505677709764769
+          b: 0.5500908478831843
+        fuzz: 0.058273947543809549
+    - geometry:
+        type: Sphere
+        centre:
+          x: 6.703044778121362
+          y: 0.2
+          z: 4.36913497520793
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.01574183240110709
+          g: 0.10812350783904608
+          b: 0.44196582797813546
+    - geometry:
+        type: Sphere
+        centre:
+          x: 6.757478549774157
+          y: 0.2
+          z: 5.403014918916066
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.08862581034172168
+          g: 0.030424238066882944
+          b: 0.13787322767275343
+    - geometry:
+        type: Sphere
+        centre:
+          x: 6.526602813676326
+          y: 0.2
+          z: 6.54166565055461
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.059246525744306267
+          g: 0.5459039959673722
+          b: 0.4064913676712456
+    - geometry:
+        type: Sphere
+        centre:
+          x: 6.5491172193329298
+          y: 0.2
+          z: 7.478085767585884
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.011034027149834442
+          g: 0.055616111955268759
+          b: 0.010917987454282168
+    - geometry:
+        type: Sphere
+        centre:
+          x: 6.667708678567618
+          y: 0.2
+          z: 8.488526396493742
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.4324719971249018
+          g: 0.049008736246975787
+          b: 0.08251704647687633
+    - geometry:
+        type: Sphere
+        centre:
+          x: 6.883998740689678
+          y: 0.2
+          z: 9.831942247677599
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.06938100009520011
+          g: 0.4096437963738831
+          b: 0.7544652142789243
+    - geometry:
+        type: Sphere
+        centre:
+          x: 6.719412951838464
+          y: 0.2
+          z: 10.188358134117568
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.17123771789453655
+          g: 0.054666017659281748
+          b: 0.2308945680951729
+    - geometry:
+        type: Sphere
+        centre:
+          x: 7.795099343301757
+          y: 0.2
+          z: -10.962749674680584
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.18955641604184943
+          g: 0.2618241152502328
+          b: 0.6687006660207704
+    - geometry:
+        type: Sphere
+        centre:
+          x: 7.043237673783928
+          y: 0.2
+          z: -9.59191513135146
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.029425088620314563
+          g: 0.31458040165367798
+          b: 0.6972061369327554
+    - geometry:
+        type: Sphere
+        centre:
+          x: 7.548310565595804
+          y: 0.2
+          z: -8.973410649237426
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.047972114799289287
+          g: 0.3511731178145747
+          b: 0.9514053561744089
+    - geometry:
+        type: Sphere
+        centre:
+          x: 7.618842050646293
+          y: 0.2
+          z: -7.9542104605264269
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.14346047860283654
+          g: 0.25753475902143538
+          b: 0.15758540170197264
+    - geometry:
+        type: Sphere
+        centre:
+          x: 7.0292867941495269
+          y: 0.2
+          z: -6.401984788683592
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.19003136011682238
+          g: 0.033440741784283179
+          b: 0.7427797325796678
+    - geometry:
+        type: Sphere
+        centre:
+          x: 7.24434971637832
+          y: 0.2
+          z: -5.87201849430456
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.245226501703614
+          g: 0.040970875344761039
+          b: 0.34519137717496536
+    - geometry:
+        type: Sphere
+        centre:
+          x: 7.199282951117491
+          y: 0.2
+          z: -4.435182382464411
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.03455883964175582
+          g: 0.47122593367839446
+          b: 0.10527421563372459
+    - geometry:
+        type: Sphere
+        centre:
+          x: 7.294743552465179
+          y: 0.2
+          z: -3.389642896767486
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.13719251884695159
+          g: 0.6265713797666054
+          b: 0.1869967670198646
+    - geometry:
+        type: Sphere
+        centre:
+          x: 7.163104898188726
+          y: 0.2
+          z: -2.828641554083307
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.3713180713421992
+          g: 0.04031891433931449
+          b: 0.5514989872011227
+    - geometry:
+        type: Sphere
+        centre:
+          x: 7.60865561372905
+          y: 0.2
+          z: -1.3303668703445187
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.8029341437274813
+          g: 0.8815986696482676
+          b: 0.5007349459664708
+        fuzz: 0.332106231237405
+    - geometry:
+        type: Sphere
+        centre:
+          x: 7.740649567057676
+          y: 0.2
+          z: -0.4846097121923313
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.6709592478287101
+          g: 0.7916844424732243
+          b: 0.7109298271315172
+        fuzz: 0.33767198114499238
+    - geometry:
+        type: Sphere
+        centre:
+          x: 7.475376595018461
+          y: 0.2
+          z: 0.37977620205098447
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.5514593258237195
+          g: 0.786183761071846
+          b: 0.7463613754560354
+        fuzz: 0.30519675356320549
+    - geometry:
+        type: Sphere
+        centre:
+          x: 7.426189110249158
+          y: 0.2
+          z: 1.8628755127786028
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.2000783109377613
+          g: 0.0038889866633516269
+          b: 0.6489862330146721
+    - geometry:
+        type: Sphere
+        centre:
+          x: 7.099131865114867
+          y: 0.2
+          z: 2.541113324078779
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.022854626903084979
+          g: 0.11732112148712115
+          b: 0.014135000349018894
+    - geometry:
+        type: Sphere
+        centre:
+          x: 7.183779502704546
+          y: 0.2
+          z: 3.631094021193285
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.18198206042608879
+          g: 0.09669131371761246
+          b: 0.33922808703998238
+    - geometry:
+        type: Sphere
+        centre:
+          x: 7.356933918201308
+          y: 0.2
+          z: 4.486153734161776
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.9626179812695361
+          g: 0.7246771419327132
+          b: 0.6677770861048817
+        fuzz: 0.20418168347662625
+    - geometry:
+        type: Sphere
+        centre:
+          x: 7.194034238583588
+          y: 0.2
+          z: 5.763820841040052
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.8885488170243364
+          g: 0.8695553384309154
+          b: 0.9248374242145593
+        fuzz: 0.1367895944896404
+    - geometry:
+        type: Sphere
+        centre:
+          x: 7.117861129497739
+          y: 0.2
+          z: 6.606568716720398
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.7120155227039365
+          g: 0.46593145564580309
+          b: 0.014231641517003737
+    - geometry:
+        type: Sphere
+        centre:
+          x: 7.596736991767061
+          y: 0.2
+          z: 7.444186850315604
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.945039296697451
+          g: 0.05378266266931743
+          b: 0.2441808455641109
+    - geometry:
+        type: Sphere
+        centre:
+          x: 7.739622968108799
+          y: 0.2
+          z: 8.265775624951003
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.13434607169492406
+          g: 0.40753043224459808
+          b: 0.04128838590132503
+    - geometry:
+        type: Sphere
+        centre:
+          x: 7.497324246674513
+          y: 0.2
+          z: 9.490081365783136
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.5136496708564445
+          g: 0.7902741526968327
+          b: 0.9258854651440035
+        fuzz: 0.08294377806218167
+    - geometry:
+        type: Sphere
+        centre:
+          x: 7.1350454104573919
+          y: 0.2
+          z: 10.431797887826632
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.13245610896886243
+          g: 0.35336868005110436
+          b: 0.7044201525059265
+    - geometry:
+        type: Sphere
+        centre:
+          x: 8.465186791095576
+          y: 0.2
+          z: -10.24532875258323
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.10295691248158796
+          g: 0.16235797054211366
+          b: 0.7696329147091026
+    - geometry:
+        type: Sphere
+        centre:
+          x: 8.777362511118897
+          y: 0.2
+          z: -9.254766084475332
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.4417841457727715
+          g: 0.14548678318290948
+          b: 0.6954963109188617
+    - geometry:
+        type: Sphere
+        centre:
+          x: 8.117424001942224
+          y: 0.2
+          z: -8.688436079363309
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.9568361844422784
+          g: 0.9067665492154978
+          b: 0.9846978957871986
+        fuzz: 0.12578947100117694
+    - geometry:
+        type: Sphere
+        centre:
+          x: 8.577901559338905
+          y: 0.2
+          z: -7.659700922069703
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.014452240750230356
+          g: 0.24473550598208239
+          b: 0.15297676642025646
+    - geometry:
+        type: Sphere
+        centre:
+          x: 8.717554719246336
+          y: 0.2
+          z: -6.530569354098169
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.21094915264553036
+          g: 0.213177973467633
+          b: 0.22478503711575338
+    - geometry:
+        type: Sphere
+        centre:
+          x: 8.503348781228383
+          y: 0.2
+          z: -5.484255196689826
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.08417289382177995
+          g: 0.33219349840971709
+          b: 0.24159722886848779
+    - geometry:
+        type: Sphere
+        centre:
+          x: 8.779052306635896
+          y: 0.2
+          z: -4.556175906061201
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.8643357784632957
+          g: 0.7832491391126939
+          b: 0.662818789203597
+        fuzz: 0.37245821115885516
+    - geometry:
+        type: Sphere
+        centre:
+          x: 8.254382515280854
+          y: 0.2
+          z: -3.899987156356082
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.6264224982947619
+          g: 0.5251362462260233
+          b: 0.7115443861640921
+        fuzz: 0.12250452858921912
+    - geometry:
+        type: Sphere
+        centre:
+          x: 8.561992679229855
+          y: 0.2
+          z: -2.503765803192092
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.540337658238541
+          g: 0.6538448600635485
+          b: 0.9325650262186337
+        fuzz: 0.13524617629972608
+    - geometry:
+        type: Sphere
+        centre:
+          x: 8.028345473983592
+          y: 0.2
+          z: -1.1764052504864569
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.020923051895372834
+          g: 0.1679852838982759
+          b: 0.19075827669425794
+    - geometry:
+        type: Sphere
+        centre:
+          x: 8.451537365084432
+          y: 0.2
+          z: -0.6136812025242844
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.7679966370583284
+          g: 0.9643907040155975
+          b: 0.5248417745677999
+        fuzz: 0.07523356010036486
+    - geometry:
+        type: Sphere
+        centre:
+          x: 8.314740882552274
+          y: 0.2
+          z: 0.5822616182556618
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.07118381853658654
+          g: 0.015735983694672965
+          b: 0.00018725435615962114
+    - geometry:
+        type: Sphere
+        centre:
+          x: 8.544500208479539
+          y: 0.2
+          z: 1.8783314323770085
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.1282889201732312
+          g: 0.15565999499278997
+          b: 0.00032984468961809064
+    - geometry:
+        type: Sphere
+        centre:
+          x: 8.491041746420209
+          y: 0.2
+          z: 2.038767248505825
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.6023694182045032
+          g: 0.5414753630145943
+          b: 0.2920940472834974
+    - geometry:
+        type: Sphere
+        centre:
+          x: 8.879653757740809
+          y: 0.2
+          z: 3.1084726844090939
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.11085185792509674
+          g: 0.2731221587978154
+          b: 0.17738558271339403
+    - geometry:
+        type: Sphere
+        centre:
+          x: 8.7835034020655
+          y: 0.2
+          z: 4.829695115423283
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.4590550223148655
+          g: 0.5126901545483097
+          b: 0.10186430498044719
+    - geometry:
+        type: Sphere
+        centre:
+          x: 8.27674747176245
+          y: 0.2
+          z: 5.6689664663196599
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.10998743427096829
+          g: 0.008501321917276504
+          b: 0.26341307887068
+    - geometry:
+        type: Sphere
+        centre:
+          x: 8.520688495311532
+          y: 0.2
+          z: 6.182538241829161
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.1736205997307659
+          g: 0.2774222623102978
+          b: 0.29273091720453756
+    - geometry:
+        type: Sphere
+        centre:
+          x: 8.20240026457667
+          y: 0.2
+          z: 7.176258909197531
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.7414643815683775
+          g: 0.9889627787977149
+          b: 0.6021983037874494
+        fuzz: 0.12734241905229527
+    - geometry:
+        type: Sphere
+        centre:
+          x: 8.401751015336455
+          y: 0.2
+          z: 8.038521639974388
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.9288897259328743
+          g: 0.9342310252678785
+          b: 0.5530582176867365
+        fuzz: 0.07471510586900465
+    - geometry:
+        type: Sphere
+        centre:
+          x: 8.065703467982129
+          y: 0.2
+          z: 9.496040051027072
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.18083997852777143
+          g: 0.027711279180545269
+          b: 0.28593778545702439
+    - geometry:
+        type: Sphere
+        centre:
+          x: 8.850916663790322
+          y: 0.2
+          z: 10.640181282376809
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.3321929919022325
+          g: 0.2308744466155343
+          b: 0.30733260317140728
+    - geometry:
+        type: Sphere
+        centre:
+          x: 9.879661515039768
+          y: 0.2
+          z: -10.244234745031834
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.6006988891965841
+          g: 0.39191107428248508
+          b: 0.27296018267025448
+    - geometry:
+        type: Sphere
+        centre:
+          x: 9.503312890776014
+          y: 0.2
+          z: -9.65134133846426
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.04255344493229758
+          g: 0.021911645384278975
+          b: 0.04342038124967527
+    - geometry:
+        type: Sphere
+        centre:
+          x: 9.333444712825039
+          y: 0.2
+          z: -8.646345444758186
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.9800447802766367
+          g: 0.5499271435219919
+          b: 0.7374001594438311
+        fuzz: 0.24736021121029046
+    - geometry:
+        type: Sphere
+        centre:
+          x: 9.094248747070072
+          y: 0.2
+          z: -7.206248964700088
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.08797786458889916
+          g: 0.18467412674371318
+          b: 0.1949699248218535
+    - geometry:
+        type: Sphere
+        centre:
+          x: 9.101851743790347
+          y: 0.2
+          z: -6.246917536599639
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.19160081060631338
+          g: 0.2801030847433462
+          b: 0.13810469144998184
+    - geometry:
+        type: Sphere
+        centre:
+          x: 9.211168753269229
+          y: 0.2
+          z: -5.881913718811639
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.03740246354702378
+          g: 0.5136275845433027
+          b: 0.22641459203907775
+    - geometry:
+        type: Sphere
+        centre:
+          x: 9.003968503777929
+          y: 0.2
+          z: -4.1947188651901039
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.9216869134136804
+          g: 0.18977693240769087
+          b: 0.028967197472711246
+    - geometry:
+        type: Sphere
+        centre:
+          x: 9.019046071707923
+          y: 0.2
+          z: -3.2930299129165347
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.1376823201874797
+          g: 0.2197502901500609
+          b: 0.05223337294867557
+    - geometry:
+        type: Sphere
+        centre:
+          x: 9.646328765113502
+          y: 0.2
+          z: -2.2904638768845566
+        radius: 0.2
+      material:
+        type: Dielectric
+        refractive_index: 1.5
+    - geometry:
+        type: Sphere
+        centre:
+          x: 9.360131404247733
+          y: 0.2
+          z: -1.5560379867511234
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.2866848673987448
+          g: 0.8068746025791903
+          b: 0.12776236524589364
+    - geometry:
+        type: Sphere
+        centre:
+          x: 9.701143964882706
+          y: 0.2
+          z: -0.5264471064530359
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.7645022821757925
+          g: 0.6543330516845471
+          b: 0.5409694906146928
+        fuzz: 0.20450973396983603
+    - geometry:
+        type: Sphere
+        centre:
+          x: 9.74736123638678
+          y: 0.2
+          z: 0.6138542872353551
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.5433476572173609
+          g: 0.29171213104671508
+          b: 0.043251326131638487
+    - geometry:
+        type: Sphere
+        centre:
+          x: 9.555915066734793
+          y: 0.2
+          z: 1.481737416587269
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.022291263465509187
+          g: 0.11515058376309875
+          b: 0.12355391266756939
+    - geometry:
+        type: Sphere
+        centre:
+          x: 9.745235999937412
+          y: 0.2
+          z: 2.3258082438744425
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.15202564363222755
+          g: 0.34311227941076319
+          b: 0.39742206514593805
+    - geometry:
+        type: Sphere
+        centre:
+          x: 9.574292048521967
+          y: 0.2
+          z: 3.893733003904187
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.052937165353161477
+          g: 0.009347409800331918
+          b: 0.3057028510931662
+    - geometry:
+        type: Sphere
+        centre:
+          x: 9.619764452988293
+          y: 0.2
+          z: 4.674464149310124
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.1568381448781182
+          g: 0.10553443374434964
+          b: 0.6988018285691321
+    - geometry:
+        type: Sphere
+        centre:
+          x: 9.377434412366668
+          y: 0.2
+          z: 5.1124745014811749
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.08522229522071195
+          g: 0.32528155131991889
+          b: 0.4381160283341345
+    - geometry:
+        type: Sphere
+        centre:
+          x: 9.085197351266329
+          y: 0.2
+          z: 6.70591314805807
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.18681042672536025
+          g: 0.0059333492038534068
+          b: 0.21254287266311734
+    - geometry:
+        type: Sphere
+        centre:
+          x: 9.637424853584527
+          y: 0.2
+          z: 7.0849846795616779
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.20176494284606814
+          g: 0.4978553039880327
+          b: 0.10408582995287044
+    - geometry:
+        type: Sphere
+        centre:
+          x: 9.07821294224706
+          y: 0.2
+          z: 8.628623509644479
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.08465373797724052
+          g: 0.015402899296075093
+          b: 0.08825338193487147
+    - geometry:
+        type: Sphere
+        centre:
+          x: 9.372946686729849
+          y: 0.2
+          z: 9.261865482617275
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.3705584245128976
+          g: 0.012109289187833444
+          b: 0.10462779819154616
+    - geometry:
+        type: Sphere
+        centre:
+          x: 9.040890930628564
+          y: 0.2
+          z: 10.441620143590092
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.12870512206429439
+          g: 0.0361676512086644
+          b: 0.010742494490275619
+    - geometry:
+        type: Sphere
+        centre:
+          x: 10.18874447785451
+          y: 0.2
+          z: -10.644744593437795
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.024579623083270938
+          g: 0.10796988723213159
+          b: 0.5625743564044204
+    - geometry:
+        type: Sphere
+        centre:
+          x: 10.128828704338082
+          y: 0.2
+          z: -9.968902943429644
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.11329695406341652
+          g: 0.6332032153407619
+          b: 0.23437668463758874
+    - geometry:
+        type: Sphere
+        centre:
+          x: 10.575643686316776
+          y: 0.2
+          z: -8.771170082300939
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.27283897718593017
+          g: 0.058303562362863308
+          b: 0.27684357784576998
+    - geometry:
+        type: Sphere
+        centre:
+          x: 10.536531265241566
+          y: 0.2
+          z: -7.369937737908838
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.7853413701753895
+          g: 0.7031888581306998
+          b: 0.5412424863555361
+        fuzz: 0.06198206762553132
+    - geometry:
+        type: Sphere
+        centre:
+          x: 10.463057157369303
+          y: 0.2
+          z: -6.87041394406546
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.13551887543482717
+          g: 0.33925016719679798
+          b: 0.5320100208238492
+    - geometry:
+        type: Sphere
+        centre:
+          x: 10.888041880719735
+          y: 0.2
+          z: -5.7414794545215319
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.05045567488096728
+          g: 0.2139575607359258
+          b: 0.2487347706835335
+    - geometry:
+        type: Sphere
+        centre:
+          x: 10.440791422409597
+          y: 0.2
+          z: -4.826478928711048
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.18748702206270063
+          g: 0.22009013681689716
+          b: 0.18718780400745978
+    - geometry:
+        type: Sphere
+        centre:
+          x: 10.667975493236334
+          y: 0.2
+          z: -3.827662452788349
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.07501381642554371
+          g: 0.03933655538302892
+          b: 0.821010267144615
+    - geometry:
+        type: Sphere
+        centre:
+          x: 10.80863332653768
+          y: 0.2
+          z: -2.840077330412104
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.5164550660487938
+          g: 0.11113870690514065
+          b: 0.32555203607007168
+    - geometry:
+        type: Sphere
+        centre:
+          x: 10.226523320841676
+          y: 0.2
+          z: -1.1797375431828768
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.03036630313492292
+          g: 0.3195634108025212
+          b: 0.13439600705511169
+    - geometry:
+        type: Sphere
+        centre:
+          x: 10.780110809695465
+          y: 0.2
+          z: -0.6445185474986777
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.034822492406569569
+          g: 0.6844784285364589
+          b: 0.08462830705997976
+    - geometry:
+        type: Sphere
+        centre:
+          x: 10.740896671197817
+          y: 0.2
+          z: 0.5764257642204411
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.150927549591552
+          g: 0.007985668925774965
+          b: 0.09454625860841023
+    - geometry:
+        type: Sphere
+        centre:
+          x: 10.712347070591877
+          y: 0.2
+          z: 1.1697060980255685
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.14973069590253874
+          g: 0.0055774330121410018
+          b: 0.0008789485806444324
+    - geometry:
+        type: Sphere
+        centre:
+          x: 10.358360833740676
+          y: 0.2
+          z: 2.0345749634851568
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.9923653429351076
+          g: 0.814294426015167
+          b: 0.5646434966531835
+        fuzz: 0.30819877755894817
+    - geometry:
+        type: Sphere
+        centre:
+          x: 10.107814804330774
+          y: 0.2
+          z: 3.3311555120468494
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.06478317549732332
+          g: 0.15711832555074083
+          b: 0.18657113097731124
+    - geometry:
+        type: Sphere
+        centre:
+          x: 10.130187392528049
+          y: 0.2
+          z: 4.4861175010577238
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.10270761338490023
+          g: 0.02205071208616718
+          b: 0.2166104309402874
+    - geometry:
+        type: Sphere
+        centre:
+          x: 10.299537572304635
+          y: 0.2
+          z: 5.788238377154507
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.8835153766180631
+          g: 0.5501125873615548
+          b: 0.6433298798678873
+        fuzz: 0.43766355498886758
+    - geometry:
+        type: Sphere
+        centre:
+          x: 10.550195614367145
+          y: 0.2
+          z: 6.26019944993709
+        radius: 0.2
+      material:
+        type: Metal
+        albedo:
+          r: 0.8248021331054549
+          g: 0.9686564922671608
+          b: 0.7326292045166533
+        fuzz: 0.4201699384501322
+    - geometry:
+        type: Sphere
+        centre:
+          x: 10.880129245832505
+          y: 0.2
+          z: 7.153567441456345
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.45804739887918385
+          g: 0.13239756622139077
+          b: 0.007890825429687526
+    - geometry:
+        type: Sphere
+        centre:
+          x: 10.668336405419265
+          y: 0.2
+          z: 8.422389415827493
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.16657192736629884
+          g: 0.32355407046663217
+          b: 0.3856954622507772
+    - geometry:
+        type: Sphere
+        centre:
+          x: 10.506998925489265
+          y: 0.2
+          z: 9.750568724906591
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.1841683181989433
+          g: 0.08767471985370555
+          b: 0.28362669858552627
+    - geometry:
+        type: Sphere
+        centre:
+          x: 10.336730798000632
+          y: 0.2
+          z: 10.239375294640759
+        radius: 0.2
+      material:
+        type: Lambertian
+        albedo:
+          r: 0.11339158939147398
+          g: 0.06973811408181634
+          b: 0.03831291992093301

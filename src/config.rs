@@ -1,4 +1,4 @@
-use view::Camera;
+use view::{Camera, CameraSave};
 use data::vector::Vector;
 use data::colour::Colour;
 use world::entity::Entity;
@@ -14,68 +14,47 @@ pub struct Config {
     pub world: World,
 }
 
-pub fn build_config() -> Config {
-    let scale = 2;
+#[derive(Serialize, Deserialize)]
+pub struct ConfigSave {
+    pub aspect: f64,
+    pub camera: CameraSave,
+    pub world: World,
+}
 
-    let width = 120 * scale;
-    let height = 80 * scale;
+impl Config {
+    pub fn into_save(self) -> ConfigSave {
+        ConfigSave {
+            aspect: self.width as f64 / self.height as f64,
+            camera: self.camera.into_save(),
+            world: self.world,
+        }
+    }
+
+    pub fn from_save(save: ConfigSave, width: u64) -> Config {
+        Config {
+            width,
+            height: (width as f64 / save.aspect) as u64,
+            camera: Camera::from_save(save.camera),
+            world: save.world,
+        }
+    }
+}
+
+pub fn build_book_cover_config() -> ConfigSave {
+    let aspect = 1.5;
 
     let camera = Camera::new(
         &Vector { x: 13.0, y: 2.0, z: 3.0 },
         &Vector { x: 0.0, y: 0.0, z: 0.0 },
         &Vector {x: 0.0, y: 1.0, z: 0.0},
         20.0,
-        width as f64 / height as f64,
+        aspect,
         0.1,
         10.0,
-    );
+    ).into_save();
     let world = build_book_cover_world();
 
-    Config {width, height, camera, world}
-}
-
-fn build_world_a() -> World {
-    let volumes: Vec<Entity> = vec![
-        Entity {
-            geometry: Box::from(Sphere {
-                centre: Vector {x: 0.0, y: 0.0, z: -1.0},
-                radius: 0.5,
-            }),
-            material: Box::from(Lambertian {
-                albedo: Colour {r: 0.1, g: 0.2, b: 0.5},
-            }),
-        },
-        Entity {
-            geometry: Box::from(Sphere {
-                centre: Vector {x: 0.0, y: -100.5, z: -1.0},
-                radius: 100.0,
-            }),
-            material: Box::from(Lambertian {
-                albedo: Colour {r: 0.8, g: 0.8, b: 0.0},
-            }),
-        },
-        Entity {
-            geometry: Box::from(Sphere {
-                centre: Vector { x: 1.0, y: 0.0, z: -1.0 },
-                radius: 0.5,
-            }),
-            material: Box::from(Metal {
-                albedo: Colour {r: 0.8, g: 0.6, b: 0.2},
-                fuzz: 0.1,
-            }),
-        },
-        Entity {
-            geometry: Box::from(Sphere {
-                centre: Vector { x: -1.0, y: 0.0, z: -1.0 },
-                radius: -0.45,
-            }),
-            material: Box::from(Dielectric{
-                refractive_index: 1.5,
-            }),
-        },
-    ];
-
-    World {volumes}
+    ConfigSave {aspect, camera, world}
 }
 
 fn build_book_cover_world() -> World {
@@ -194,4 +173,111 @@ fn build_book_cover_world() -> World {
     }
 
     World {volumes}
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_serialise_roundtrip_camera() {
+        let camera = Camera::new(
+            &Vector { x: 13.0, y: 2.0, z: 3.0 },
+            &Vector { x: 0.0, y: 0.0, z: 0.0 },
+            &Vector {x: 0.0, y: 1.0, z: 0.0},
+            20.0,
+            1.5,
+            0.1,
+            10.0,
+        ).into_save();
+
+        let serialised = serde_yaml::to_string(&camera).unwrap();
+        let deserialised = serde_yaml::from_str(&serialised).unwrap();
+
+        assert_eq!(camera, deserialised);
+    }
+
+    #[test]
+    fn test_serialise_roundtrip_world() {
+        let world = World {
+            volumes: vec![
+                Entity {
+                    geometry: Box::from(Sphere {
+                        centre: Vector {x: 0.0, y: 0.0, z: -1.0},
+                        radius: 0.5,
+                    }),
+                    material: Box::from(Lambertian {
+                        albedo: Colour {r: 0.1, g: 0.2, b: 0.5},
+                    }),
+                },
+                Entity {
+                    geometry: Box::from(Sphere {
+                        centre: Vector {x: 0.0, y: -100.5, z: -1.0},
+                        radius: 100.0,
+                    }),
+                    material: Box::from(Lambertian {
+                        albedo: Colour {r: 0.8, g: 0.8, b: 0.0},
+                    }),
+                },
+                Entity {
+                    geometry: Box::from(Sphere {
+                        centre: Vector { x: 1.0, y: 0.0, z: -1.0 },
+                        radius: 0.5,
+                    }),
+                    material: Box::from(Metal {
+                        albedo: Colour {r: 0.8, g: 0.6, b: 0.2},
+                        fuzz: 0.1,
+                    }),
+                },
+                Entity {
+                    geometry: Box::from(Sphere {
+                        centre: Vector { x: -1.0, y: 0.0, z: -1.0 },
+                        radius: -0.45,
+                    }),
+                    material: Box::from(Dielectric{
+                        refractive_index: 1.5,
+                    }),
+                },
+            ]
+        };
+
+        let serialised = serde_yaml::to_string(&world).unwrap();
+        let deserialised: World = serde_yaml::from_str(&serialised).unwrap();
+
+        assert_eq!(world.volumes.len(), deserialised.volumes.len());
+    }
+
+    #[test]
+    fn test_serialise_roundtrip_saved_config() {
+        let camera = Camera::new(
+            &Vector { x: 13.0, y: 2.0, z: 3.0 },
+            &Vector { x: 0.0, y: 0.0, z: 0.0 },
+            &Vector {x: 0.0, y: 1.0, z: 0.0},
+            20.0,
+            1.5,
+            0.1,
+            10.0,
+        ).into_save();
+        let world = World {
+            volumes: vec![
+                Entity {
+                    geometry: Box::from(Sphere {
+                        centre: Vector {x: 0.0, y: 0.0, z: -1.0},
+                        radius: 0.5,
+                    }),
+                    material: Box::from(Lambertian {
+                        albedo: Colour {r: 0.1, g: 0.2, b: 0.5},
+                    }),
+                },
+            ]
+        };
+        let saved_config = ConfigSave {
+            aspect: 1.5,
+            camera,
+            world,
+        };
+
+        let serialised = serde_yaml::to_string(&saved_config).unwrap();
+        serde_yaml::from_str::<ConfigSave>(&serialised).unwrap();
+    }
 }

@@ -6,7 +6,9 @@ extern crate rayon;
 extern crate indicatif;
 extern crate console;
 #[macro_use] extern crate clap;
-#[macro_use] extern crate simple_error;
+extern crate serde_yaml;
+#[macro_use] extern crate serde_derive;
+extern crate typetag;
 
 mod io;
 mod data;
@@ -17,7 +19,7 @@ mod colouriser;
 mod imager;
 mod cli;
 
-use config::{build_config, Config};
+use config::{Config, build_book_cover_config};
 use imager::build_image;
 use colouriser::build_colouriser;
 use indicatif::{ProgressBar, ProgressStyle, HumanDuration};
@@ -26,6 +28,7 @@ use console::style;
 use cli::{get_cli_config, CliCommand};
 use std::error::Error;
 use std::process;
+use io::{save_config, load_config};
 
 const NUM_OF_THREADS: usize = 4;
 const PROGRESS_BAR_STYLE: &str =
@@ -39,22 +42,25 @@ fn main() {
 }
 
 fn run() -> Result<(), Box<Error>> {
-    let cli_config = get_cli_config()?;
+    let cli_config = get_cli_config();
 
     match cli_config.command {
-        CliCommand::RENDER => {
-            render()?;
+        CliCommand::RENDER {width} => {
+            render(&cli_config.config_path, width)?;
+        },
+        CliCommand::GENERATE => {
+            generate(&cli_config.config_path)?;
         }
     };
 
     Ok(())
 }
 
-fn render() -> Result<(), Box<Error>> {
+fn render(config_path: &str, width: u64) -> Result<(), Box<Error>> {
     rayon::ThreadPoolBuilder::new().num_threads(NUM_OF_THREADS).build_global().unwrap();
 
     let started = Instant::now();
-    let config = build_config();
+    let config = Config::from_save(load_config(config_path), width);
     let colouriser = build_colouriser();
 
     println!("{} Rendering...", style("[1/2]").bold().dim());
@@ -65,6 +71,12 @@ fn render() -> Result<(), Box<Error>> {
 
     println!("Done in {}", HumanDuration(started.elapsed()));
 
+    Ok(())
+}
+
+fn generate(config_path: &str) -> Result<(), Box<Error>> {
+    let config_save = build_book_cover_config();
+    save_config(config_path, config_save);
     Ok(())
 }
 

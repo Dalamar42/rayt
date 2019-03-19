@@ -2,6 +2,7 @@ use world::geometry::Geometry;
 use world::materials::{Material, ScatterResult};
 use view::Ray;
 
+#[derive(Serialize, Deserialize)]
 pub struct Entity {
     pub geometry: Box<dyn Geometry>,
     pub material: Box<dyn Material>,

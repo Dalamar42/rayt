@@ -39,6 +39,18 @@ pub struct Camera {
     v: Vector,
     w: Vector,
     lens_radius: f64,
+    save: CameraSave,
+}
+
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
+pub struct CameraSave {
+    look_from: Vector,
+    look_at: Vector,
+    view_up: Vector,
+    vertical_fov: f64,
+    aspect: f64,
+    aperture: f64,
+    focus_distance: f64,
 }
 
 impl Camera {
@@ -66,6 +78,16 @@ impl Camera {
         let horizontal = 2.0 * half_width * &u;
         let vertical = 2.0 * half_height * &v;
 
+        let save = CameraSave {
+            look_from: look_from.clone(),
+            look_at: look_at.clone(),
+            view_up: view_up.clone(),
+            vertical_fov,
+            aspect,
+            aperture,
+            focus_distance,
+        };
+
         Camera {
             origin,
             lower_left_corner,
@@ -75,7 +97,24 @@ impl Camera {
             v,
             w,
             lens_radius,
+            save,
         }
+    }
+
+    pub fn into_save(self) -> CameraSave {
+        self.save
+    }
+
+    pub fn from_save(save: CameraSave) -> Camera {
+        Camera::new(
+            &save.look_from,
+            &save.look_at,
+            &save.view_up,
+            save.vertical_fov,
+            save.aspect,
+            save.aperture,
+            save.focus_distance,
+        )
     }
 
     pub fn pixels(&self, config: &Config) -> Vec<(u64, u64)> {

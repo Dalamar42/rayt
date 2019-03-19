@@ -1,5 +1,6 @@
 use std;
 use data::image::Image;
+use config::ConfigSave;
 
 const IMAGE_PATH: &str = "image.ppm";
 const IMAGE_FORMAT: &str = "P3";
@@ -20,4 +21,15 @@ pub fn write_image_as_ppm(image: Image) -> std::io::Result<()> {
 
     std::fs::write(IMAGE_PATH, rows.join("\n"))?;
     Ok(())
+}
+
+pub fn save_config(config_path: &str, config_save: ConfigSave) {
+    let serialised = serde_yaml::to_string(&config_save).unwrap();
+    std::fs::write(config_path, serialised).unwrap();
+}
+
+pub fn load_config(config_path: &str) -> ConfigSave {
+    let read = std::fs::read_to_string(config_path).unwrap();
+    let deserialised: ConfigSave = serde_yaml::from_str(&read).unwrap();
+    deserialised
 }

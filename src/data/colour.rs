@@ -1,7 +1,7 @@
 use std::ops;
 use std::iter::Sum;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Colour {
     pub r: f64,
     pub g: f64,

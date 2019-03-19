@@ -10,6 +10,7 @@ pub struct ScatterResult {
     pub attenuation: Colour,
 }
 
+#[typetag::serde(tag = "type")]
 pub trait Material: Sync {
     fn scatter(
         &self, geometry: &Box<Geometry>, ray: &Ray, distance: f64,
@@ -58,11 +59,12 @@ fn refract(
     None
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct Lambertian {
     pub albedo: Colour,
 }
 
+#[typetag::serde]
 impl Material for Lambertian {
     fn scatter(
         &self, geometry: &Box<Geometry>, ray: &Ray, distance: f64,
@@ -79,12 +81,13 @@ impl Material for Lambertian {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct Metal {
     pub albedo: Colour,
     pub fuzz: f64,
 }
 
+#[typetag::serde]
 impl Material for Metal {
     fn scatter(
         &self, geometry: &Box<Geometry>, ray: &Ray, distance: f64,
@@ -110,7 +113,7 @@ impl Material for Metal {
 const REFRACTIVE_INDEX_OF_AIR: f64 = 1.0;
 const DIELECTRIC_ATTENUATION: Colour = Colour {r: 1.0, g: 1.0, b: 1.0};
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct Dielectric {
     // Air: 1.0, Glass: 1.3-1.7, Diamond: 2.4
     pub refractive_index: f64,
@@ -122,6 +125,7 @@ fn reflectivity_schlick_approx(cosine: f64, n_i: f64, n_t: f64) -> f64 {
     r0 + (1.0 - r0) * f64::powi(1.0 - cosine, 5)
 }
 
+#[typetag::serde]
 impl Material for Dielectric {
     fn scatter(
         &self, geometry: &Box<Geometry>, ray: &Ray, distance: f64,
