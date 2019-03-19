@@ -2,11 +2,10 @@ use std;
 use data::image::Image;
 use config::ConfigSave;
 
-const IMAGE_PATH: &str = "image.ppm";
 const IMAGE_FORMAT: &str = "P3";
 const MAX_COLOUR: u8 = 255;
 
-pub fn write_image_as_ppm(image: Image) -> std::io::Result<()> {
+pub fn write_image_as_ppm(image: Image, output_path: &str) -> std::io::Result<()> {
     let mut rows: Vec<String> = vec!();
 
     rows.push(IMAGE_FORMAT.to_string());
@@ -19,7 +18,7 @@ pub fn write_image_as_ppm(image: Image) -> std::io::Result<()> {
 
     rows.push("".to_string());
 
-    std::fs::write(IMAGE_PATH, rows.join("\n"))?;
+    std::fs::write(output_path, rows.join("\n"))?;
     Ok(())
 }
 

@@ -45,8 +45,8 @@ fn run() -> Result<(), Box<Error>> {
     let cli_config = get_cli_config();
 
     match cli_config.command {
-        CliCommand::RENDER {width} => {
-            render(&cli_config.config_path, width)?;
+        CliCommand::RENDER {width, output_path} => {
+            render(&cli_config.config_path, width, &output_path)?;
         },
         CliCommand::GENERATE => {
             generate(&cli_config.config_path)?;
@@ -56,7 +56,7 @@ fn run() -> Result<(), Box<Error>> {
     Ok(())
 }
 
-fn render(config_path: &str, width: u64) -> Result<(), Box<Error>> {
+fn render(config_path: &str, width: u64, output_path: &str) -> Result<(), Box<Error>> {
     rayon::ThreadPoolBuilder::new().num_threads(NUM_OF_THREADS).build_global().unwrap();
 
     let started = Instant::now();
@@ -67,7 +67,7 @@ fn render(config_path: &str, width: u64) -> Result<(), Box<Error>> {
     let test_image = build_image(colouriser, &config, &progress_bar(&config));
 
     println!("{} Printing image...", style("[2/2]").bold().dim());
-    io::write_image_as_ppm(test_image)?;
+    io::write_image_as_ppm(test_image, output_path)?;
 
     println!("Done in {}", HumanDuration(started.elapsed()));
 
