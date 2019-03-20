@@ -145,9 +145,9 @@ fn build_book_cover_world() -> World {
         for b in -11..11 {
             let choose_mat: f64 = rng.gen();
             let centre = Vector {
-                x: (a as f64) + 0.9 * rng.gen::<f64>(),
+                x: f64::from(a) + 0.9 * rng.gen::<f64>(),
                 y: 0.2,
-                z: (b as f64) + 0.9 * rng.gen::<f64>(),
+                z: f64::from(b) + 0.9 * rng.gen::<f64>(),
             };
 
             if (&centre

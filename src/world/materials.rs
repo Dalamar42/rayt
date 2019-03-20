@@ -12,7 +12,7 @@ pub struct ScatterResult {
 
 #[typetag::serde(tag = "type")]
 pub trait Material: Sync {
-    fn scatter(&self, geometry: &Box<Geometry>, ray: &Ray, distance: f64) -> Option<ScatterResult>;
+    fn scatter(&self, geometry: &Geometry, ray: &Ray, distance: f64) -> Option<ScatterResult>;
 }
 
 fn random_point_in_unit_sphere() -> Vector {
@@ -73,7 +73,7 @@ pub struct Lambertian {
 
 #[typetag::serde]
 impl Material for Lambertian {
-    fn scatter(&self, geometry: &Box<Geometry>, ray: &Ray, distance: f64) -> Option<ScatterResult> {
+    fn scatter(&self, geometry: &Geometry, ray: &Ray, distance: f64) -> Option<ScatterResult> {
         let hit_point = &ray.point(distance);
         let surface_normal = &geometry.surface_normal(&ray, distance);
 
@@ -97,7 +97,7 @@ pub struct Metal {
 
 #[typetag::serde]
 impl Material for Metal {
-    fn scatter(&self, geometry: &Box<Geometry>, ray: &Ray, distance: f64) -> Option<ScatterResult> {
+    fn scatter(&self, geometry: &Geometry, ray: &Ray, distance: f64) -> Option<ScatterResult> {
         let unit_vector = ray.direction().unit_vector();
         let surface_normal = geometry.surface_normal(&ray, distance);
         let reflected = reflect(&unit_vector, &surface_normal);
@@ -140,7 +140,7 @@ fn reflectivity_schlick_approx(cosine: f64, n_i: f64, n_t: f64) -> f64 {
 
 #[typetag::serde]
 impl Material for Dielectric {
-    fn scatter(&self, geometry: &Box<Geometry>, ray: &Ray, distance: f64) -> Option<ScatterResult> {
+    fn scatter(&self, geometry: &Geometry, ray: &Ray, distance: f64) -> Option<ScatterResult> {
         let unit_vector = &ray.direction().unit_vector();
         let surface_normal = geometry.surface_normal(&ray, distance);
         let reflected = reflect(&unit_vector, &surface_normal);

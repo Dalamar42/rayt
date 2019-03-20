@@ -14,6 +14,6 @@ impl Entity {
     }
 
     pub fn scatter(&self, ray: &Ray, distance: f64) -> Option<ScatterResult> {
-        self.material.scatter(&self.geometry, &ray, distance)
+        self.material.scatter(&*self.geometry, &ray, distance)
     }
 }

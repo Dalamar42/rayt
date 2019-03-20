@@ -27,7 +27,7 @@ where
     }
 }
 
-fn colour<T>(colouriser: &T, rays: &Vec<Ray>, config: &Config, progress_bar: &ProgressBar) -> Colour
+fn colour<T>(colouriser: &T, rays: &[Ray], config: &Config, progress_bar: &ProgressBar) -> Colour
 where
     T: Fn(&Ray, &Config) -> Colour,
 {

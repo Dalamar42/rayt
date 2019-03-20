@@ -13,15 +13,15 @@ impl Vector {
     }
 
     pub fn len_squared(&self) -> f64 {
-        &self.x * &self.x + &self.y * &self.y + &self.z * &self.z
+        self.x * self.x + self.y * self.y + self.z * self.z
     }
 
     pub fn unit_vector(&self) -> Vector {
         let k = 1.0 / &self.len();
         Vector {
-            x: &self.x * k,
-            y: &self.y * k,
-            z: &self.z * k,
+            x: self.x * k,
+            y: self.y * k,
+            z: self.z * k,
         }
     }
 

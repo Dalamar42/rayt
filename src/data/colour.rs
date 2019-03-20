@@ -11,17 +11,17 @@ pub struct Colour {
 impl Colour {
     pub fn r_norm(&self) -> u8 {
         assert!(0.0 <= self.r && self.r <= 1.0);
-        return (255.99 * &self.r) as u8;
+        (255.99 * &self.r) as u8
     }
 
     pub fn g_norm(&self) -> u8 {
         assert!(0.0 <= self.g && self.g <= 1.0);
-        return (255.99 * &self.g) as u8;
+        (255.99 * &self.g) as u8
     }
 
     pub fn b_norm(&self) -> u8 {
         assert!(0.0 <= self.b && self.b <= 1.0);
-        return (255.99 * &self.b) as u8;
+        (255.99 * &self.b) as u8
     }
 
     pub fn gamma_2(self) -> Colour {
