@@ -5,7 +5,7 @@ use view::Ray;
 pub trait Geometry: Sync {
     fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<f64>;
 
-    fn surface_normal(&self, ray: &Ray, hit_t: f64) -> Vector;
+    fn surface_normal(&self, ray: &Ray, distance: f64) -> Vector;
 }
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
@@ -42,10 +42,10 @@ impl Geometry for Sphere {
         Option::Some(t)
     }
 
-    fn surface_normal(&self, ray: &Ray, hit_t: f64) -> Vector {
+    fn surface_normal(&self, ray: &Ray, distance: f64) -> Vector {
         // We divide by radius instead of taking the unit vector so that a negative
         // radius sphere will have a surface normal that points inward
-        (ray.point(hit_t) - &self.centre) / self.radius
+        (ray.point(distance) - &self.centre) / self.radius
     }
 }
 
