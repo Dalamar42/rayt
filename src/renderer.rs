@@ -1,9 +1,35 @@
 use config::Config;
 use data::colour::Colour;
+use data::image::Image;
+use indicatif::ProgressBar;
+use rayon::prelude::*;
 use view::Ray;
 
-pub fn build_colouriser() -> impl Fn(&Ray, &Config) -> Colour {
-    |ray, config| colour(&ray, &config, 0)
+pub fn render(config: &Config, progress_bar: &ProgressBar) -> Image {
+    let pixels: Vec<Colour> = config
+        .camera
+        .pixels(&config)
+        .par_iter()
+        .map(|(row, col)| config.camera.rays(*row, *col, &config))
+        .map(|rays| colour_from_rays(&rays, &config, &progress_bar))
+        .map(|colour| colour.gamma_2())
+        .collect();
+
+    progress_bar.finish();
+
+    Image {
+        pixels,
+        num_rows: config.height,
+        num_cols: config.width,
+    }
+}
+
+fn colour_from_rays(rays: &[Ray], config: &Config, progress_bar: &ProgressBar) -> Colour {
+    let colour_sum: Colour = rays.iter().map(|ray| colour(&ray, &config, 0)).sum();
+
+    progress_bar.inc(1);
+
+    colour_sum / (rays.len() as f64)
 }
 
 fn colour(ray: &Ray, config: &Config, depth: u64) -> Colour {

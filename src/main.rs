@@ -14,21 +14,19 @@ extern crate serde_derive;
 extern crate typetag;
 
 mod cli;
-mod colouriser;
 mod config;
 mod data;
-mod imager;
 mod io;
+mod renderer;
 mod view;
 mod world;
 
 use cli::{get_cli_config, CliCommand};
-use colouriser::build_colouriser;
 use config::{build_book_cover_config, Config};
 use console::style;
-use imager::build_image;
 use indicatif::{HumanDuration, ProgressBar, ProgressStyle};
 use io::{load_config, save_config};
+use renderer::render;
 use std::error::Error;
 use std::process;
 use std::time::Instant;
@@ -48,17 +46,17 @@ fn run() -> Result<(), Box<Error>> {
 
     match cli_config.command {
         CliCommand::RENDER { width, output_path } => {
-            render(&cli_config.config_path, width, &output_path)?;
+            run_render(&cli_config.config_path, width, &output_path)?;
         }
         CliCommand::GENERATE => {
-            generate(&cli_config.config_path)?;
+            run_generate(&cli_config.config_path)?;
         }
     };
 
     Ok(())
 }
 
-fn render(config_path: &str, width: u64, output_path: &str) -> Result<(), Box<Error>> {
+fn run_render(config_path: &str, width: u64, output_path: &str) -> Result<(), Box<Error>> {
     rayon::ThreadPoolBuilder::new()
         .num_threads(NUM_OF_THREADS)
         .build_global()
@@ -68,10 +66,9 @@ fn render(config_path: &str, width: u64, output_path: &str) -> Result<(), Box<Er
 
     println!("{} Loading image yaml...", style("[1/3]").bold().dim());
     let config = Config::from_save(load_config(config_path), width);
-    let colouriser = build_colouriser();
 
     println!("{} Rendering...", style("[2/3]").bold().dim());
-    let test_image = build_image(colouriser, &config, &progress_bar(&config));
+    let test_image = render(&config, &progress_bar(&config));
 
     println!("{} Printing image...", style("[3/3]").bold().dim());
     io::write_image_as_ppm(test_image, output_path)?;
@@ -81,7 +78,7 @@ fn render(config_path: &str, width: u64, output_path: &str) -> Result<(), Box<Er
     Ok(())
 }
 
-fn generate(config_path: &str) -> Result<(), Box<Error>> {
+fn run_generate(config_path: &str) -> Result<(), Box<Error>> {
     let config_save = build_book_cover_config();
     save_config(config_path, config_save);
     Ok(())
