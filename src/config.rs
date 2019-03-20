@@ -22,14 +22,6 @@ pub struct ConfigSave {
 }
 
 impl Config {
-    pub fn into_save(self) -> ConfigSave {
-        ConfigSave {
-            aspect: self.width as f64 / self.height as f64,
-            camera: self.camera.into_save(),
-            world: self.world,
-        }
-    }
-
     pub fn from_save(save: ConfigSave, width: u64) -> Config {
         Config {
             width,
