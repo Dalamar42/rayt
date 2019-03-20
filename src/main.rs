@@ -65,13 +65,15 @@ fn render(config_path: &str, width: u64, output_path: &str) -> Result<(), Box<Er
         .unwrap();
 
     let started = Instant::now();
+
+    println!("{} Loading image yaml...", style("[1/3]").bold().dim());
     let config = Config::from_save(load_config(config_path), width);
     let colouriser = build_colouriser();
 
-    println!("{} Rendering...", style("[1/2]").bold().dim());
+    println!("{} Rendering...", style("[2/3]").bold().dim());
     let test_image = build_image(colouriser, &config, &progress_bar(&config));
 
-    println!("{} Printing image...", style("[2/2]").bold().dim());
+    println!("{} Printing image...", style("[3/3]").bold().dim());
     io::write_image_as_ppm(test_image, output_path)?;
 
     println!("Done in {}", HumanDuration(started.elapsed()));
