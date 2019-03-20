@@ -2,6 +2,7 @@ use data::colour::Colour;
 use data::vector::Vector;
 use rand::prelude::*;
 use view::{Camera, CameraSave};
+use world::background::Background;
 use world::entity::Entity;
 use world::geometry::Sphere;
 use world::materials::{Dielectric, Lambertian, Metal};
@@ -203,7 +204,25 @@ fn build_book_cover_world() -> World {
         }
     }
 
-    World { volumes }
+    let white = Colour {
+        r: 1.0,
+        g: 1.0,
+        b: 1.0,
+    };
+    let blue = Colour {
+        r: 0.5,
+        g: 0.7,
+        b: 1.0,
+    };
+    let background = Background {
+        bottom: white,
+        top: blue,
+    };
+
+    World {
+        background,
+        volumes,
+    }
 }
 
 #[cfg(test)]
@@ -244,6 +263,18 @@ mod tests {
     #[test]
     fn test_serialise_roundtrip_world() {
         let world = World {
+            background: Background {
+                bottom: Colour {
+                    r: 1.0,
+                    g: 1.0,
+                    b: 1.0,
+                },
+                top: Colour {
+                    r: 0.5,
+                    g: 0.0,
+                    b: 0.0,
+                },
+            },
             volumes: vec![
                 Entity {
                     geometry: Box::from(Sphere {
@@ -344,6 +375,18 @@ mod tests {
         )
         .into_save();
         let world = World {
+            background: Background {
+                bottom: Colour {
+                    r: 1.0,
+                    g: 1.0,
+                    b: 1.0,
+                },
+                top: Colour {
+                    r: 0.5,
+                    g: 0.0,
+                    b: 0.0,
+                },
+            },
             volumes: vec![Entity {
                 geometry: Box::from(Sphere {
                     centre: Vector {

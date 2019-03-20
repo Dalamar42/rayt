@@ -40,22 +40,15 @@ fn colour(ray: &Ray, config: &Config, depth: u64) -> Colour {
             let unit_direction = ray.direction().unit_vector();
             let t = 0.5 * (unit_direction.y + 1.0);
 
-            let white = Colour {
-                r: 1.0,
-                g: 1.0,
-                b: 1.0,
-            };
-            let blue = Colour {
-                r: 0.5,
-                g: 0.7,
-                b: 1.0,
-            };
-
-            linear_interpolation(t, white, blue)
+            linear_interpolation(
+                t,
+                &config.world.background.bottom,
+                &config.world.background.top,
+            )
         }
     }
 }
 
-fn linear_interpolation(t: f64, colour_a: Colour, colour_b: Colour) -> Colour {
+fn linear_interpolation(t: f64, colour_a: &Colour, colour_b: &Colour) -> Colour {
     (1.0 - t) * colour_a + t * colour_b
 }
