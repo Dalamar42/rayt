@@ -1,7 +1,7 @@
+use camera::Ray;
 use data::colour::Colour;
 use data::vector::Vector;
 use rand::prelude::*;
-use view::Ray;
 use world::geometry::Geometry;
 
 #[derive(Debug)]

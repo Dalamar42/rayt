@@ -1,7 +1,7 @@
+use camera::{Camera, CameraSave};
 use data::colour::Colour;
 use data::vector::Vector;
 use rand::prelude::*;
-use view::{Camera, CameraSave};
 use world::background::Background;
 use world::entity::Entity;
 use world::geometry::Sphere;

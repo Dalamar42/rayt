@@ -13,12 +13,12 @@ extern crate serde_yaml;
 extern crate serde_derive;
 extern crate typetag;
 
+mod camera;
 mod cli;
 mod config;
 mod data;
 mod io;
 mod renderer;
-mod view;
 mod world;
 
 use cli::{get_cli_config, CliCommand};

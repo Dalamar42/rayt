@@ -1,9 +1,9 @@
+use camera::Ray;
 use config::Config;
 use data::colour::Colour;
 use data::image::Image;
 use indicatif::ProgressBar;
 use rayon::prelude::*;
-use view::Ray;
 
 pub fn render(config: &Config, progress_bar: &ProgressBar) -> Image {
     let pixels: Vec<Colour> = config

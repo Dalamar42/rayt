@@ -1,5 +1,5 @@
+use camera::Ray;
 use data::vector::Vector;
-use view::Ray;
 
 #[typetag::serde(tag = "type")]
 pub trait Geometry: Sync {

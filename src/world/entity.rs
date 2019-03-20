@@ -1,4 +1,4 @@
-use view::Ray;
+use camera::Ray;
 use world::geometry::Geometry;
 use world::materials::{Material, ScatterResult};
 
