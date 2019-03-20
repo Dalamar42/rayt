@@ -1,6 +1,6 @@
 use config::Config;
-use rand::prelude::*;
 use data::vector::Vector;
+use rand::prelude::*;
 use std::f64::consts::PI;
 
 const ANTI_ALIASING_FACTOR: u64 = 100;
@@ -13,7 +13,7 @@ pub struct Ray {
 
 impl Ray {
     pub fn new(a: Vector, b: Vector) -> Ray {
-        Ray {a, b}
+        Ray { a, b }
     }
 
     pub fn origin(&self) -> &Vector {
@@ -147,23 +147,30 @@ impl Camera {
         let lens_offset = &self.u * rd.x + &self.v * rd.y;
         Ray {
             a: &self.origin + &lens_offset,
-            b: &self.lower_left_corner +
-                h * &self.horizontal +
-                v * &self.vertical -
-                &self.origin -
-                &lens_offset,
+            b: &self.lower_left_corner + h * &self.horizontal + v * &self.vertical
+                - &self.origin
+                - &lens_offset,
         }
     }
 }
 
 fn random_point_in_unit_disk() -> Vector {
     let mut rng = rand::thread_rng();
-    let centre = Vector {x: 1.0, y: 1.0, z: 0.0};
+    let centre = Vector {
+        x: 1.0,
+        y: 1.0,
+        z: 0.0,
+    };
 
     loop {
-        let point = 2.0 * Vector {x: rng.gen(), y: rng.gen(), z: 0.0} - &centre;
+        let point =
+            2.0 * Vector {
+                x: rng.gen(),
+                y: rng.gen(),
+                z: 0.0,
+            } - &centre;
         if Vector::dot(&point, &point) < 1.0 {
-            return point
+            return point;
         }
     }
 }

@@ -253,7 +253,11 @@ mod tests {
 
     #[test]
     fn test_vector_len() {
-        let vector = Vector {x: 1.0, y: 2.0, z: 3.0};
+        let vector = Vector {
+            x: 1.0,
+            y: 2.0,
+            z: 3.0,
+        };
 
         let expected_result = 3.7416573867739413;
 
@@ -262,17 +266,33 @@ mod tests {
 
     #[test]
     fn test_vector_unit_vector() {
-        let vector = Vector {x: 1.0, y: 2.0, z: 3.0};
+        let vector = Vector {
+            x: 1.0,
+            y: 2.0,
+            z: 3.0,
+        };
 
         assert_approx_eq!(vector.unit_vector().len(), 1.0)
     }
 
     #[test]
     fn test_add_vectors() {
-        let vector_a = Vector {x: 1.0, y: 1.5, z: 2.0};
-        let vector_b = Vector {x: -1.0, y: 0.5, z: 0.0};
+        let vector_a = Vector {
+            x: 1.0,
+            y: 1.5,
+            z: 2.0,
+        };
+        let vector_b = Vector {
+            x: -1.0,
+            y: 0.5,
+            z: 0.0,
+        };
 
-        let expected_result = Vector {x: 0.0, y: 2.0, z: 2.0};
+        let expected_result = Vector {
+            x: 0.0,
+            y: 2.0,
+            z: 2.0,
+        };
 
         assert_eq!(vector_a.clone() + vector_b.clone(), expected_result);
         assert_eq!(&vector_a + vector_b.clone(), expected_result);
@@ -282,10 +302,22 @@ mod tests {
 
     #[test]
     fn test_subtract_vectors() {
-        let vector_a = Vector {x: 1.0, y: 1.5, z: 2.0};
-        let vector_b = Vector {x: -1.0, y: 0.5, z: 0.0};
+        let vector_a = Vector {
+            x: 1.0,
+            y: 1.5,
+            z: 2.0,
+        };
+        let vector_b = Vector {
+            x: -1.0,
+            y: 0.5,
+            z: 0.0,
+        };
 
-        let expected_result = Vector {x: 2.0, y: 1.0, z: 2.0};
+        let expected_result = Vector {
+            x: 2.0,
+            y: 1.0,
+            z: 2.0,
+        };
 
         assert_eq!(vector_a.clone() - vector_b.clone(), expected_result);
         assert_eq!(&vector_a - vector_b.clone(), expected_result);
@@ -295,9 +327,17 @@ mod tests {
 
     #[test]
     fn test_neg_vector() {
-        let vector = Vector {x: 1.0, y: 1.5, z: 2.0};
+        let vector = Vector {
+            x: 1.0,
+            y: 1.5,
+            z: 2.0,
+        };
 
-        let expected_result = Vector {x: -1.0, y: -1.5, z: -2.0};
+        let expected_result = Vector {
+            x: -1.0,
+            y: -1.5,
+            z: -2.0,
+        };
 
         assert_eq!(-vector.clone(), expected_result);
         assert_eq!(-&vector, expected_result);
@@ -305,10 +345,18 @@ mod tests {
 
     #[test]
     fn test_add_vector_and_scalar() {
-        let vector = Vector {x: 1.0, y: 1.5, z: 2.0};
+        let vector = Vector {
+            x: 1.0,
+            y: 1.5,
+            z: 2.0,
+        };
         let scalar = 2.0;
 
-        let expected_result = Vector {x: 3.0, y: 3.5, z: 4.0};
+        let expected_result = Vector {
+            x: 3.0,
+            y: 3.5,
+            z: 4.0,
+        };
 
         assert_eq!(vector.clone() + scalar, expected_result);
         assert_eq!(&vector + scalar, expected_result);
@@ -318,10 +366,18 @@ mod tests {
 
     #[test]
     fn test_mul_vector_and_scalar() {
-        let vector = Vector {x: 1.0, y: 1.5, z: 2.0};
+        let vector = Vector {
+            x: 1.0,
+            y: 1.5,
+            z: 2.0,
+        };
         let scalar = 2.0;
 
-        let expected_result = Vector {x: 2.0, y: 3.0, z: 4.0};
+        let expected_result = Vector {
+            x: 2.0,
+            y: 3.0,
+            z: 4.0,
+        };
 
         assert_eq!(vector.clone() * scalar, expected_result);
         assert_eq!(&vector * scalar, expected_result);
@@ -331,10 +387,18 @@ mod tests {
 
     #[test]
     fn test_div_vector_and_scalar() {
-        let vector = Vector {x: 1.0, y: 1.5, z: 2.0};
+        let vector = Vector {
+            x: 1.0,
+            y: 1.5,
+            z: 2.0,
+        };
         let scalar = 2.0;
 
-        let expected_result = Vector {x: 0.5, y: 0.75, z: 1.0};
+        let expected_result = Vector {
+            x: 0.5,
+            y: 0.75,
+            z: 1.0,
+        };
 
         assert_eq!(vector.clone() / scalar, expected_result);
         assert_eq!(&vector / scalar, expected_result);
@@ -342,8 +406,16 @@ mod tests {
 
     #[test]
     fn test_vectors_dot_product() {
-        let vector_a = Vector {x: 1.0, y: 1.5, z: 2.0};
-        let vector_b = Vector {x: -1.0, y: 0.5, z: 0.0};
+        let vector_a = Vector {
+            x: 1.0,
+            y: 1.5,
+            z: 2.0,
+        };
+        let vector_b = Vector {
+            x: -1.0,
+            y: 0.5,
+            z: 0.0,
+        };
 
         let expected_result = -0.25;
 
@@ -352,10 +424,22 @@ mod tests {
 
     #[test]
     fn test_vectors_cross_product() {
-        let vector_a = Vector {x: 2.0, y: 3.0, z: 4.0};
-        let vector_b = Vector {x: 5.0, y: 6.0, z: 7.0};
+        let vector_a = Vector {
+            x: 2.0,
+            y: 3.0,
+            z: 4.0,
+        };
+        let vector_b = Vector {
+            x: 5.0,
+            y: 6.0,
+            z: 7.0,
+        };
 
-        let expected_result = Vector {x: -3.0, y: 6.0, z: -3.0};
+        let expected_result = Vector {
+            x: -3.0,
+            y: 6.0,
+            z: -3.0,
+        };
 
         assert_eq!(Vector::cross(&vector_a, &vector_b), expected_result);
     }

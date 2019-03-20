@@ -1,6 +1,6 @@
+use view::Ray;
 use world::geometry::Geometry;
 use world::materials::{Material, ScatterResult};
-use view::Ray;
 
 #[derive(Serialize, Deserialize)]
 pub struct Entity {
@@ -9,7 +9,6 @@ pub struct Entity {
 }
 
 impl Entity {
-
     pub fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<f64> {
         self.geometry.hit(&ray, tmin, tmax)
     }

@@ -1,38 +1,40 @@
-extern crate core;
 extern crate assert_approx_eq;
-#[macro_use] extern crate itertools;
+extern crate core;
+#[macro_use]
+extern crate itertools;
+extern crate console;
+extern crate indicatif;
 extern crate rand;
 extern crate rayon;
-extern crate indicatif;
-extern crate console;
-#[macro_use] extern crate clap;
+#[macro_use]
+extern crate clap;
 extern crate serde_yaml;
-#[macro_use] extern crate serde_derive;
+#[macro_use]
+extern crate serde_derive;
 extern crate typetag;
 
-mod io;
+mod cli;
+mod colouriser;
+mod config;
 mod data;
+mod imager;
+mod io;
 mod view;
 mod world;
-mod config;
-mod colouriser;
-mod imager;
-mod cli;
 
-use config::{Config, build_book_cover_config};
-use imager::build_image;
-use colouriser::build_colouriser;
-use indicatif::{ProgressBar, ProgressStyle, HumanDuration};
-use std::time::Instant;
-use console::style;
 use cli::{get_cli_config, CliCommand};
+use colouriser::build_colouriser;
+use config::{build_book_cover_config, Config};
+use console::style;
+use imager::build_image;
+use indicatif::{HumanDuration, ProgressBar, ProgressStyle};
+use io::{load_config, save_config};
 use std::error::Error;
 use std::process;
-use io::{save_config, load_config};
+use std::time::Instant;
 
 const NUM_OF_THREADS: usize = 4;
-const PROGRESS_BAR_STYLE: &str =
-    "[{elapsed_precise}] [{bar:60.cyan/blue}] {percent}% ({eta})";
+const PROGRESS_BAR_STYLE: &str = "[{elapsed_precise}] [{bar:60.cyan/blue}] {percent}% ({eta})";
 
 fn main() {
     if let Err(e) = run() {
@@ -45,9 +47,9 @@ fn run() -> Result<(), Box<Error>> {
     let cli_config = get_cli_config();
 
     match cli_config.command {
-        CliCommand::RENDER {width, output_path} => {
+        CliCommand::RENDER { width, output_path } => {
             render(&cli_config.config_path, width, &output_path)?;
-        },
+        }
         CliCommand::GENERATE => {
             generate(&cli_config.config_path)?;
         }
@@ -57,7 +59,10 @@ fn run() -> Result<(), Box<Error>> {
 }
 
 fn render(config_path: &str, width: u64, output_path: &str) -> Result<(), Box<Error>> {
-    rayon::ThreadPoolBuilder::new().num_threads(NUM_OF_THREADS).build_global().unwrap();
+    rayon::ThreadPoolBuilder::new()
+        .num_threads(NUM_OF_THREADS)
+        .build_global()
+        .unwrap();
 
     let started = Instant::now();
     let config = Config::from_save(load_config(config_path), width);

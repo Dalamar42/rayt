@@ -31,12 +31,12 @@ impl Geometry for Sphere {
         let discriminant = b * b - 4.0 * a * c;
 
         if discriminant < 0.0 {
-            return Option::None
+            return Option::None;
         }
 
         let t = (-b - discriminant.sqrt()) / (2.0 * a);
         if t < tmin || t > tmax {
-            return Option::None
+            return Option::None;
         }
 
         Option::Some(t)
@@ -56,10 +56,25 @@ mod tests {
 
     #[test]
     fn test_sphere_hit() {
-        let sphere = Sphere { centre: Vector { x: 0.0, y: 0.0, z: 0.0 }, radius: 1.0 };
+        let sphere = Sphere {
+            centre: Vector {
+                x: 0.0,
+                y: 0.0,
+                z: 0.0,
+            },
+            radius: 1.0,
+        };
         let ray = Ray::new(
-            Vector { x: -2.0, y: 0.0, z: 0.0 },
-            Vector { x: 1.0, y: 0.0, z: 0.0 },
+            Vector {
+                x: -2.0,
+                y: 0.0,
+                z: 0.0,
+            },
+            Vector {
+                x: 1.0,
+                y: 0.0,
+                z: 0.0,
+            },
         );
 
         let hit_distance = sphere.hit(&ray, 0.0, core::f64::MAX).unwrap();
@@ -69,10 +84,25 @@ mod tests {
 
     #[test]
     fn test_neg_radius_sphere_hit() {
-        let sphere = Sphere { centre: Vector { x: 0.0, y: 0.0, z: 0.0 }, radius: -1.0 };
+        let sphere = Sphere {
+            centre: Vector {
+                x: 0.0,
+                y: 0.0,
+                z: 0.0,
+            },
+            radius: -1.0,
+        };
         let ray = Ray::new(
-            Vector { x: -2.0, y: 0.0, z: 0.0 },
-            Vector { x: 1.0, y: 0.0, z: 0.0 },
+            Vector {
+                x: -2.0,
+                y: 0.0,
+                z: 0.0,
+            },
+            Vector {
+                x: 1.0,
+                y: 0.0,
+                z: 0.0,
+            },
         );
 
         let hit_distance = sphere.hit(&ray, 0.0, core::f64::MAX).unwrap();
@@ -82,29 +112,73 @@ mod tests {
 
     #[test]
     fn test_sphere_surface_normal() {
-        let sphere = Sphere { centre: Vector { x: 0.0, y: 0.0, z: 0.0 }, radius: 1.0 };
+        let sphere = Sphere {
+            centre: Vector {
+                x: 0.0,
+                y: 0.0,
+                z: 0.0,
+            },
+            radius: 1.0,
+        };
         let ray = Ray::new(
-            Vector { x: -2.0, y: 0.0, z: 0.0 },
-            Vector { x: 1.0, y: 0.0, z: 0.0 },
+            Vector {
+                x: -2.0,
+                y: 0.0,
+                z: 0.0,
+            },
+            Vector {
+                x: 1.0,
+                y: 0.0,
+                z: 0.0,
+            },
         );
 
         let hit_distance = sphere.hit(&ray, 0.0, core::f64::MAX).unwrap();
         let surface_normal = sphere.surface_normal(&ray, hit_distance);
 
-        assert_eq!(surface_normal, Vector {x: -1.0, y: 0.0, z: 0.0});
+        assert_eq!(
+            surface_normal,
+            Vector {
+                x: -1.0,
+                y: 0.0,
+                z: 0.0
+            }
+        );
     }
 
     #[test]
     fn test_neg_radius_sphere_surface_normal() {
-        let sphere = Sphere { centre: Vector { x: 0.0, y: 0.0, z: 0.0 }, radius: -1.0 };
+        let sphere = Sphere {
+            centre: Vector {
+                x: 0.0,
+                y: 0.0,
+                z: 0.0,
+            },
+            radius: -1.0,
+        };
         let ray = Ray::new(
-            Vector { x: -2.0, y: 0.0, z: 0.0 },
-            Vector { x: 1.0, y: 0.0, z: 0.0 },
+            Vector {
+                x: -2.0,
+                y: 0.0,
+                z: 0.0,
+            },
+            Vector {
+                x: 1.0,
+                y: 0.0,
+                z: 0.0,
+            },
         );
 
         let hit_distance = sphere.hit(&ray, 0.0, core::f64::MAX).unwrap();
         let surface_normal = sphere.surface_normal(&ray, hit_distance);
 
-        assert_eq!(surface_normal, Vector {x: 1.0, y: 0.0, z: 0.0});
+        assert_eq!(
+            surface_normal,
+            Vector {
+                x: 1.0,
+                y: 0.0,
+                z: 0.0
+            }
+        );
     }
 }

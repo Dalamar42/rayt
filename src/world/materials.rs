@@ -1,7 +1,7 @@
-use view::Ray;
+use data::colour::Colour;
 use data::vector::Vector;
 use rand::prelude::*;
-use data::colour::Colour;
+use view::Ray;
 use world::geometry::Geometry;
 
 #[derive(Debug)]
@@ -12,19 +12,26 @@ pub struct ScatterResult {
 
 #[typetag::serde(tag = "type")]
 pub trait Material: Sync {
-    fn scatter(
-        &self, geometry: &Box<Geometry>, ray: &Ray, distance: f64,
-    ) -> Option<ScatterResult>;
+    fn scatter(&self, geometry: &Box<Geometry>, ray: &Ray, distance: f64) -> Option<ScatterResult>;
 }
 
 fn random_point_in_unit_sphere() -> Vector {
     let mut rng = rand::thread_rng();
-    let centre = Vector {x: 1.0, y: 1.0, z: 1.0};
+    let centre = Vector {
+        x: 1.0,
+        y: 1.0,
+        z: 1.0,
+    };
 
     loop {
-        let point = 2.0 * Vector {x: rng.gen(), y: rng.gen(), z: rng.gen()} - &centre;
+        let point =
+            2.0 * Vector {
+                x: rng.gen(),
+                y: rng.gen(),
+                z: rng.gen(),
+            } - &centre;
         if point.len_squared() < 1.0 {
-            return point
+            return point;
         }
     }
 }
@@ -53,7 +60,7 @@ fn refract(
 
     if discriminant > 0.0 {
         let refracted = ni_over_nt * (uv - n * dt) - n * discriminant.sqrt();
-        return Some(refracted)
+        return Some(refracted);
     }
 
     None
@@ -66,9 +73,7 @@ pub struct Lambertian {
 
 #[typetag::serde]
 impl Material for Lambertian {
-    fn scatter(
-        &self, geometry: &Box<Geometry>, ray: &Ray, distance: f64,
-    ) -> Option<ScatterResult> {
+    fn scatter(&self, geometry: &Box<Geometry>, ray: &Ray, distance: f64) -> Option<ScatterResult> {
         let hit_point = &ray.point(distance);
         let surface_normal = &geometry.surface_normal(&ray, distance);
 
@@ -77,7 +82,10 @@ impl Material for Lambertian {
 
         let ray = Ray::new(hit_point.clone(), target - hit_point);
 
-        Some(ScatterResult { ray, attenuation: self.albedo.clone() })
+        Some(ScatterResult {
+            ray,
+            attenuation: self.albedo.clone(),
+        })
     }
 }
 
@@ -89,9 +97,7 @@ pub struct Metal {
 
 #[typetag::serde]
 impl Material for Metal {
-    fn scatter(
-        &self, geometry: &Box<Geometry>, ray: &Ray, distance: f64,
-    ) -> Option<ScatterResult> {
+    fn scatter(&self, geometry: &Box<Geometry>, ray: &Ray, distance: f64) -> Option<ScatterResult> {
         let unit_vector = ray.direction().unit_vector();
         let surface_normal = geometry.surface_normal(&ray, distance);
         let reflected = reflect(&unit_vector, &surface_normal);
@@ -103,15 +109,22 @@ impl Material for Metal {
         );
 
         if Vector::dot(&ray.direction(), &surface_normal) <= 0.0 {
-            return None
+            return None;
         }
 
-        Some(ScatterResult { ray, attenuation: self.albedo.clone() })
+        Some(ScatterResult {
+            ray,
+            attenuation: self.albedo.clone(),
+        })
     }
 }
 
 const REFRACTIVE_INDEX_OF_AIR: f64 = 1.0;
-const DIELECTRIC_ATTENUATION: Colour = Colour {r: 1.0, g: 1.0, b: 1.0};
+const DIELECTRIC_ATTENUATION: Colour = Colour {
+    r: 1.0,
+    g: 1.0,
+    b: 1.0,
+};
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct Dielectric {
@@ -127,9 +140,7 @@ fn reflectivity_schlick_approx(cosine: f64, n_i: f64, n_t: f64) -> f64 {
 
 #[typetag::serde]
 impl Material for Dielectric {
-    fn scatter(
-        &self, geometry: &Box<Geometry>, ray: &Ray, distance: f64,
-    ) -> Option<ScatterResult> {
+    fn scatter(&self, geometry: &Box<Geometry>, ray: &Ray, distance: f64) -> Option<ScatterResult> {
         let unit_vector = &ray.direction().unit_vector();
         let surface_normal = geometry.surface_normal(&ray, distance);
         let reflected = reflect(&unit_vector, &surface_normal);
@@ -146,7 +157,7 @@ impl Material for Dielectric {
             (1.0, REFRACTIVE_INDEX_OF_AIR, self.refractive_index)
         };
 
-        let cosine = - sign * uvn;
+        let cosine = -sign * uvn;
         let reflect_prob = reflectivity_schlick_approx(cosine, n_i, n_t);
         let reflect_rand: f64 = rng.gen();
         let should_reflect = reflect_rand < reflect_prob;
@@ -154,23 +165,18 @@ impl Material for Dielectric {
         let maybe_refracted = if should_reflect {
             None
         } else {
-            refract(
-                &unit_vector,
-                &(sign * surface_normal),
-                n_i / n_t,
-            )
+            refract(&unit_vector, &(sign * surface_normal), n_i / n_t)
         };
 
         let hit_point = ray.point(distance);
         let ray = match maybe_refracted {
-            Some(refracted) => {
-                Ray::new(hit_point, refracted)
-            },
-            None => {
-                Ray::new(hit_point, reflected)
-            },
+            Some(refracted) => Ray::new(hit_point, refracted),
+            None => Ray::new(hit_point, reflected),
         };
 
-        Some(ScatterResult { ray, attenuation: DIELECTRIC_ATTENUATION.clone() })
+        Some(ScatterResult {
+            ray,
+            attenuation: DIELECTRIC_ATTENUATION.clone(),
+        })
     }
 }
