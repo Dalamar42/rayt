@@ -17,13 +17,15 @@ mod camera;
 mod cli;
 mod config;
 mod data;
+mod generator;
 mod io;
 mod renderer;
 mod world;
 
 use cli::{get_cli_config, CliCommand};
-use config::{build_book_cover_config, Config};
+use config::Config;
 use console::style;
+use generator::build_book_cover_config;
 use indicatif::{HumanDuration, ProgressBar, ProgressStyle};
 use io::{load_config, save_config};
 use renderer::render;
