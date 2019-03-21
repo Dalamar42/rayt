@@ -1,7 +1,11 @@
 use clap::{App, AppSettings, Arg, SubCommand};
 
 pub enum CliCommand {
-    RENDER { width: u64, output_path: String },
+    RENDER {
+        width: u64,
+        output_path: String,
+        num_of_rays: u64,
+    },
     GENERATE,
 }
 
@@ -44,6 +48,15 @@ pub fn get_cli_config() -> CliConfig {
                         .required(true)
                         .default_value("image.ppm")
                         .help("the output image path"),
+                )
+                .arg(
+                    Arg::with_name("rays")
+                        .short("r")
+                        .long("rays")
+                        .takes_value(true)
+                        .required(true)
+                        .default_value("100")
+                        .help("the number of rays to generate per pixel"),
                 ),
             SubCommand::with_name("generate").about("generate a random image config yaml"),
         ])
@@ -58,10 +71,16 @@ pub fn get_cli_config() -> CliConfig {
             .parse::<u64>()
             .unwrap();
         let output_path = String::from(subcommand.value_of("output_path").unwrap());
+        let num_of_rays = subcommand.value_of("rays").unwrap().parse::<u64>().unwrap();
+
         assert!(output_path.ends_with(".ppm"));
 
         return CliConfig {
-            command: CliCommand::RENDER { width, output_path },
+            command: CliCommand::RENDER {
+                width,
+                output_path,
+                num_of_rays,
+            },
             config_path,
         };
     }

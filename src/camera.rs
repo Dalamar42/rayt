@@ -3,8 +3,6 @@ use data::vector::Vector;
 use rand::prelude::*;
 use std::f64::consts::PI;
 
-const ANTI_ALIASING_FACTOR: u64 = 100;
-
 #[derive(Debug)]
 pub struct Ray {
     a: Vector,
@@ -128,7 +126,7 @@ impl Camera {
         let height = config.height;
         let width = config.width;
 
-        (0..ANTI_ALIASING_FACTOR)
+        (0..config.num_of_rays)
             .map(|_| {
                 let mut rng = rand::thread_rng();
                 let row_fuzz: f64 = rng.gen();

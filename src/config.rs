@@ -13,6 +13,7 @@ pub struct Config {
     pub height: u64,
     pub camera: Camera,
     pub world: World,
+    pub num_of_rays: u64,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -23,12 +24,13 @@ pub struct ConfigSave {
 }
 
 impl Config {
-    pub fn from_save(save: ConfigSave, width: u64) -> Config {
+    pub fn from_save(save: ConfigSave, width: u64, num_of_rays: u64) -> Config {
         Config {
             width,
             height: (width as f64 / save.aspect) as u64,
             camera: Camera::from_save(save.camera),
             world: save.world,
+            num_of_rays,
         }
     }
 }

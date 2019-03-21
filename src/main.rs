@@ -45,8 +45,12 @@ fn run() -> Result<(), Box<Error>> {
     let cli_config = get_cli_config();
 
     match cli_config.command {
-        CliCommand::RENDER { width, output_path } => {
-            run_render(&cli_config.config_path, width, &output_path)?;
+        CliCommand::RENDER {
+            width,
+            output_path,
+            num_of_rays,
+        } => {
+            run_render(&cli_config.config_path, width, &output_path, num_of_rays)?;
         }
         CliCommand::GENERATE => {
             run_generate(&cli_config.config_path)?;
@@ -56,7 +60,12 @@ fn run() -> Result<(), Box<Error>> {
     Ok(())
 }
 
-fn run_render(config_path: &str, width: u64, output_path: &str) -> Result<(), Box<Error>> {
+fn run_render(
+    config_path: &str,
+    width: u64,
+    output_path: &str,
+    num_of_rays: u64,
+) -> Result<(), Box<Error>> {
     rayon::ThreadPoolBuilder::new()
         .num_threads(NUM_OF_THREADS)
         .build_global()
@@ -65,7 +74,7 @@ fn run_render(config_path: &str, width: u64, output_path: &str) -> Result<(), Bo
     let started = Instant::now();
 
     println!("{} Loading image yaml...", style("[1/3]").bold().dim());
-    let config = Config::from_save(load_config(config_path), width);
+    let config = Config::from_save(load_config(config_path), width, num_of_rays);
 
     println!("{} Rendering...", style("[2/3]").bold().dim());
     let test_image = render(&config, &progress_bar(&config));
