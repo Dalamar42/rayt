@@ -1,4 +1,5 @@
 use config::ConfigSave;
+use failure::Error;
 use renderer::Image;
 use std;
 
@@ -24,13 +25,14 @@ pub fn write_image_as_ppm(image: Image, output_path: &str) -> std::io::Result<()
     Ok(())
 }
 
-pub fn save_config(config_path: &str, config_save: ConfigSave) {
-    let serialised = serde_yaml::to_string(&config_save).unwrap();
-    std::fs::write(config_path, serialised).unwrap();
+pub fn save_config(config_path: &str, config_save: ConfigSave) -> Result<(), Error> {
+    let serialised = serde_yaml::to_string(&config_save)?;
+    std::fs::write(config_path, serialised)?;
+    Ok(())
 }
 
-pub fn load_config(config_path: &str) -> ConfigSave {
-    let read = std::fs::read_to_string(config_path).unwrap();
-    let deserialised: ConfigSave = serde_yaml::from_str(&read).unwrap();
-    deserialised
+pub fn load_config(config_path: &str) -> Result<ConfigSave, Error> {
+    let read = std::fs::read_to_string(config_path)?;
+    let deserialised: ConfigSave = serde_yaml::from_str(&read)?;
+    Ok(deserialised)
 }

@@ -1,4 +1,6 @@
-use clap::{App, AppSettings, Arg, SubCommand};
+use clap::{App, AppSettings, Arg, ArgMatches, SubCommand};
+use failure::Error;
+use std::str::FromStr;
 
 pub enum CliCommand {
     RENDER {
@@ -15,7 +17,13 @@ pub struct CliConfig {
     pub config_path: String,
 }
 
-pub fn get_cli_config() -> CliConfig {
+#[derive(Debug, Fail)]
+enum CliParsingError {
+    #[fail(display = "invalid value <{}> for arg <{}>", value, arg)]
+    InvalidValue { arg: String, value: String },
+}
+
+pub fn get_cli_config() -> Result<CliConfig, Error> {
     let matches = App::new("Ray tracer")
         .setting(AppSettings::SubcommandRequiredElseHelp)
         .setting(AppSettings::VersionlessSubcommands)
@@ -73,24 +81,25 @@ pub fn get_cli_config() -> CliConfig {
         .get_matches();
 
     let config_path = String::from(matches.value_of("config").unwrap());
+    ensure!(
+        config_path.ends_with(".yaml"),
+        "Config path <{}> must end in .yaml",
+        config_path,
+    );
 
     if let Some(subcommand) = matches.subcommand_matches("render") {
-        let width = subcommand
-            .value_of("width")
-            .unwrap()
-            .parse::<u64>()
-            .unwrap();
+        let width = parse::<u64>(subcommand, "width")?;
         let output_path = String::from(subcommand.value_of("output_path").unwrap());
-        let num_of_rays = subcommand.value_of("rays").unwrap().parse::<u64>().unwrap();
-        let num_of_threads = subcommand
-            .value_of("threads")
-            .unwrap()
-            .parse::<usize>()
-            .unwrap();
+        let num_of_rays = parse::<u64>(subcommand, "rays")?;
+        let num_of_threads = parse::<usize>(subcommand, "threads")?;
 
-        assert!(output_path.ends_with(".ppm"));
+        ensure!(
+            output_path.ends_with(".ppm"),
+            "Output path <{}> must end in .ppm",
+            output_path,
+        );
 
-        return CliConfig {
+        return Ok(CliConfig {
             command: CliCommand::RENDER {
                 width,
                 output_path,
@@ -98,14 +107,26 @@ pub fn get_cli_config() -> CliConfig {
                 num_of_threads,
             },
             config_path,
-        };
+        });
     }
     if matches.subcommand_matches("generate").is_some() {
-        return CliConfig {
+        return Ok(CliConfig {
             command: CliCommand::GENERATE,
             config_path,
-        };
+        });
     }
 
+    // Clap should have errored before we get here
     panic!("Unable to parse CLI args")
+}
+
+fn parse<T: FromStr>(matches: &ArgMatches, arg: &str) -> Result<T, CliParsingError> {
+    let raw = matches.value_of(arg).unwrap();
+    match raw.parse::<T>() {
+        Ok(parsed) => Ok(parsed),
+        Err(_) => Err(CliParsingError::InvalidValue {
+            arg: String::from(arg),
+            value: String::from(raw),
+        }),
+    }
 }

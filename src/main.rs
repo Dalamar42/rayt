@@ -12,6 +12,8 @@ extern crate serde_yaml;
 #[macro_use]
 extern crate serde_derive;
 extern crate typetag;
+#[macro_use]
+extern crate failure;
 
 mod camera;
 mod cli;
@@ -25,11 +27,11 @@ mod world;
 use cli::{get_cli_config, CliCommand};
 use config::Config;
 use console::style;
+use failure::Error;
 use generator::build_book_cover_config;
 use indicatif::{HumanDuration, ProgressBar, ProgressStyle};
 use io::{load_config, save_config};
 use renderer::render;
-use std::error::Error;
 use std::process;
 use std::time::Instant;
 
@@ -37,13 +39,13 @@ const PROGRESS_BAR_STYLE: &str = "[{elapsed_precise}] [{bar:60.cyan/blue}] {perc
 
 fn main() {
     if let Err(e) = run() {
-        eprintln!("Application error: {}", e);
+        eprintln!("{} {}", style("error:").red(), e);
         process::exit(1);
     }
 }
 
-fn run() -> Result<(), Box<Error>> {
-    let cli_config = get_cli_config();
+fn run() -> Result<(), Error> {
+    let cli_config = get_cli_config()?;
 
     match cli_config.command {
         CliCommand::RENDER {
@@ -74,16 +76,15 @@ fn run_render(
     output_path: &str,
     num_of_rays: u64,
     num_of_threads: usize,
-) -> Result<(), Box<Error>> {
+) -> Result<(), Error> {
     rayon::ThreadPoolBuilder::new()
         .num_threads(num_of_threads)
-        .build_global()
-        .unwrap();
+        .build_global()?;
 
     let started = Instant::now();
 
     println!("{} Loading image yaml...", style("[1/3]").bold().dim());
-    let config = Config::from_save(load_config(config_path), width, num_of_rays);
+    let config = Config::from_save(load_config(config_path)?, width, num_of_rays);
 
     println!("{} Rendering...", style("[2/3]").bold().dim());
     let test_image = render(&config, &progress_bar(&config));
@@ -96,9 +97,9 @@ fn run_render(
     Ok(())
 }
 
-fn run_generate(config_path: &str) -> Result<(), Box<Error>> {
+fn run_generate(config_path: &str) -> Result<(), Error> {
     let config_save = build_book_cover_config();
-    save_config(config_path, config_save);
+    save_config(config_path, config_save)?;
     Ok(())
 }
 
