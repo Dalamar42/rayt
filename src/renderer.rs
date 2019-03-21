@@ -1,9 +1,15 @@
 use camera::Ray;
 use config::Config;
 use data::colour::Colour;
-use data::image::Image;
 use indicatif::ProgressBar;
 use rayon::prelude::*;
+
+#[derive(Debug)]
+pub struct Image {
+    pub pixels: Vec<Colour>,
+    pub num_rows: u64,
+    pub num_cols: u64,
+}
 
 pub fn render(config: &Config, progress_bar: &ProgressBar) -> Image {
     let pixels: Vec<Colour> = config

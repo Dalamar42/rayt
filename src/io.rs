@@ -1,5 +1,5 @@
 use config::ConfigSave;
-use data::image::Image;
+use renderer::Image;
 use std;
 
 const IMAGE_FORMAT: &str = "P3";
