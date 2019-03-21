@@ -33,7 +33,6 @@ use std::error::Error;
 use std::process;
 use std::time::Instant;
 
-const NUM_OF_THREADS: usize = 4;
 const PROGRESS_BAR_STYLE: &str = "[{elapsed_precise}] [{bar:60.cyan/blue}] {percent}% ({eta})";
 
 fn main() {
@@ -51,8 +50,15 @@ fn run() -> Result<(), Box<Error>> {
             width,
             output_path,
             num_of_rays,
+            num_of_threads,
         } => {
-            run_render(&cli_config.config_path, width, &output_path, num_of_rays)?;
+            run_render(
+                &cli_config.config_path,
+                width,
+                &output_path,
+                num_of_rays,
+                num_of_threads,
+            )?;
         }
         CliCommand::GENERATE => {
             run_generate(&cli_config.config_path)?;
@@ -67,9 +73,10 @@ fn run_render(
     width: u64,
     output_path: &str,
     num_of_rays: u64,
+    num_of_threads: usize,
 ) -> Result<(), Box<Error>> {
     rayon::ThreadPoolBuilder::new()
-        .num_threads(NUM_OF_THREADS)
+        .num_threads(num_of_threads)
         .build_global()
         .unwrap();
 

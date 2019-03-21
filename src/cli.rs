@@ -5,6 +5,7 @@ pub enum CliCommand {
         width: u64,
         output_path: String,
         num_of_rays: u64,
+        num_of_threads: usize,
     },
     GENERATE,
 }
@@ -18,8 +19,8 @@ pub fn get_cli_config() -> CliConfig {
     let matches = App::new("Ray tracer")
         .setting(AppSettings::SubcommandRequiredElseHelp)
         .setting(AppSettings::VersionlessSubcommands)
-        .setting(AppSettings::ColoredHelp)
-        .setting(AppSettings::DeriveDisplayOrder)
+        .global_setting(AppSettings::ColoredHelp)
+        .global_setting(AppSettings::DeriveDisplayOrder)
         .version(crate_version!())
         .arg(
             Arg::with_name("config")
@@ -57,6 +58,15 @@ pub fn get_cli_config() -> CliConfig {
                         .required(true)
                         .default_value("100")
                         .help("the number of rays to generate per pixel"),
+                )
+                .arg(
+                    Arg::with_name("threads")
+                        .short("t")
+                        .long("threads")
+                        .takes_value(true)
+                        .required(true)
+                        .default_value("4")
+                        .help("the number of threads to create for the renderer"),
                 ),
             SubCommand::with_name("generate").about("generate a random image config yaml"),
         ])
@@ -72,6 +82,11 @@ pub fn get_cli_config() -> CliConfig {
             .unwrap();
         let output_path = String::from(subcommand.value_of("output_path").unwrap());
         let num_of_rays = subcommand.value_of("rays").unwrap().parse::<u64>().unwrap();
+        let num_of_threads = subcommand
+            .value_of("threads")
+            .unwrap()
+            .parse::<usize>()
+            .unwrap();
 
         assert!(output_path.ends_with(".ppm"));
 
@@ -80,6 +95,7 @@ pub fn get_cli_config() -> CliConfig {
                 width,
                 output_path,
                 num_of_rays,
+                num_of_threads,
             },
             config_path,
         };
