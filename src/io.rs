@@ -1,10 +1,10 @@
 use config::ConfigSave;
+use data::colour::MAX_COLOUR;
 use failure::Error;
 use renderer::Image;
 use std;
 
 const IMAGE_FORMAT: &str = "P3";
-const MAX_COLOUR: u8 = 255;
 
 pub fn write_image_as_ppm(image: Image, output_path: &str) -> std::io::Result<()> {
     let mut rows: Vec<String> = vec![];

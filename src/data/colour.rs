@@ -1,6 +1,8 @@
 use std::iter::Sum;
 use std::ops;
 
+pub const MAX_COLOUR: u8 = 255;
+
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Colour {
     pub r: f64,
