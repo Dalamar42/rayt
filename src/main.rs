@@ -73,7 +73,7 @@ fn run() -> Result<(), Error> {
 
 fn run_render(
     config_path: &str,
-    width: u64,
+    width: u32,
     output_path: &str,
     num_of_rays: u64,
     num_of_threads: usize,
@@ -108,7 +108,7 @@ fn progress_bar(config: &Config) -> ProgressBar {
     let progress_style = ProgressStyle::default_bar()
         .template(PROGRESS_BAR_STYLE)
         .progress_chars("##-");
-    let bar_size = config.height * config.width;
+    let bar_size = u64::from(config.height * config.width);
     let progress_bar = ProgressBar::new(bar_size);
     progress_bar.set_style(progress_style.clone());
     progress_bar.tick();

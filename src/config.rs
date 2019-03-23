@@ -2,8 +2,8 @@ use camera::{Camera, CameraSave};
 use world::World;
 
 pub struct Config {
-    pub width: u64,
-    pub height: u64,
+    pub width: u32,
+    pub height: u32,
     pub camera: Camera,
     pub world: World,
     pub num_of_rays: u64,
@@ -17,10 +17,10 @@ pub struct ConfigSave {
 }
 
 impl Config {
-    pub fn from_save(save: ConfigSave, width: u64, num_of_rays: u64) -> Config {
+    pub fn from_save(save: ConfigSave, width: u32, num_of_rays: u64) -> Config {
         Config {
             width,
-            height: (width as f64 / save.aspect) as u64,
+            height: (f64::from(width) / save.aspect) as u32,
             camera: Camera::from_save(save.camera),
             world: save.world,
             num_of_rays,

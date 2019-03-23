@@ -5,7 +5,7 @@ use std::str::FromStr;
 
 pub enum CliCommand {
     RENDER {
-        width: u64,
+        width: u32,
         output_path: String,
         num_of_rays: u64,
         num_of_threads: usize,
@@ -89,7 +89,7 @@ pub fn get_cli_config() -> Result<CliConfig, Error> {
     );
 
     if let Some(subcommand) = matches.subcommand_matches("render") {
-        let width = parse::<u64>(subcommand, "width")?;
+        let width = parse::<u32>(subcommand, "width")?;
         let output_path = String::from(subcommand.value_of("output_path").unwrap());
         let num_of_rays = parse::<u64>(subcommand, "rays")?;
         let num_of_threads = parse::<usize>(subcommand, "threads")?;

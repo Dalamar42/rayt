@@ -21,7 +21,7 @@ pub fn render(config: &Config, progress_bar: &ProgressBar) -> RgbImage {
 
     progress_bar.finish();
 
-    let mut image: RgbImage = ImageBuffer::new(config.width as u32, config.height as u32);
+    let mut image: RgbImage = ImageBuffer::new(config.width, config.height);
 
     for pixel in pixels {
         image.put_pixel(pixel.x, pixel.y, pixel.colour);
@@ -30,7 +30,7 @@ pub fn render(config: &Config, progress_bar: &ProgressBar) -> RgbImage {
     image
 }
 
-fn pixel(row: u64, col: u64, config: &Config, progress_bar: &ProgressBar) -> Pixel {
+fn pixel(row: u32, col: u32, config: &Config, progress_bar: &ProgressBar) -> Pixel {
     let rays = config.camera.rays(row, col, &config);
 
     let colour_sum: Colour = rays.iter().map(|ray| colour(&ray, &config, 0)).sum();
@@ -41,8 +41,8 @@ fn pixel(row: u64, col: u64, config: &Config, progress_bar: &ProgressBar) -> Pix
 
     // Translate into the coordinate system expected by the image crate
     Pixel {
-        x: col as u32,
-        y: config.height as u32 - row as u32 - 1,
+        x: col,
+        y: config.height - row - 1,
         colour: colour.into_rgb(),
     }
 }

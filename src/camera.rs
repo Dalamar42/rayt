@@ -115,14 +115,14 @@ impl Camera {
         )
     }
 
-    pub fn pixels(&self, config: &Config) -> Vec<(u64, u64)> {
+    pub fn pixels(&self, config: &Config) -> Vec<(u32, u32)> {
         let height = config.height;
         let width = config.width;
 
-        iproduct!((0..height).rev(), 0..width).collect()
+        iproduct!(0..height, 0..width).collect()
     }
 
-    pub fn rays(&self, row: u64, col: u64, config: &Config) -> Vec<Ray> {
+    pub fn rays(&self, row: u32, col: u32, config: &Config) -> Vec<Ray> {
         let height = config.height;
         let width = config.width;
 
@@ -132,10 +132,10 @@ impl Camera {
                 let row_fuzz: f64 = rng.gen();
                 let col_fuzz: f64 = rng.gen();
 
-                let v = (row as f64) + row_fuzz;
-                let h = (col as f64) + col_fuzz;
+                let v = f64::from(row) + row_fuzz;
+                let h = f64::from(col) + col_fuzz;
 
-                self.ray(h / (width as f64), v / (height as f64))
+                self.ray(h / f64::from(width), v / f64::from(height))
             })
             .collect()
     }
