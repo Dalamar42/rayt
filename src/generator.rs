@@ -5,7 +5,7 @@ use data::vector::Vector;
 use rand::prelude::*;
 use world::background::Background;
 use world::entity::Entity;
-use world::geometry::sphere::Sphere;
+use world::geometry::sphere::{MovingSphere, Sphere};
 use world::materials::{Dielectric, Lambertian, Metal};
 use world::World;
 
@@ -32,6 +32,8 @@ pub fn build_book_cover_config() -> ConfigSave {
         aspect,
         0.1,
         10.0,
+        0.0,
+        1.0,
     )
     .into_save();
     let world = build_book_cover_world();
@@ -138,8 +140,16 @@ fn build_book_cover_world() -> World {
             {
                 if choose_mat < 0.8 {
                     volumes.push(Entity {
-                        geometry: Box::from(Sphere {
-                            centre,
+                        geometry: Box::from(MovingSphere {
+                            centre_start: centre.clone(),
+                            time_start: 0.0,
+                            centre_end: &centre
+                                + Vector {
+                                    x: 0.0,
+                                    y: 0.5 * rng.gen::<f64>(),
+                                    z: 0.0,
+                                },
+                            time_end: 1.0,
                             radius: 0.2,
                         }),
                         material: Box::from(Lambertian {

@@ -17,6 +17,8 @@ camera:
   aspect: 2.0
   aperture: 0.1
   focus_distance: 4.0
+  time_start: 0.0
+  time_end: 1.0
 world:
   background:
     top:

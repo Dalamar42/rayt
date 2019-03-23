@@ -80,7 +80,7 @@ impl Material for Lambertian {
         let diffuse = random_point_in_unit_sphere();
         let target = hit_point + surface_normal + diffuse;
 
-        let ray = Ray::new(hit_point.clone(), target - hit_point);
+        let ray = Ray::new(hit_point.clone(), target - hit_point, ray.time());
 
         Some(ScatterResult {
             ray,
@@ -106,6 +106,7 @@ impl Material for Metal {
         let ray = Ray::new(
             hit_point.clone(),
             reflected + self.fuzz * random_point_in_unit_sphere(),
+            ray.time(),
         );
 
         if Vector::dot(&ray.direction(), &surface_normal) <= 0.0 {
@@ -170,8 +171,8 @@ impl Material for Dielectric {
 
         let hit_point = ray.point(distance);
         let ray = match maybe_refracted {
-            Some(refracted) => Ray::new(hit_point, refracted),
-            None => Ray::new(hit_point, reflected),
+            Some(refracted) => Ray::new(hit_point, refracted, ray.time()),
+            None => Ray::new(hit_point, reflected, ray.time()),
         };
 
         Some(ScatterResult {

@@ -60,6 +60,8 @@ mod tests {
             1.5,
             0.1,
             10.0,
+            0.0,
+            1.0,
         )
         .into_save();
 
@@ -181,6 +183,8 @@ mod tests {
             1.5,
             0.1,
             10.0,
+            0.0,
+            1.0,
         )
         .into_save();
         let world = World {

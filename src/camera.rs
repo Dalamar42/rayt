@@ -7,11 +7,12 @@ use std::f64::consts::PI;
 pub struct Ray {
     a: Vector,
     b: Vector,
+    time: f64,
 }
 
 impl Ray {
-    pub fn new(a: Vector, b: Vector) -> Ray {
-        Ray { a, b }
+    pub fn new(a: Vector, b: Vector, time: f64) -> Ray {
+        Ray { a, b, time }
     }
 
     pub fn origin(&self) -> &Vector {
@@ -25,6 +26,10 @@ impl Ray {
     pub fn point(&self, t: f64) -> Vector {
         &self.a + t * &self.b
     }
+
+    pub fn time(&self) -> f64 {
+        self.time
+    }
 }
 
 #[derive(Debug)]
@@ -37,6 +42,8 @@ pub struct Camera {
     v: Vector,
     w: Vector,
     lens_radius: f64,
+    time_start: f64,
+    time_end: f64,
     save: CameraSave,
 }
 
@@ -49,6 +56,8 @@ pub struct CameraSave {
     aspect: f64,
     aperture: f64,
     focus_distance: f64,
+    time_start: f64,
+    time_end: f64,
 }
 
 impl Camera {
@@ -60,6 +69,8 @@ impl Camera {
         aspect: f64,
         aperture: f64,
         focus_distance: f64,
+        time_start: f64,
+        time_end: f64,
     ) -> Camera {
         let lens_radius = aperture / 2.0;
 
@@ -84,6 +95,8 @@ impl Camera {
             aspect,
             aperture,
             focus_distance,
+            time_start,
+            time_end,
         };
 
         Camera {
@@ -95,6 +108,8 @@ impl Camera {
             v,
             w,
             lens_radius,
+            time_start,
+            time_end,
             save,
         }
     }
@@ -112,6 +127,8 @@ impl Camera {
             save.aspect,
             save.aperture,
             save.focus_distance,
+            save.time_start,
+            save.time_end,
         )
     }
 
@@ -143,11 +160,14 @@ impl Camera {
     fn ray(&self, h: f64, v: f64) -> Ray {
         let rd = self.lens_radius * random_point_in_unit_disk();
         let lens_offset = &self.u * rd.x + &self.v * rd.y;
+        let mut rng = rand::thread_rng();
+        let time = self.time_start + rng.gen::<f64>() * (self.time_end - self.time_start);
         Ray {
             a: &self.origin + &lens_offset,
             b: &self.lower_left_corner + h * &self.horizontal + v * &self.vertical
                 - &self.origin
                 - &lens_offset,
+            time,
         }
     }
 }
