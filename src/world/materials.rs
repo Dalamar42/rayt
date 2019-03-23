@@ -6,8 +6,22 @@ use world::geometry::Geometry;
 
 #[derive(Debug)]
 pub struct ScatterResult {
-    pub ray: Ray,
-    pub attenuation: Colour,
+    ray: Ray,
+    attenuation: Colour,
+}
+
+impl ScatterResult {
+    pub fn new(ray: Ray, attenuation: Colour) -> ScatterResult {
+        ScatterResult { ray, attenuation }
+    }
+
+    pub fn ray(&self) -> &Ray {
+        &self.ray
+    }
+
+    pub fn attenuation(&self) -> &Colour {
+        &self.attenuation
+    }
 }
 
 #[typetag::serde(tag = "type")]
@@ -17,19 +31,10 @@ pub trait Material: Sync {
 
 fn random_point_in_unit_sphere() -> Vector {
     let mut rng = rand::thread_rng();
-    let centre = Vector {
-        x: 1.0,
-        y: 1.0,
-        z: 1.0,
-    };
+    let centre = Vector::new(1.0, 1.0, 1.0);
 
     loop {
-        let point =
-            2.0 * Vector {
-                x: rng.gen(),
-                y: rng.gen(),
-                z: rng.gen(),
-            } - &centre;
+        let point = 2.0 * Vector::new(rng.gen(), rng.gen(), rng.gen()) - &centre;
         if point.len_squared() < 1.0 {
             return point;
         }
@@ -68,7 +73,13 @@ fn refract(
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct Lambertian {
-    pub albedo: Colour,
+    albedo: Colour,
+}
+
+impl Lambertian {
+    pub fn new(albedo: Colour) -> Lambertian {
+        Lambertian { albedo }
+    }
 }
 
 #[typetag::serde]
@@ -91,8 +102,14 @@ impl Material for Lambertian {
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct Metal {
-    pub albedo: Colour,
-    pub fuzz: f64,
+    albedo: Colour,
+    fuzz: f64,
+}
+
+impl Metal {
+    pub fn new(albedo: Colour, fuzz: f64) -> Metal {
+        Metal { albedo, fuzz }
+    }
 }
 
 #[typetag::serde]
@@ -121,16 +138,18 @@ impl Material for Metal {
 }
 
 const REFRACTIVE_INDEX_OF_AIR: f64 = 1.0;
-const DIELECTRIC_ATTENUATION: Colour = Colour {
-    r: 1.0,
-    g: 1.0,
-    b: 1.0,
-};
+const DIELECTRIC_ATTENUATION: [f64; 3] = [1.0, 1.0, 1.0];
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct Dielectric {
     // Air: 1.0, Glass: 1.3-1.7, Diamond: 2.4
-    pub refractive_index: f64,
+    refractive_index: f64,
+}
+
+impl Dielectric {
+    pub fn new(refractive_index: f64) -> Dielectric {
+        Dielectric { refractive_index }
+    }
 }
 
 fn reflectivity_schlick_approx(cosine: f64, n_i: f64, n_t: f64) -> f64 {
@@ -177,7 +196,11 @@ impl Material for Dielectric {
 
         Some(ScatterResult {
             ray,
-            attenuation: DIELECTRIC_ATTENUATION.clone(),
+            attenuation: Colour::new(
+                DIELECTRIC_ATTENUATION[0],
+                DIELECTRIC_ATTENUATION[1],
+                DIELECTRIC_ATTENUATION[2],
+            ),
         })
     }
 }

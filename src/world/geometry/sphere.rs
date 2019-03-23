@@ -30,8 +30,14 @@ fn sphere_hit(ray: &Ray, centre: &Vector, radius: f64, tmin: f64, tmax: f64) -> 
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct Sphere {
-    pub centre: Vector,
-    pub radius: f64,
+    centre: Vector,
+    radius: f64,
+}
+
+impl Sphere {
+    pub fn new(centre: Vector, radius: f64) -> Sphere {
+        Sphere { centre, radius }
+    }
 }
 
 #[typetag::serde]
@@ -49,14 +55,30 @@ impl Geometry for Sphere {
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct MovingSphere {
-    pub centre_start: Vector,
-    pub time_start: f64,
-    pub centre_end: Vector,
-    pub time_end: f64,
-    pub radius: f64,
+    centre_start: Vector,
+    time_start: f64,
+    centre_end: Vector,
+    time_end: f64,
+    radius: f64,
 }
 
 impl MovingSphere {
+    pub fn new(
+        centre_start: Vector,
+        time_start: f64,
+        centre_end: Vector,
+        time_end: f64,
+        radius: f64,
+    ) -> MovingSphere {
+        MovingSphere {
+            centre_start,
+            time_start,
+            centre_end,
+            time_end,
+            radius,
+        }
+    }
+
     fn centre(&self, time: f64) -> Vector {
         let time_fraction = (time - self.time_start) / (self.time_end - self.time_start);
         &self.centre_start + time_fraction * (&self.centre_end - &self.centre_start)
@@ -86,26 +108,10 @@ mod tests {
     #[test]
     fn test_sphere_hit() {
         let sphere = Sphere {
-            centre: Vector {
-                x: 0.0,
-                y: 0.0,
-                z: 0.0,
-            },
+            centre: Vector::new(0.0, 0.0, 0.0),
             radius: 1.0,
         };
-        let ray = Ray::new(
-            Vector {
-                x: -2.0,
-                y: 0.0,
-                z: 0.0,
-            },
-            Vector {
-                x: 1.0,
-                y: 0.0,
-                z: 0.0,
-            },
-            0.0,
-        );
+        let ray = Ray::new(Vector::new(-2.0, 0.0, 0.0), Vector::new(1.0, 0.0, 0.0), 0.0);
 
         let hit_distance = sphere.hit(&ray, 0.0, core::f64::MAX).unwrap();
 
@@ -115,26 +121,10 @@ mod tests {
     #[test]
     fn test_neg_radius_sphere_hit() {
         let sphere = Sphere {
-            centre: Vector {
-                x: 0.0,
-                y: 0.0,
-                z: 0.0,
-            },
+            centre: Vector::new(0.0, 0.0, 0.0),
             radius: -1.0,
         };
-        let ray = Ray::new(
-            Vector {
-                x: -2.0,
-                y: 0.0,
-                z: 0.0,
-            },
-            Vector {
-                x: 1.0,
-                y: 0.0,
-                z: 0.0,
-            },
-            0.0,
-        );
+        let ray = Ray::new(Vector::new(-2.0, 0.0, 0.0), Vector::new(1.0, 0.0, 0.0), 0.0);
 
         let hit_distance = sphere.hit(&ray, 0.0, core::f64::MAX).unwrap();
 
@@ -144,74 +134,28 @@ mod tests {
     #[test]
     fn test_sphere_surface_normal() {
         let sphere = Sphere {
-            centre: Vector {
-                x: 0.0,
-                y: 0.0,
-                z: 0.0,
-            },
+            centre: Vector::new(0.0, 0.0, 0.0),
             radius: 1.0,
         };
-        let ray = Ray::new(
-            Vector {
-                x: -2.0,
-                y: 0.0,
-                z: 0.0,
-            },
-            Vector {
-                x: 1.0,
-                y: 0.0,
-                z: 0.0,
-            },
-            0.0,
-        );
+        let ray = Ray::new(Vector::new(-2.0, 0.0, 0.0), Vector::new(1.0, 0.0, 0.0), 0.0);
 
         let hit_distance = sphere.hit(&ray, 0.0, core::f64::MAX).unwrap();
         let surface_normal = sphere.surface_normal(&ray, hit_distance);
 
-        assert_eq!(
-            surface_normal,
-            Vector {
-                x: -1.0,
-                y: 0.0,
-                z: 0.0
-            }
-        );
+        assert_eq!(surface_normal, Vector::new(-1.0, 0.0, 0.0),);
     }
 
     #[test]
     fn test_neg_radius_sphere_surface_normal() {
         let sphere = Sphere {
-            centre: Vector {
-                x: 0.0,
-                y: 0.0,
-                z: 0.0,
-            },
+            centre: Vector::new(0.0, 0.0, 0.0),
             radius: -1.0,
         };
-        let ray = Ray::new(
-            Vector {
-                x: -2.0,
-                y: 0.0,
-                z: 0.0,
-            },
-            Vector {
-                x: 1.0,
-                y: 0.0,
-                z: 0.0,
-            },
-            0.0,
-        );
+        let ray = Ray::new(Vector::new(-2.0, 0.0, 0.0), Vector::new(1.0, 0.0, 0.0), 0.0);
 
         let hit_distance = sphere.hit(&ray, 0.0, core::f64::MAX).unwrap();
         let surface_normal = sphere.surface_normal(&ray, hit_distance);
 
-        assert_eq!(
-            surface_normal,
-            Vector {
-                x: 1.0,
-                y: 0.0,
-                z: 0.0
-            }
-        );
+        assert_eq!(surface_normal, Vector::new(1.0, 0.0, 0.0),);
     }
 }

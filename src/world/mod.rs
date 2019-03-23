@@ -8,6 +8,23 @@ pub mod materials;
 
 #[derive(Serialize, Deserialize)]
 pub struct World {
-    pub background: Background,
-    pub volumes: Vec<Entity>,
+    background: Background,
+    volumes: Vec<Entity>,
+}
+
+impl World {
+    pub fn new(background: Background, volumes: Vec<Entity>) -> World {
+        World {
+            background,
+            volumes,
+        }
+    }
+
+    pub fn background(&self) -> &Background {
+        &self.background
+    }
+
+    pub fn volumes(&self) -> &Vec<Entity> {
+        &self.volumes
+    }
 }

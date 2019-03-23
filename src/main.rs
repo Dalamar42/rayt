@@ -48,7 +48,7 @@ fn main() {
 fn run() -> Result<(), Error> {
     let cli_config = get_cli_config()?;
 
-    match cli_config.command {
+    match cli_config.command() {
         CliCommand::RENDER {
             width,
             output_path,
@@ -56,15 +56,15 @@ fn run() -> Result<(), Error> {
             num_of_threads,
         } => {
             run_render(
-                &cli_config.config_path,
-                width,
+                &cli_config.config_path(),
+                *width,
                 &output_path,
-                num_of_rays,
-                num_of_threads,
+                *num_of_rays,
+                *num_of_threads,
             )?;
         }
         CliCommand::GENERATE => {
-            run_generate(&cli_config.config_path)?;
+            run_generate(&cli_config.config_path())?;
         }
     };
 
@@ -108,7 +108,7 @@ fn progress_bar(config: &Config) -> ProgressBar {
     let progress_style = ProgressStyle::default_bar()
         .template(PROGRESS_BAR_STYLE)
         .progress_chars("##-");
-    let bar_size = u64::from(config.height * config.width);
+    let bar_size = u64::from(config.height() * config.width());
     let progress_bar = ProgressBar::new(bar_size);
     progress_bar.set_style(progress_style.clone());
     progress_bar.tick();

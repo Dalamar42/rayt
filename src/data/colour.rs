@@ -4,12 +4,28 @@ use std::ops;
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Colour {
-    pub r: f64,
-    pub g: f64,
-    pub b: f64,
+    r: f64,
+    g: f64,
+    b: f64,
 }
 
 impl Colour {
+    pub fn new(r: f64, g: f64, b: f64) -> Colour {
+        Colour { r, g, b }
+    }
+
+    pub fn r(&self) -> f64 {
+        self.r
+    }
+
+    pub fn g(&self) -> f64 {
+        self.g
+    }
+
+    pub fn b(&self) -> f64 {
+        self.b
+    }
+
     pub fn into_rgb(self) -> Rgb<u8> {
         assert!(0.0 <= self.r && self.r <= 1.0);
         assert!(0.0 <= self.g && self.g <= 1.0);

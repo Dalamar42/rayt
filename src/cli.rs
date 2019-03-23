@@ -14,8 +14,18 @@ pub enum CliCommand {
 }
 
 pub struct CliConfig {
-    pub command: CliCommand,
-    pub config_path: String,
+    command: CliCommand,
+    config_path: String,
+}
+
+impl CliConfig {
+    pub fn command(&self) -> &CliCommand {
+        &self.command
+    }
+
+    pub fn config_path(&self) -> &str {
+        &self.config_path
+    }
 }
 
 #[derive(Debug, Fail)]

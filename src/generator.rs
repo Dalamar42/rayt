@@ -13,21 +13,9 @@ pub fn build_book_cover_config() -> ConfigSave {
     let aspect = 1.5;
 
     let camera = CameraSave::new(
-        &Vector {
-            x: 13.0,
-            y: 2.0,
-            z: 3.0,
-        },
-        &Vector {
-            x: 0.0,
-            y: 0.0,
-            z: 0.0,
-        },
-        &Vector {
-            x: 0.0,
-            y: 1.0,
-            z: 0.0,
-        },
+        &Vector::new(13.0, 2.0, 3.0),
+        &Vector::new(0.0, 0.0, 0.0),
+        &Vector::new(0.0, 1.0, 0.0),
         20.0,
         aspect,
         0.1,
@@ -37,11 +25,7 @@ pub fn build_book_cover_config() -> ConfigSave {
     );
     let world = build_book_cover_world();
 
-    ConfigSave {
-        aspect,
-        camera,
-        world,
-    }
+    ConfigSave::new(aspect, camera, world)
 }
 
 fn build_book_cover_world() -> World {
@@ -49,163 +33,77 @@ fn build_book_cover_world() -> World {
     let mut volumes: Vec<Entity> = Vec::with_capacity(n);
 
     // Floor
-    volumes.push(Entity {
-        geometry: Box::from(Sphere {
-            centre: Vector {
-                x: 0.0,
-                y: -1000.0,
-                z: 0.0,
-            },
-            radius: 1000.0,
-        }),
-        material: Box::from(Lambertian {
-            albedo: Colour {
-                r: 0.5,
-                g: 0.5,
-                b: 0.5,
-            },
-        }),
-    });
+    volumes.push(Entity::new(
+        Box::from(Sphere::new(Vector::new(0.0, -1000.0, 0.0), 1000.0)),
+        Box::from(Lambertian::new(Colour::new(0.5, 0.5, 0.5))),
+    ));
 
     // 3 big spheres
-    volumes.push(Entity {
-        geometry: Box::from(Sphere {
-            centre: Vector {
-                x: 0.0,
-                y: 1.0,
-                z: 0.0,
-            },
-            radius: 1.0,
-        }),
-        material: Box::from(Dielectric {
-            refractive_index: 1.5,
-        }),
-    });
-    volumes.push(Entity {
-        geometry: Box::from(Sphere {
-            centre: Vector {
-                x: -4.0,
-                y: 1.0,
-                z: 0.0,
-            },
-            radius: 1.0,
-        }),
-        material: Box::from(Lambertian {
-            albedo: Colour {
-                r: 0.4,
-                g: 0.2,
-                b: 0.1,
-            },
-        }),
-    });
-    volumes.push(Entity {
-        geometry: Box::from(Sphere {
-            centre: Vector {
-                x: 4.0,
-                y: 1.0,
-                z: 0.0,
-            },
-            radius: 1.0,
-        }),
-        material: Box::from(Metal {
-            albedo: Colour {
-                r: 0.7,
-                g: 0.6,
-                b: 0.5,
-            },
-            fuzz: 0.0,
-        }),
-    });
+    volumes.push(Entity::new(
+        Box::from(Sphere::new(Vector::new(0.0, 1.0, 0.0), 1.0)),
+        Box::from(Dielectric::new(1.5)),
+    ));
+    volumes.push(Entity::new(
+        Box::from(Sphere::new(Vector::new(-4.0, 1.0, 0.0), 1.0)),
+        Box::from(Lambertian::new(Colour::new(0.4, 0.2, 0.1))),
+    ));
+    volumes.push(Entity::new(
+        Box::from(Sphere::new(Vector::new(4.0, 1.0, 0.0), 1.0)),
+        Box::from(Metal::new(Colour::new(0.7, 0.6, 0.5), 0.0)),
+    ));
 
     let mut rng = rand::thread_rng();
 
     for a in -11..11 {
         for b in -11..11 {
             let choose_mat: f64 = rng.gen();
-            let centre = Vector {
-                x: f64::from(a) + 0.9 * rng.gen::<f64>(),
-                y: 0.2,
-                z: f64::from(b) + 0.9 * rng.gen::<f64>(),
-            };
+            let centre = Vector::new(
+                f64::from(a) + 0.9 * rng.gen::<f64>(),
+                0.2,
+                f64::from(b) + 0.9 * rng.gen::<f64>(),
+            );
 
-            if (&centre
-                - Vector {
-                    x: 4.0,
-                    y: 0.2,
-                    z: 0.0,
-                })
-            .len()
-                > 0.9
-            {
+            if (&centre - Vector::new(4.0, 0.2, 0.0)).len() > 0.9 {
                 if choose_mat < 0.8 {
-                    volumes.push(Entity {
-                        geometry: Box::from(MovingSphere {
-                            centre_start: centre.clone(),
-                            time_start: 0.0,
-                            centre_end: &centre
-                                + Vector {
-                                    x: 0.0,
-                                    y: 0.5 * rng.gen::<f64>(),
-                                    z: 0.0,
-                                },
-                            time_end: 1.0,
-                            radius: 0.2,
-                        }),
-                        material: Box::from(Lambertian {
-                            albedo: Colour {
-                                r: rng.gen::<f64>() * rng.gen::<f64>(),
-                                g: rng.gen::<f64>() * rng.gen::<f64>(),
-                                b: rng.gen::<f64>() * rng.gen::<f64>(),
-                            },
-                        }),
-                    });
+                    volumes.push(Entity::new(
+                        Box::from(MovingSphere::new(
+                            centre.clone(),
+                            0.0,
+                            &centre + Vector::new(0.0, 0.5 * rng.gen::<f64>(), 0.0),
+                            1.0,
+                            0.2,
+                        )),
+                        Box::from(Lambertian::new(Colour::new(
+                            rng.gen::<f64>() * rng.gen::<f64>(),
+                            rng.gen::<f64>() * rng.gen::<f64>(),
+                            rng.gen::<f64>() * rng.gen::<f64>(),
+                        ))),
+                    ));
                 } else if choose_mat < 0.95 {
-                    volumes.push(Entity {
-                        geometry: Box::from(Sphere {
-                            centre,
-                            radius: 0.2,
-                        }),
-                        material: Box::from(Metal {
-                            albedo: Colour {
-                                r: 0.5 * (1.0 + rng.gen::<f64>()),
-                                g: 0.5 * (1.0 + rng.gen::<f64>()),
-                                b: 0.5 * (1.0 + rng.gen::<f64>()),
-                            },
-                            fuzz: 0.5 * rng.gen::<f64>(),
-                        }),
-                    });
+                    volumes.push(Entity::new(
+                        Box::from(Sphere::new(centre, 0.2)),
+                        Box::from(Metal::new(
+                            Colour::new(
+                                0.5 * (1.0 + rng.gen::<f64>()),
+                                0.5 * (1.0 + rng.gen::<f64>()),
+                                0.5 * (1.0 + rng.gen::<f64>()),
+                            ),
+                            0.5 * rng.gen::<f64>(),
+                        )),
+                    ));
                 } else {
-                    volumes.push(Entity {
-                        geometry: Box::from(Sphere {
-                            centre,
-                            radius: 0.2,
-                        }),
-                        material: Box::from(Dielectric {
-                            refractive_index: 1.5,
-                        }),
-                    });
+                    volumes.push(Entity::new(
+                        Box::from(Sphere::new(centre, 0.2)),
+                        Box::from(Dielectric::new(1.5)),
+                    ));
                 }
             }
         }
     }
 
-    let white = Colour {
-        r: 1.0,
-        g: 1.0,
-        b: 1.0,
-    };
-    let blue = Colour {
-        r: 0.5,
-        g: 0.7,
-        b: 1.0,
-    };
-    let background = Background {
-        bottom: white,
-        top: blue,
-    };
+    let white = Colour::new(1.0, 1.0, 1.0);
+    let blue = Colour::new(0.5, 0.7, 1.0);
+    let background = Background::new(white, blue);
 
-    World {
-        background,
-        volumes,
-    }
+    World::new(background, volumes)
 }

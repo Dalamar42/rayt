@@ -13,7 +13,7 @@ struct Pixel {
 
 pub fn render(config: &Config, progress_bar: &ProgressBar) -> RgbImage {
     let pixels: Vec<Pixel> = config
-        .camera
+        .camera()
         .pixels(&config)
         .par_iter()
         .map(|(row, col)| pixel(*row, *col, &config, &progress_bar))
@@ -21,7 +21,7 @@ pub fn render(config: &Config, progress_bar: &ProgressBar) -> RgbImage {
 
     progress_bar.finish();
 
-    let mut image: RgbImage = ImageBuffer::new(config.width, config.height);
+    let mut image: RgbImage = ImageBuffer::new(config.width(), config.height());
 
     for pixel in pixels {
         image.put_pixel(pixel.x, pixel.y, pixel.colour);
@@ -31,7 +31,7 @@ pub fn render(config: &Config, progress_bar: &ProgressBar) -> RgbImage {
 }
 
 fn pixel(row: u32, col: u32, config: &Config, progress_bar: &ProgressBar) -> Pixel {
-    let rays = config.camera.rays(row, col, &config);
+    let rays = config.camera().rays(row, col, &config);
 
     let colour_sum: Colour = rays.iter().map(|ray| colour(&ray, &config, 0)).sum();
     let colour = colour_sum / (rays.len() as f64);
@@ -42,23 +42,19 @@ fn pixel(row: u32, col: u32, config: &Config, progress_bar: &ProgressBar) -> Pix
     // Translate into the coordinate system expected by the image crate
     Pixel {
         x: col,
-        y: config.height - row - 1,
+        y: config.height() - row - 1,
         colour: colour.into_rgb(),
     }
 }
 
 fn colour(ray: &Ray, config: &Config, depth: u64) -> Colour {
     if depth >= 50 {
-        return Colour {
-            r: 0.0,
-            g: 0.0,
-            b: 0.0,
-        };
+        return Colour::new(0.0, 0.0, 0.0);
     }
 
     let maybe_hit_result = config
-        .world
-        .volumes
+        .world()
+        .volumes()
         .iter()
         .filter_map(|volume| {
             let maybe_hit_distance = volume.hit(&ray, 0.001, core::f64::MAX);
@@ -76,15 +72,15 @@ fn colour(ray: &Ray, config: &Config, depth: u64) -> Colour {
         .last();
 
     match maybe_hit_result {
-        Some(scatter) => scatter.attenuation * colour(&scatter.ray, &config, depth + 1),
+        Some(scatter) => scatter.attenuation() * colour(&scatter.ray(), &config, depth + 1),
         None => {
             let unit_direction = ray.direction().unit_vector();
-            let t = 0.5 * (unit_direction.y + 1.0);
+            let t = 0.5 * (unit_direction.y() + 1.0);
 
             linear_interpolation(
                 t,
-                &config.world.background.bottom,
-                &config.world.background.top,
+                &config.world().background().bottom(),
+                &config.world().background().top(),
             )
         }
     }

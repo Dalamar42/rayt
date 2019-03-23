@@ -2,12 +2,28 @@ use std::ops;
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Vector {
-    pub x: f64,
-    pub y: f64,
-    pub z: f64,
+    x: f64,
+    y: f64,
+    z: f64,
 }
 
 impl Vector {
+    pub fn new(x: f64, y: f64, z: f64) -> Vector {
+        Vector { x, y, z }
+    }
+
+    pub fn x(&self) -> f64 {
+        self.x
+    }
+
+    pub fn y(&self) -> f64 {
+        self.y
+    }
+
+    pub fn z(&self) -> f64 {
+        self.z
+    }
+
     pub fn len(&self) -> f64 {
         (&self).len_squared().sqrt()
     }

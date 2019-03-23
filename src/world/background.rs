@@ -2,6 +2,20 @@ use data::colour::Colour;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Background {
-    pub top: Colour,
-    pub bottom: Colour,
+    top: Colour,
+    bottom: Colour,
+}
+
+impl Background {
+    pub fn new(top: Colour, bottom: Colour) -> Background {
+        Background { top, bottom }
+    }
+
+    pub fn top(&self) -> &Colour {
+        &self.top
+    }
+
+    pub fn bottom(&self) -> &Colour {
+        &self.bottom
+    }
 }

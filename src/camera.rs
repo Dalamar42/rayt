@@ -120,17 +120,17 @@ impl CameraSave {
 
 impl Camera {
     pub fn pixels(&self, config: &Config) -> Vec<(u32, u32)> {
-        let height = config.height;
-        let width = config.width;
+        let height = config.height();
+        let width = config.width();
 
         iproduct!(0..height, 0..width).collect()
     }
 
     pub fn rays(&self, row: u32, col: u32, config: &Config) -> Vec<Ray> {
-        let height = config.height;
-        let width = config.width;
+        let height = config.height();
+        let width = config.width();
 
-        (0..config.num_of_rays)
+        (0..config.num_of_rays())
             .map(|_| {
                 let mut rng = rand::thread_rng();
                 let row_fuzz: f64 = rng.gen();
@@ -146,7 +146,7 @@ impl Camera {
 
     fn ray(&self, h: f64, v: f64) -> Ray {
         let rd = self.lens_radius * random_point_in_unit_disk();
-        let lens_offset = &self.u * rd.x + &self.v * rd.y;
+        let lens_offset = &self.u * rd.x() + &self.v * rd.y();
         let mut rng = rand::thread_rng();
         let time = self.time_start + rng.gen::<f64>() * (self.time_end - self.time_start);
         Ray {
@@ -161,19 +161,10 @@ impl Camera {
 
 fn random_point_in_unit_disk() -> Vector {
     let mut rng = rand::thread_rng();
-    let centre = Vector {
-        x: 1.0,
-        y: 1.0,
-        z: 0.0,
-    };
+    let centre = Vector::new(1.0, 1.0, 0.0);
 
     loop {
-        let point =
-            2.0 * Vector {
-                x: rng.gen(),
-                y: rng.gen(),
-                z: 0.0,
-            } - &centre;
+        let point = 2.0 * Vector::new(rng.gen(), rng.gen(), 0.0) - &centre;
         if Vector::dot(&point, &point) < 1.0 {
             return point;
         }
