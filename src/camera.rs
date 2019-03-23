@@ -60,7 +60,7 @@ pub struct CameraSave {
     time_end: f64,
 }
 
-impl Camera {
+impl CameraSave {
     pub fn new(
         look_from: &Vector,
         look_at: &Vector,
@@ -71,23 +71,8 @@ impl Camera {
         focus_distance: f64,
         time_start: f64,
         time_end: f64,
-    ) -> Camera {
-        let lens_radius = aperture / 2.0;
-
-        let theta = vertical_fov * PI / 180.0;
-        let half_height = f64::tan(theta / 2.0) * focus_distance;
-        let half_width = aspect * half_height;
-
-        let w = (look_from - look_at).unit_vector();
-        let u = Vector::cross(view_up, &w).unit_vector();
-        let v = Vector::cross(&w, &u);
-
-        let origin = look_from.clone();
-        let lower_left_corner = &origin - half_width * &u - half_height * &v - focus_distance * &w;
-        let horizontal = 2.0 * half_width * &u;
-        let vertical = 2.0 * half_height * &v;
-
-        let save = CameraSave {
+    ) -> CameraSave {
+        CameraSave {
             look_from: look_from.clone(),
             look_at: look_at.clone(),
             view_up: view_up.clone(),
@@ -97,7 +82,25 @@ impl Camera {
             focus_distance,
             time_start,
             time_end,
-        };
+        }
+    }
+
+    pub fn into_camera(self) -> Camera {
+        let lens_radius = self.aperture / 2.0;
+
+        let theta = self.vertical_fov * PI / 180.0;
+        let half_height = f64::tan(theta / 2.0) * self.focus_distance;
+        let half_width = self.aspect * half_height;
+
+        let w = (&self.look_from - &self.look_at).unit_vector();
+        let u = Vector::cross(&self.view_up, &w).unit_vector();
+        let v = Vector::cross(&w, &u);
+
+        let origin = self.look_from.clone();
+        let lower_left_corner =
+            &origin - half_width * &u - half_height * &v - self.focus_distance * &w;
+        let horizontal = 2.0 * half_width * &u;
+        let vertical = 2.0 * half_height * &v;
 
         Camera {
             origin,
@@ -108,30 +111,14 @@ impl Camera {
             v,
             w,
             lens_radius,
-            time_start,
-            time_end,
-            save,
+            time_start: self.time_start,
+            time_end: self.time_end,
+            save: self,
         }
     }
+}
 
-    pub fn into_save(self) -> CameraSave {
-        self.save
-    }
-
-    pub fn from_save(save: CameraSave) -> Camera {
-        Camera::new(
-            &save.look_from,
-            &save.look_at,
-            &save.view_up,
-            save.vertical_fov,
-            save.aspect,
-            save.aperture,
-            save.focus_distance,
-            save.time_start,
-            save.time_end,
-        )
-    }
-
+impl Camera {
     pub fn pixels(&self, config: &Config) -> Vec<(u32, u32)> {
         let height = config.height;
         let width = config.width;

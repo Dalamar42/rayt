@@ -1,4 +1,4 @@
-use camera::Camera;
+use camera::CameraSave;
 use config::ConfigSave;
 use data::colour::Colour;
 use data::vector::Vector;
@@ -12,7 +12,7 @@ use world::World;
 pub fn build_book_cover_config() -> ConfigSave {
     let aspect = 1.5;
 
-    let camera = Camera::new(
+    let camera = CameraSave::new(
         &Vector {
             x: 13.0,
             y: 2.0,
@@ -34,8 +34,7 @@ pub fn build_book_cover_config() -> ConfigSave {
         10.0,
         0.0,
         1.0,
-    )
-    .into_save();
+    );
     let world = build_book_cover_world();
 
     ConfigSave {

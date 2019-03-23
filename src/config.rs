@@ -21,7 +21,7 @@ impl Config {
         Config {
             width,
             height: (f64::from(width) / save.aspect) as u32,
-            camera: Camera::from_save(save.camera),
+            camera: save.camera.into_camera(),
             world: save.world,
             num_of_rays,
         }
@@ -40,7 +40,7 @@ mod tests {
 
     #[test]
     fn test_serialise_roundtrip_camera() {
-        let camera = Camera::new(
+        let camera = CameraSave::new(
             &Vector {
                 x: 13.0,
                 y: 2.0,
@@ -62,8 +62,7 @@ mod tests {
             10.0,
             0.0,
             1.0,
-        )
-        .into_save();
+        );
 
         let serialised = serde_yaml::to_string(&camera).unwrap();
         let deserialised = serde_yaml::from_str(&serialised).unwrap();
@@ -163,7 +162,7 @@ mod tests {
 
     #[test]
     fn test_serialise_roundtrip_saved_config() {
-        let camera = Camera::new(
+        let camera = CameraSave::new(
             &Vector {
                 x: 13.0,
                 y: 2.0,
@@ -185,8 +184,7 @@ mod tests {
             10.0,
             0.0,
             1.0,
-        )
-        .into_save();
+        );
         let world = World {
             background: Background {
                 bottom: Colour {
