@@ -39,7 +39,7 @@ fn pixel(row: u64, col: u64, config: &Config, progress_bar: &ProgressBar) -> Pix
 
     progress_bar.inc(1);
 
-    // Translate into the coordinator system expected by the image crate
+    // Translate into the coordinate system expected by the image crate
     Pixel {
         x: col as u32,
         y: config.height as u32 - row as u32 - 1,
