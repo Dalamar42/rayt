@@ -35,7 +35,7 @@ mod tests {
     use data::vector::Vector;
     use world::background::Background;
     use world::entity::Entity;
-    use world::geometry::Sphere;
+    use world::geometry::sphere::Sphere;
     use world::materials::{Dielectric, Lambertian, Metal};
 
     #[test]
