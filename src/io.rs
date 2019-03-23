@@ -1,28 +1,12 @@
 use config::ConfigSave;
-use data::colour::MAX_COLOUR;
 use failure::Error;
-use renderer::Image;
+use image::RgbImage;
 use std;
 
-const IMAGE_FORMAT: &str = "P3";
+pub const SUPPORTED_IMAGE_EXT: [&str; 4] = [".ppm", ".jpeg", ".jpg", ".png"];
 
-pub fn write_image_as_ppm(image: Image, output_path: &str) -> std::io::Result<()> {
-    let mut rows: Vec<String> = vec![];
-
-    rows.push(IMAGE_FORMAT.to_string());
-    rows.push(format!("{} {}", image.num_cols, image.num_rows));
-    rows.push(MAX_COLOUR.to_string());
-
-    image
-        .pixels
-        .iter()
-        .map(|p| format!("{:3} {:3} {:3}", p.r_norm(), p.g_norm(), p.b_norm()))
-        .for_each(|fp| rows.push(fp));
-
-    rows.push("".to_string());
-
-    std::fs::write(output_path, rows.join("\n"))?;
-    Ok(())
+pub fn write_image(image: RgbImage, output_path: &str) -> std::io::Result<()> {
+    image.save(output_path)
 }
 
 pub fn save_config(config_path: &str, config_save: ConfigSave) -> Result<(), Error> {

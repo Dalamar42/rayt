@@ -14,6 +14,7 @@ extern crate serde_derive;
 extern crate typetag;
 #[macro_use]
 extern crate failure;
+extern crate image;
 
 mod camera;
 mod cli;
@@ -90,7 +91,7 @@ fn run_render(
     let test_image = render(&config, &progress_bar(&config));
 
     println!("{} Printing image...", style("[3/3]").bold().dim());
-    io::write_image_as_ppm(test_image, output_path)?;
+    io::write_image(test_image, output_path)?;
 
     println!("Done in {}", HumanDuration(started.elapsed()));
 

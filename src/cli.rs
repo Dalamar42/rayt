@@ -1,5 +1,6 @@
 use clap::{App, AppSettings, Arg, ArgMatches, SubCommand};
 use failure::Error;
+use io::SUPPORTED_IMAGE_EXT;
 use std::str::FromStr;
 
 pub enum CliCommand {
@@ -94,9 +95,12 @@ pub fn get_cli_config() -> Result<CliConfig, Error> {
         let num_of_threads = parse::<usize>(subcommand, "threads")?;
 
         ensure!(
-            output_path.ends_with(".ppm"),
-            "Output path <{}> must end in .ppm",
+            SUPPORTED_IMAGE_EXT
+                .iter()
+                .any(|ext| output_path.ends_with(ext)),
+            "Output path <{}> must end in one of {:?}",
             output_path,
+            SUPPORTED_IMAGE_EXT,
         );
 
         return Ok(CliConfig {

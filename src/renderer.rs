@@ -1,41 +1,50 @@
 use camera::Ray;
 use config::Config;
 use data::colour::Colour;
+use image::{ImageBuffer, Rgb, RgbImage};
 use indicatif::ProgressBar;
 use rayon::prelude::*;
 
-#[derive(Debug)]
-pub struct Image {
-    pub pixels: Vec<Colour>,
-    pub num_rows: u64,
-    pub num_cols: u64,
+struct Pixel {
+    x: u32,
+    y: u32,
+    colour: Rgb<u8>,
 }
 
-pub fn render(config: &Config, progress_bar: &ProgressBar) -> Image {
-    let pixels: Vec<Colour> = config
+pub fn render(config: &Config, progress_bar: &ProgressBar) -> RgbImage {
+    let pixels: Vec<Pixel> = config
         .camera
         .pixels(&config)
         .par_iter()
-        .map(|(row, col)| config.camera.rays(*row, *col, &config))
-        .map(|rays| colour_from_rays(&rays, &config, &progress_bar))
-        .map(|colour| colour.gamma_2())
+        .map(|(row, col)| pixel(*row, *col, &config, &progress_bar))
         .collect();
 
     progress_bar.finish();
 
-    Image {
-        pixels,
-        num_rows: config.height,
-        num_cols: config.width,
+    let mut image: RgbImage = ImageBuffer::new(config.width as u32, config.height as u32);
+
+    for pixel in pixels {
+        image.put_pixel(pixel.x, pixel.y, pixel.colour);
     }
+
+    image
 }
 
-fn colour_from_rays(rays: &[Ray], config: &Config, progress_bar: &ProgressBar) -> Colour {
+fn pixel(row: u64, col: u64, config: &Config, progress_bar: &ProgressBar) -> Pixel {
+    let rays = config.camera.rays(row, col, &config);
+
     let colour_sum: Colour = rays.iter().map(|ray| colour(&ray, &config, 0)).sum();
+    let colour = colour_sum / (rays.len() as f64);
+    let colour = colour.gamma_2();
 
     progress_bar.inc(1);
 
-    colour_sum / (rays.len() as f64)
+    // Translate into the coordinator system expected by the image crate
+    Pixel {
+        x: col as u32,
+        y: config.height as u32 - row as u32 - 1,
+        colour: colour.into_rgb(),
+    }
 }
 
 fn colour(ray: &Ray, config: &Config, depth: u64) -> Colour {

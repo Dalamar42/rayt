@@ -1,7 +1,6 @@
+use image::Rgb;
 use std::iter::Sum;
 use std::ops;
-
-pub const MAX_COLOUR: u8 = 255;
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Colour {
@@ -11,19 +10,18 @@ pub struct Colour {
 }
 
 impl Colour {
-    pub fn r_norm(&self) -> u8 {
+    pub fn into_rgb(self) -> Rgb<u8> {
         assert!(0.0 <= self.r && self.r <= 1.0);
-        (255.99 * &self.r) as u8
-    }
-
-    pub fn g_norm(&self) -> u8 {
         assert!(0.0 <= self.g && self.g <= 1.0);
-        (255.99 * &self.g) as u8
-    }
-
-    pub fn b_norm(&self) -> u8 {
         assert!(0.0 <= self.b && self.b <= 1.0);
-        (255.99 * &self.b) as u8
+
+        let mult: f64 = 255.99;
+
+        Rgb([
+            (mult * self.r) as u8,
+            (mult * self.g) as u8,
+            (mult * self.b) as u8,
+        ])
     }
 
     pub fn gamma_2(self) -> Colour {
@@ -238,16 +236,18 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_normalise_colour() {
+    fn test_colour_into_rgb() {
         let colour = Colour {
             r: 1.0,
             g: 0.5,
             b: 0.0,
         };
 
-        assert_eq!(colour.r_norm(), 255);
-        assert_eq!(colour.g_norm(), 127);
-        assert_eq!(colour.b_norm(), 0);
+        let rgb = colour.into_rgb();
+
+        assert_eq!(rgb[0], 255);
+        assert_eq!(rgb[1], 127);
+        assert_eq!(rgb[2], 0);
     }
 
     #[test]
