@@ -1,7 +1,10 @@
+pub mod axis_aligned_bounding_box;
 pub mod sphere;
+
 use camera::Ray;
 use data::vector::Vector;
 use std::cmp::Ordering;
+use world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
 
 #[derive(Debug, Clone)]
 pub enum HitResult {
@@ -12,11 +15,14 @@ pub enum HitResult {
         surface_normal: Vector,
     },
     Miss,
+    Intersection,
 }
 
 #[typetag::serde(tag = "type")]
 pub trait Geometry: Sync {
     fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> HitResult;
+
+    fn bounding_box(&self, time_start: f64, time_end: f64) -> Option<AxisAlignedBoundingBox>;
 }
 
 impl Ord for HitResult {
@@ -35,6 +41,11 @@ impl Ord for HitResult {
                 // We should never get a NaN here. Panic if we do
                 distance.partial_cmp(other_distance).unwrap()
             }
+            (HitResult::Intersection, HitResult::Intersection) => Ordering::Equal,
+            (HitResult::Intersection, HitResult::Miss) => Ordering::Less,
+            (HitResult::Miss, HitResult::Intersection) => Ordering::Greater,
+            (HitResult::Intersection, HitResult::Hit { .. }) => Ordering::Greater,
+            (HitResult::Hit { .. }, HitResult::Intersection) => Ordering::Less,
         }
     }
 }
@@ -77,6 +88,10 @@ mod tests {
             surface_normal: Vector::new(0.0, 0.0, 0.0),
         };
         assert_ne!(hit_result.clone(), other_hit_result.clone());
+
+        assert_eq!(HitResult::Intersection, HitResult::Intersection);
+        assert_ne!(HitResult::Intersection, HitResult::Miss);
+        assert_ne!(HitResult::Intersection, hit_result);
     }
 
     #[test]
@@ -99,5 +114,10 @@ mod tests {
         };
         assert!(other_hit_result > hit_result);
         assert!(hit_result < other_hit_result);
+
+        assert!(HitResult::Intersection < HitResult::Miss);
+        assert!(HitResult::Miss > HitResult::Intersection);
+        assert!(HitResult::Intersection > hit_result);
+        assert!(hit_result < HitResult::Intersection);
     }
 }

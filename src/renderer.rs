@@ -68,6 +68,7 @@ fn colour(ray: &Ray, config: &Config, depth: u64) -> Colour {
                 ..
             } => entity.scatter(&ray, &point, &surface_normal),
             HitResult::Miss => None,
+            HitResult::Intersection => unimplemented!(),
         })
         .last();
 

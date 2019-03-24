@@ -1,5 +1,6 @@
 use camera::Ray;
 use data::vector::Vector;
+use world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
 use world::geometry::{Geometry, HitResult};
 
 fn sphere_hit(ray: &Ray, centre: &Vector, radius: f64, tmin: f64, tmax: f64) -> Option<f64> {
@@ -26,6 +27,13 @@ fn sphere_hit(ray: &Ray, centre: &Vector, radius: f64, tmin: f64, tmax: f64) -> 
     }
 
     Option::Some(t)
+}
+
+fn sphere_bounding_box(centre: &Vector, radius: f64) -> Option<AxisAlignedBoundingBox> {
+    Some(AxisAlignedBoundingBox::new(
+        centre - Vector::new(radius, radius, radius),
+        centre + Vector::new(radius, radius, radius),
+    ))
 }
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
@@ -65,6 +73,10 @@ impl Geometry for Sphere {
             point,
             surface_normal,
         }
+    }
+
+    fn bounding_box(&self, time_start: f64, time_end: f64) -> Option<AxisAlignedBoundingBox> {
+        sphere_bounding_box(&self.centre, self.radius)
     }
 }
 
@@ -127,6 +139,13 @@ impl Geometry for MovingSphere {
             point,
             surface_normal,
         }
+    }
+
+    fn bounding_box(&self, time_start: f64, time_end: f64) -> Option<AxisAlignedBoundingBox> {
+        let box_start = sphere_bounding_box(&self.centre(time_start), self.radius);
+        let box_end = sphere_bounding_box(&self.centre(time_end), self.radius);
+
+        AxisAlignedBoundingBox::surrounding(&box_start, &box_end)
     }
 }
 
@@ -225,5 +244,34 @@ mod tests {
             }
             _ => assert!(false),
         }
+    }
+
+    #[test]
+    fn test_sphere_bounding_box() {
+        let sphere = Sphere {
+            centre: Vector::new(0.0, 0.0, 0.0),
+            radius: 1.0,
+        };
+
+        let expected_box =
+            AxisAlignedBoundingBox::new(Vector::new(-1.0, -1.0, -1.0), Vector::new(1.0, 1.0, 1.0));
+
+        assert_eq!(sphere.bounding_box(0.0, 0.0), Some(expected_box));
+    }
+
+    #[test]
+    fn test_moving_sphere_bounding_box() {
+        let sphere = MovingSphere {
+            centre_start: Vector::new(0.0, 0.0, 0.0),
+            time_start: 0.0,
+            centre_end: Vector::new(2.0, 2.0, 2.0),
+            time_end: 2.0,
+            radius: 1.0,
+        };
+
+        let expected_box =
+            AxisAlignedBoundingBox::new(Vector::new(-1.0, -1.0, -1.0), Vector::new(2.0, 2.0, 2.0));
+
+        assert_eq!(sphere.bounding_box(0.0, 1.0), Some(expected_box));
     }
 }

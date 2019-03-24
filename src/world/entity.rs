@@ -1,5 +1,6 @@
 use camera::Ray;
 use data::vector::Vector;
+use world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
 use world::geometry::{Geometry, HitResult};
 use world::materials::{Material, ScatterResult};
 
@@ -25,5 +26,9 @@ impl Entity {
         surface_normal: &Vector,
     ) -> Option<ScatterResult> {
         self.material.scatter(ray, hit_point, surface_normal)
+    }
+
+    pub fn bounding_box(&self, time_start: f64, time_end: f64) -> Option<AxisAlignedBoundingBox> {
+        self.geometry.bounding_box(time_start, time_end)
     }
 }
