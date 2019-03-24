@@ -1,5 +1,6 @@
 use camera::Ray;
-use world::geometry::Geometry;
+use data::vector::Vector;
+use world::geometry::{Geometry, HitResult};
 use world::materials::{Material, ScatterResult};
 
 #[derive(Serialize, Deserialize)]
@@ -13,11 +14,16 @@ impl Entity {
         Entity { geometry, material }
     }
 
-    pub fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<f64> {
-        self.geometry.hit(&ray, tmin, tmax)
+    pub fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> (HitResult, &Entity) {
+        (self.geometry.hit(&ray, tmin, tmax), &self)
     }
 
-    pub fn scatter(&self, ray: &Ray, distance: f64) -> Option<ScatterResult> {
-        self.material.scatter(&*self.geometry, &ray, distance)
+    pub fn scatter(
+        &self,
+        ray: &Ray,
+        hit_point: &Vector,
+        surface_normal: &Vector,
+    ) -> Option<ScatterResult> {
+        self.material.scatter(ray, hit_point, surface_normal)
     }
 }

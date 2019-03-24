@@ -1,6 +1,6 @@
 use camera::Ray;
 use data::vector::Vector;
-use world::geometry::Geometry;
+use world::geometry::{Geometry, HitResult};
 
 fn sphere_hit(ray: &Ray, centre: &Vector, radius: f64, tmin: f64, tmax: f64) -> Option<f64> {
     // p(t) = ray
@@ -38,18 +38,33 @@ impl Sphere {
     pub fn new(centre: Vector, radius: f64) -> Sphere {
         Sphere { centre, radius }
     }
-}
-
-#[typetag::serde]
-impl Geometry for Sphere {
-    fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<f64> {
-        sphere_hit(ray, &self.centre, self.radius, tmin, tmax)
-    }
 
     fn surface_normal(&self, ray: &Ray, distance: f64) -> Vector {
         // We divide by radius instead of taking the unit vector so that a negative
         // radius sphere will have a surface normal that points inward
         (ray.point(distance) - &self.centre) / self.radius
+    }
+}
+
+#[typetag::serde]
+impl Geometry for Sphere {
+    fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> HitResult {
+        let hit_distance = sphere_hit(ray, &self.centre, self.radius, tmin, tmax);
+        if hit_distance.is_none() {
+            return HitResult::Miss;
+        }
+
+        let distance = hit_distance.unwrap();
+
+        let point = ray.point(distance);
+        let surface_normal = self.surface_normal(&ray, distance);
+
+        HitResult::Hit {
+            distance,
+            ray: ray.clone(),
+            point,
+            surface_normal,
+        }
     }
 }
 
@@ -83,20 +98,35 @@ impl MovingSphere {
         let time_fraction = (time - self.time_start) / (self.time_end - self.time_start);
         &self.centre_start + time_fraction * (&self.centre_end - &self.centre_start)
     }
-}
-
-#[typetag::serde]
-impl Geometry for MovingSphere {
-    fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<f64> {
-        let centre = self.centre(ray.time());
-        sphere_hit(ray, &centre, self.radius, tmin, tmax)
-    }
 
     fn surface_normal(&self, ray: &Ray, distance: f64) -> Vector {
         // We divide by radius instead of taking the unit vector so that a negative
         // radius sphere will have a surface normal that points inward
         let centre = self.centre(ray.time());
         (ray.point(distance) - &centre) / self.radius
+    }
+}
+
+#[typetag::serde]
+impl Geometry for MovingSphere {
+    fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> HitResult {
+        let centre = self.centre(ray.time());
+        let hit_distance = sphere_hit(ray, &centre, self.radius, tmin, tmax);
+        if hit_distance.is_none() {
+            return HitResult::Miss;
+        }
+
+        let distance = hit_distance.unwrap();
+
+        let point = ray.point(distance);
+        let surface_normal = self.surface_normal(&ray, distance);
+
+        HitResult::Hit {
+            distance,
+            ray: ray.clone(),
+            point,
+            surface_normal,
+        }
     }
 }
 
@@ -113,9 +143,19 @@ mod tests {
         };
         let ray = Ray::new(Vector::new(-2.0, 0.0, 0.0), Vector::new(1.0, 0.0, 0.0), 0.0);
 
-        let hit_distance = sphere.hit(&ray, 0.0, core::f64::MAX).unwrap();
+        let hit_result = sphere.hit(&ray, 0.0, core::f64::MAX);
 
-        assert_approx_eq!(hit_distance, 1.0);
+        match hit_result {
+            HitResult::Hit {
+                distance,
+                point: _,
+                ray: _,
+                surface_normal: _,
+            } => {
+                assert_approx_eq!(distance, 1.0);
+            }
+            _ => assert!(false),
+        }
     }
 
     #[test]
@@ -126,9 +166,19 @@ mod tests {
         };
         let ray = Ray::new(Vector::new(-2.0, 0.0, 0.0), Vector::new(1.0, 0.0, 0.0), 0.0);
 
-        let hit_distance = sphere.hit(&ray, 0.0, core::f64::MAX).unwrap();
+        let hit_result = sphere.hit(&ray, 0.0, core::f64::MAX);
 
-        assert_approx_eq!(hit_distance, 1.0);
+        match hit_result {
+            HitResult::Hit {
+                distance,
+                point: _,
+                ray: _,
+                surface_normal: _,
+            } => {
+                assert_approx_eq!(distance, 1.0);
+            }
+            _ => assert!(false),
+        }
     }
 
     #[test]
@@ -139,10 +189,19 @@ mod tests {
         };
         let ray = Ray::new(Vector::new(-2.0, 0.0, 0.0), Vector::new(1.0, 0.0, 0.0), 0.0);
 
-        let hit_distance = sphere.hit(&ray, 0.0, core::f64::MAX).unwrap();
-        let surface_normal = sphere.surface_normal(&ray, hit_distance);
+        let hit_result = sphere.hit(&ray, 0.0, core::f64::MAX);
 
-        assert_eq!(surface_normal, Vector::new(-1.0, 0.0, 0.0),);
+        match hit_result {
+            HitResult::Hit {
+                distance: _,
+                point: _,
+                ray: _,
+                surface_normal,
+            } => {
+                assert_eq!(surface_normal, Vector::new(-1.0, 0.0, 0.0));
+            }
+            _ => assert!(false),
+        }
     }
 
     #[test]
@@ -153,9 +212,18 @@ mod tests {
         };
         let ray = Ray::new(Vector::new(-2.0, 0.0, 0.0), Vector::new(1.0, 0.0, 0.0), 0.0);
 
-        let hit_distance = sphere.hit(&ray, 0.0, core::f64::MAX).unwrap();
-        let surface_normal = sphere.surface_normal(&ray, hit_distance);
+        let hit_result = sphere.hit(&ray, 0.0, core::f64::MAX);
 
-        assert_eq!(surface_normal, Vector::new(1.0, 0.0, 0.0),);
+        match hit_result {
+            HitResult::Hit {
+                distance: _,
+                point: _,
+                ray: _,
+                surface_normal,
+            } => {
+                assert_eq!(surface_normal, Vector::new(1.0, 0.0, 0.0));
+            }
+            _ => assert!(false),
+        }
     }
 }

@@ -4,6 +4,7 @@ use data::colour::Colour;
 use image::{ImageBuffer, Rgb, RgbImage};
 use indicatif::ProgressBar;
 use rayon::prelude::*;
+use world::geometry::HitResult;
 
 struct Pixel {
     x: u32,
@@ -56,34 +57,35 @@ fn colour(ray: &Ray, config: &Config, depth: u64) -> Colour {
         .world()
         .volumes()
         .iter()
-        .filter_map(|volume| {
-            let maybe_hit_distance = volume.hit(&ray, 0.001, core::f64::MAX);
-            match maybe_hit_distance {
-                Some(hit_distance) => Some((hit_distance, volume)),
-                None => None,
-            }
-        })
-        .min_by(|(distance_a, _), (distance_b, _)| {
-            // Should never get a NaN here. Panic if we do
-            distance_a.partial_cmp(distance_b).unwrap()
-        })
+        .map(|volume| volume.hit(&ray, 0.001, core::f64::MAX))
+        .min_by(|(hit_result_a, _), (hit_result_b, _)| hit_result_a.cmp(hit_result_b))
         .into_iter()
-        .filter_map(|(distance, volume)| volume.scatter(&ray, distance))
+        .filter_map(|(hit_result, entity)| match hit_result {
+            HitResult::Hit {
+                ray,
+                point,
+                surface_normal,
+                ..
+            } => entity.scatter(&ray, &point, &surface_normal),
+            HitResult::Miss => None,
+        })
         .last();
 
     match maybe_hit_result {
         Some(scatter) => scatter.attenuation() * colour(&scatter.ray(), &config, depth + 1),
-        None => {
-            let unit_direction = ray.direction().unit_vector();
-            let t = 0.5 * (unit_direction.y() + 1.0);
-
-            linear_interpolation(
-                t,
-                &config.world().background().bottom(),
-                &config.world().background().top(),
-            )
-        }
+        None => background(&ray, &config),
     }
+}
+
+fn background(ray: &Ray, config: &Config) -> Colour {
+    let unit_direction = ray.direction().unit_vector();
+    let t = 0.5 * (unit_direction.y() + 1.0);
+
+    linear_interpolation(
+        t,
+        &config.world().background().bottom(),
+        &config.world().background().top(),
+    )
 }
 
 fn linear_interpolation(t: f64, colour_a: &Colour, colour_b: &Colour) -> Colour {

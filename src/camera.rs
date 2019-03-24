@@ -3,7 +3,7 @@ use data::vector::Vector;
 use rand::prelude::*;
 use std::f64::consts::PI;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Ray {
     a: Vector,
     b: Vector,

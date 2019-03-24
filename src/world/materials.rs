@@ -2,7 +2,6 @@ use camera::Ray;
 use data::colour::Colour;
 use data::vector::Vector;
 use rand::prelude::*;
-use world::geometry::Geometry;
 
 #[derive(Debug)]
 pub struct ScatterResult {
@@ -26,7 +25,12 @@ impl ScatterResult {
 
 #[typetag::serde(tag = "type")]
 pub trait Material: Sync {
-    fn scatter(&self, geometry: &Geometry, ray: &Ray, distance: f64) -> Option<ScatterResult>;
+    fn scatter(
+        &self,
+        ray: &Ray,
+        hit_point: &Vector,
+        surface_normal: &Vector,
+    ) -> Option<ScatterResult>;
 }
 
 fn random_point_in_unit_sphere() -> Vector {
@@ -84,10 +88,12 @@ impl Lambertian {
 
 #[typetag::serde]
 impl Material for Lambertian {
-    fn scatter(&self, geometry: &Geometry, ray: &Ray, distance: f64) -> Option<ScatterResult> {
-        let hit_point = &ray.point(distance);
-        let surface_normal = &geometry.surface_normal(&ray, distance);
-
+    fn scatter(
+        &self,
+        ray: &Ray,
+        hit_point: &Vector,
+        surface_normal: &Vector,
+    ) -> Option<ScatterResult> {
         let diffuse = random_point_in_unit_sphere();
         let target = hit_point + surface_normal + diffuse;
 
@@ -114,12 +120,15 @@ impl Metal {
 
 #[typetag::serde]
 impl Material for Metal {
-    fn scatter(&self, geometry: &Geometry, ray: &Ray, distance: f64) -> Option<ScatterResult> {
+    fn scatter(
+        &self,
+        ray: &Ray,
+        hit_point: &Vector,
+        surface_normal: &Vector,
+    ) -> Option<ScatterResult> {
         let unit_vector = ray.direction().unit_vector();
-        let surface_normal = geometry.surface_normal(&ray, distance);
         let reflected = reflect(&unit_vector, &surface_normal);
 
-        let hit_point = &ray.point(distance);
         let ray = Ray::new(
             hit_point.clone(),
             reflected + self.fuzz * random_point_in_unit_sphere(),
@@ -160,9 +169,13 @@ fn reflectivity_schlick_approx(cosine: f64, n_i: f64, n_t: f64) -> f64 {
 
 #[typetag::serde]
 impl Material for Dielectric {
-    fn scatter(&self, geometry: &Geometry, ray: &Ray, distance: f64) -> Option<ScatterResult> {
-        let unit_vector = &ray.direction().unit_vector();
-        let surface_normal = geometry.surface_normal(&ray, distance);
+    fn scatter(
+        &self,
+        ray: &Ray,
+        hit_point: &Vector,
+        surface_normal: &Vector,
+    ) -> Option<ScatterResult> {
+        let unit_vector = ray.direction().unit_vector();
         let reflected = reflect(&unit_vector, &surface_normal);
 
         let mut rng = rand::thread_rng();
@@ -188,10 +201,9 @@ impl Material for Dielectric {
             refract(&unit_vector, &(sign * surface_normal), n_i / n_t)
         };
 
-        let hit_point = ray.point(distance);
         let ray = match maybe_refracted {
-            Some(refracted) => Ray::new(hit_point, refracted, ray.time()),
-            None => Ray::new(hit_point, reflected, ray.time()),
+            Some(refracted) => Ray::new(hit_point.clone(), refracted, ray.time()),
+            None => Ray::new(hit_point.clone(), reflected, ray.time()),
         };
 
         Some(ScatterResult {
