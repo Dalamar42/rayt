@@ -2,6 +2,7 @@ use camera::Ray;
 use data::vector::Vector;
 use world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
 use world::geometry::{Geometry, HitResult};
+use world::materials::Material;
 
 fn sphere_hit(ray: &Ray, centre: &Vector, radius: f64, tmin: f64, tmax: f64) -> Option<f64> {
     // p(t) = ray
@@ -40,11 +41,16 @@ fn sphere_bounding_box(centre: &Vector, radius: f64) -> Option<AxisAlignedBoundi
 pub struct Sphere {
     centre: Vector,
     radius: f64,
+    material: Material,
 }
 
 impl Sphere {
-    pub fn new(centre: Vector, radius: f64) -> Sphere {
-        Sphere { centre, radius }
+    pub fn new(centre: Vector, radius: f64, material: Material) -> Sphere {
+        Sphere {
+            centre,
+            radius,
+            material,
+        }
     }
 
     fn surface_normal(&self, ray: &Ray, distance: f64) -> Vector {
@@ -72,6 +78,7 @@ impl Geometry for Sphere {
             ray: ray.clone(),
             point,
             surface_normal,
+            material: self.material.clone(),
         }
     }
 
@@ -87,6 +94,7 @@ pub struct MovingSphere {
     centre_end: Vector,
     time_end: f64,
     radius: f64,
+    material: Material,
 }
 
 impl MovingSphere {
@@ -96,6 +104,7 @@ impl MovingSphere {
         centre_end: Vector,
         time_end: f64,
         radius: f64,
+        material: Material,
     ) -> MovingSphere {
         MovingSphere {
             centre_start,
@@ -103,6 +112,7 @@ impl MovingSphere {
             centre_end,
             time_end,
             radius,
+            material,
         }
     }
 
@@ -138,6 +148,7 @@ impl Geometry for MovingSphere {
             ray: ray.clone(),
             point,
             surface_normal,
+            material: self.material.clone(),
         }
     }
 
@@ -159,6 +170,9 @@ mod tests {
         let sphere = Sphere {
             centre: Vector::new(0.0, 0.0, 0.0),
             radius: 1.0,
+            material: Material::Dielectric {
+                refractive_index: 1.5,
+            },
         };
         let ray = Ray::new(Vector::new(-2.0, 0.0, 0.0), Vector::new(1.0, 0.0, 0.0), 0.0);
 
@@ -170,6 +184,7 @@ mod tests {
                 point: _,
                 ray: _,
                 surface_normal: _,
+                material: _,
             } => {
                 assert_approx_eq!(distance, 1.0);
             }
@@ -182,6 +197,9 @@ mod tests {
         let sphere = Sphere {
             centre: Vector::new(0.0, 0.0, 0.0),
             radius: -1.0,
+            material: Material::Dielectric {
+                refractive_index: 1.5,
+            },
         };
         let ray = Ray::new(Vector::new(-2.0, 0.0, 0.0), Vector::new(1.0, 0.0, 0.0), 0.0);
 
@@ -193,6 +211,7 @@ mod tests {
                 point: _,
                 ray: _,
                 surface_normal: _,
+                material: _,
             } => {
                 assert_approx_eq!(distance, 1.0);
             }
@@ -205,6 +224,9 @@ mod tests {
         let sphere = Sphere {
             centre: Vector::new(0.0, 0.0, 0.0),
             radius: 1.0,
+            material: Material::Dielectric {
+                refractive_index: 1.5,
+            },
         };
         let ray = Ray::new(Vector::new(-2.0, 0.0, 0.0), Vector::new(1.0, 0.0, 0.0), 0.0);
 
@@ -216,6 +238,7 @@ mod tests {
                 point: _,
                 ray: _,
                 surface_normal,
+                material: _,
             } => {
                 assert_eq!(surface_normal, Vector::new(-1.0, 0.0, 0.0));
             }
@@ -228,6 +251,9 @@ mod tests {
         let sphere = Sphere {
             centre: Vector::new(0.0, 0.0, 0.0),
             radius: -1.0,
+            material: Material::Dielectric {
+                refractive_index: 1.5,
+            },
         };
         let ray = Ray::new(Vector::new(-2.0, 0.0, 0.0), Vector::new(1.0, 0.0, 0.0), 0.0);
 
@@ -239,6 +265,7 @@ mod tests {
                 point: _,
                 ray: _,
                 surface_normal,
+                material: _,
             } => {
                 assert_eq!(surface_normal, Vector::new(1.0, 0.0, 0.0));
             }
@@ -251,6 +278,9 @@ mod tests {
         let sphere = Sphere {
             centre: Vector::new(0.0, 0.0, 0.0),
             radius: 1.0,
+            material: Material::Dielectric {
+                refractive_index: 1.5,
+            },
         };
 
         let expected_box =
@@ -267,6 +297,9 @@ mod tests {
             centre_end: Vector::new(2.0, 2.0, 2.0),
             time_end: 2.0,
             radius: 1.0,
+            material: Material::Dielectric {
+                refractive_index: 1.5,
+            },
         };
 
         let expected_box =

@@ -23,14 +23,40 @@ impl ScatterResult {
     }
 }
 
-#[typetag::serde(tag = "type")]
-pub trait Material: Sync {
-    fn scatter(
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub enum Material {
+    Lambertian {
+        albedo: Colour,
+    },
+    Metal {
+        albedo: Colour,
+        fuzz: f64,
+    },
+    Dielectric {
+        // Air: 1.0, Glass: 1.3-1.7, Diamond: 2.4
+        refractive_index: f64,
+    },
+}
+
+impl Material {
+    pub fn scatter(
         &self,
         ray: &Ray,
         hit_point: &Vector,
         surface_normal: &Vector,
-    ) -> Option<ScatterResult>;
+    ) -> Option<ScatterResult> {
+        match self {
+            Material::Lambertian { albedo } => {
+                scatter_lambertian(&albedo, ray, hit_point, surface_normal)
+            }
+            Material::Metal { albedo, fuzz } => {
+                scatter_metal(&albedo, *fuzz, ray, hit_point, surface_normal)
+            }
+            Material::Dielectric { refractive_index } => {
+                scatter_dielectric(*refractive_index, ray, hit_point, surface_normal)
+            }
+        }
+    }
 }
 
 fn random_point_in_unit_sphere() -> Vector {
@@ -75,91 +101,51 @@ fn refract(
     None
 }
 
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
-pub struct Lambertian {
-    albedo: Colour,
+fn scatter_lambertian(
+    albedo: &Colour,
+    ray: &Ray,
+    hit_point: &Vector,
+    surface_normal: &Vector,
+) -> Option<ScatterResult> {
+    let diffuse = random_point_in_unit_sphere();
+    let target = hit_point + surface_normal + diffuse;
+
+    let ray = Ray::new(hit_point.clone(), target - hit_point, ray.time());
+
+    Some(ScatterResult {
+        ray,
+        attenuation: albedo.clone(),
+    })
 }
 
-impl Lambertian {
-    pub fn new(albedo: Colour) -> Lambertian {
-        Lambertian { albedo }
-    }
-}
-
-#[typetag::serde]
-impl Material for Lambertian {
-    fn scatter(
-        &self,
-        ray: &Ray,
-        hit_point: &Vector,
-        surface_normal: &Vector,
-    ) -> Option<ScatterResult> {
-        let diffuse = random_point_in_unit_sphere();
-        let target = hit_point + surface_normal + diffuse;
-
-        let ray = Ray::new(hit_point.clone(), target - hit_point, ray.time());
-
-        Some(ScatterResult {
-            ray,
-            attenuation: self.albedo.clone(),
-        })
-    }
-}
-
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
-pub struct Metal {
-    albedo: Colour,
+fn scatter_metal(
+    albedo: &Colour,
     fuzz: f64,
-}
+    ray: &Ray,
+    hit_point: &Vector,
+    surface_normal: &Vector,
+) -> Option<ScatterResult> {
+    let unit_vector = ray.direction().unit_vector();
+    let reflected = reflect(&unit_vector, &surface_normal);
 
-impl Metal {
-    pub fn new(albedo: Colour, fuzz: f64) -> Metal {
-        Metal { albedo, fuzz }
+    let ray = Ray::new(
+        hit_point.clone(),
+        reflected + fuzz * random_point_in_unit_sphere(),
+        ray.time(),
+    );
+
+    if Vector::dot(&ray.direction(), &surface_normal) <= 0.0 {
+        return None;
     }
-}
 
-#[typetag::serde]
-impl Material for Metal {
-    fn scatter(
-        &self,
-        ray: &Ray,
-        hit_point: &Vector,
-        surface_normal: &Vector,
-    ) -> Option<ScatterResult> {
-        let unit_vector = ray.direction().unit_vector();
-        let reflected = reflect(&unit_vector, &surface_normal);
-
-        let ray = Ray::new(
-            hit_point.clone(),
-            reflected + self.fuzz * random_point_in_unit_sphere(),
-            ray.time(),
-        );
-
-        if Vector::dot(&ray.direction(), &surface_normal) <= 0.0 {
-            return None;
-        }
-
-        Some(ScatterResult {
-            ray,
-            attenuation: self.albedo.clone(),
-        })
-    }
+    Some(ScatterResult {
+        ray,
+        attenuation: albedo.clone(),
+    })
 }
 
 const REFRACTIVE_INDEX_OF_AIR: f64 = 1.0;
 const DIELECTRIC_ATTENUATION: [f64; 3] = [1.0, 1.0, 1.0];
-
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
-pub struct Dielectric {
-    // Air: 1.0, Glass: 1.3-1.7, Diamond: 2.4
-    refractive_index: f64,
-}
-
-impl Dielectric {
-    pub fn new(refractive_index: f64) -> Dielectric {
-        Dielectric { refractive_index }
-    }
-}
 
 fn reflectivity_schlick_approx(cosine: f64, n_i: f64, n_t: f64) -> f64 {
     let r0 = (n_i - n_t) / (n_i + n_t);
@@ -167,52 +153,49 @@ fn reflectivity_schlick_approx(cosine: f64, n_i: f64, n_t: f64) -> f64 {
     r0 + (1.0 - r0) * f64::powi(1.0 - cosine, 5)
 }
 
-#[typetag::serde]
-impl Material for Dielectric {
-    fn scatter(
-        &self,
-        ray: &Ray,
-        hit_point: &Vector,
-        surface_normal: &Vector,
-    ) -> Option<ScatterResult> {
-        let unit_vector = ray.direction().unit_vector();
-        let reflected = reflect(&unit_vector, &surface_normal);
+fn scatter_dielectric(
+    refractive_index: f64,
+    ray: &Ray,
+    hit_point: &Vector,
+    surface_normal: &Vector,
+) -> Option<ScatterResult> {
+    let unit_vector = ray.direction().unit_vector();
+    let reflected = reflect(&unit_vector, &surface_normal);
 
-        let mut rng = rand::thread_rng();
+    let mut rng = rand::thread_rng();
 
-        let uvn = Vector::dot(&unit_vector, &surface_normal);
+    let uvn = Vector::dot(&unit_vector, &surface_normal);
 
-        // Determine whether we are going from air to the entity or vv
-        // TODO This current does not support refraction from inside one entity to another
-        let (sign, n_i, n_t) = if uvn > 0.0 {
-            (-1.0, self.refractive_index, REFRACTIVE_INDEX_OF_AIR)
-        } else {
-            (1.0, REFRACTIVE_INDEX_OF_AIR, self.refractive_index)
-        };
+    // Determine whether we are going from air to the entity or vv
+    // TODO This current does not support refraction from inside one entity to another
+    let (sign, n_i, n_t) = if uvn > 0.0 {
+        (-1.0, refractive_index, REFRACTIVE_INDEX_OF_AIR)
+    } else {
+        (1.0, REFRACTIVE_INDEX_OF_AIR, refractive_index)
+    };
 
-        let cosine = -sign * uvn;
-        let reflect_prob = reflectivity_schlick_approx(cosine, n_i, n_t);
-        let reflect_rand: f64 = rng.gen();
-        let should_reflect = reflect_rand < reflect_prob;
+    let cosine = -sign * uvn;
+    let reflect_prob = reflectivity_schlick_approx(cosine, n_i, n_t);
+    let reflect_rand: f64 = rng.gen();
+    let should_reflect = reflect_rand < reflect_prob;
 
-        let maybe_refracted = if should_reflect {
-            None
-        } else {
-            refract(&unit_vector, &(sign * surface_normal), n_i / n_t)
-        };
+    let maybe_refracted = if should_reflect {
+        None
+    } else {
+        refract(&unit_vector, &(sign * surface_normal), n_i / n_t)
+    };
 
-        let ray = match maybe_refracted {
-            Some(refracted) => Ray::new(hit_point.clone(), refracted, ray.time()),
-            None => Ray::new(hit_point.clone(), reflected, ray.time()),
-        };
+    let ray = match maybe_refracted {
+        Some(refracted) => Ray::new(hit_point.clone(), refracted, ray.time()),
+        None => Ray::new(hit_point.clone(), reflected, ray.time()),
+    };
 
-        Some(ScatterResult {
-            ray,
-            attenuation: Colour::new(
-                DIELECTRIC_ATTENUATION[0],
-                DIELECTRIC_ATTENUATION[1],
-                DIELECTRIC_ATTENUATION[2],
-            ),
-        })
-    }
+    Some(ScatterResult {
+        ray,
+        attenuation: Colour::new(
+            DIELECTRIC_ATTENUATION[0],
+            DIELECTRIC_ATTENUATION[1],
+            DIELECTRIC_ATTENUATION[2],
+        ),
+    })
 }

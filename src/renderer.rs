@@ -55,18 +55,19 @@ fn colour(ray: &Ray, config: &Config, depth: u64) -> Colour {
 
     let maybe_hit_result = config
         .world()
-        .volumes()
+        .geometries()
         .iter()
         .map(|volume| volume.hit(&ray, 0.001, core::f64::MAX))
-        .min_by(|(hit_result_a, _), (hit_result_b, _)| hit_result_a.cmp(hit_result_b))
+        .min()
         .into_iter()
-        .filter_map(|(hit_result, entity)| match hit_result {
+        .filter_map(|hit_result| match hit_result {
             HitResult::Hit {
                 ray,
                 point,
                 surface_normal,
+                material,
                 ..
-            } => entity.scatter(&ray, &point, &surface_normal),
+            } => material.scatter(&ray, &point, &surface_normal),
             HitResult::Miss => None,
             HitResult::Intersection => unimplemented!(),
         })

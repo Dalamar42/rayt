@@ -64,9 +64,8 @@ mod tests {
     use data::colour::Colour;
     use data::vector::Vector;
     use world::background::Background;
-    use world::entity::Entity;
     use world::geometry::sphere::Sphere;
-    use world::materials::{Dielectric, Lambertian, Metal};
+    use world::materials::Material;
 
     #[test]
     fn test_serialise_roundtrip_camera() {
@@ -93,29 +92,42 @@ mod tests {
         let world = World::new(
             Background::new(Colour::new(1.0, 1.0, 1.0), Colour::new(0.5, 0.0, 0.0)),
             vec![
-                Entity::new(
-                    Box::from(Sphere::new(Vector::new(0.0, 0.0, -1.0), 0.5)),
-                    Box::from(Lambertian::new(Colour::new(0.1, 0.2, 0.5))),
-                ),
-                Entity::new(
-                    Box::from(Sphere::new(Vector::new(0.0, -100.5, -1.0), 100.0)),
-                    Box::from(Lambertian::new(Colour::new(0.8, 0.8, 0.0))),
-                ),
-                Entity::new(
-                    Box::from(Sphere::new(Vector::new(1.0, 0.0, -1.0), 0.5)),
-                    Box::from(Metal::new(Colour::new(0.8, 0.6, 0.2), 0.1)),
-                ),
-                Entity::new(
-                    Box::from(Sphere::new(Vector::new(-1.0, 0.0, -1.0), -0.45)),
-                    Box::from(Dielectric::new(1.5)),
-                ),
+                Box::from(Sphere::new(
+                    Vector::new(0.0, 0.0, -1.0),
+                    0.5,
+                    Material::Lambertian {
+                        albedo: Colour::new(0.1, 0.2, 0.5),
+                    },
+                )),
+                Box::from(Sphere::new(
+                    Vector::new(0.0, -100.5, -1.0),
+                    100.0,
+                    Material::Lambertian {
+                        albedo: Colour::new(0.8, 0.8, 0.0),
+                    },
+                )),
+                Box::from(Sphere::new(
+                    Vector::new(1.0, 0.0, -1.0),
+                    0.5,
+                    Material::Metal {
+                        albedo: Colour::new(0.8, 0.6, 0.2),
+                        fuzz: 0.1,
+                    },
+                )),
+                Box::from(Sphere::new(
+                    Vector::new(-1.0, 0.0, -1.0),
+                    -0.45,
+                    Material::Dielectric {
+                        refractive_index: 1.5,
+                    },
+                )),
             ],
         );
 
         let serialised = serde_yaml::to_string(&world).unwrap();
         let deserialised: World = serde_yaml::from_str(&serialised).unwrap();
 
-        assert_eq!(world.volumes().len(), deserialised.volumes().len());
+        assert_eq!(world.geometries().len(), deserialised.geometries().len());
     }
 
     #[test]
@@ -133,10 +145,13 @@ mod tests {
         );
         let world = World::new(
             Background::new(Colour::new(1.0, 1.0, 1.0), Colour::new(0.5, 0.0, 0.0)),
-            vec![Entity::new(
-                Box::from(Sphere::new(Vector::new(0.0, 0.0, -1.0), 0.5)),
-                Box::from(Lambertian::new(Colour::new(0.1, 0.2, 0.5))),
-            )],
+            vec![Box::from(Sphere::new(
+                Vector::new(0.0, 0.0, -1.0),
+                0.5,
+                Material::Lambertian {
+                    albedo: Colour::new(0.1, 0.2, 0.5),
+                },
+            ))],
         );
         let saved_config = ConfigSave {
             aspect: 1.5,

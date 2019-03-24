@@ -5,6 +5,7 @@ use camera::Ray;
 use data::vector::Vector;
 use std::cmp::Ordering;
 use world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
+use world::materials::Material;
 
 #[derive(Debug, Clone)]
 pub enum HitResult {
@@ -13,6 +14,7 @@ pub enum HitResult {
         ray: Ray,
         point: Vector,
         surface_normal: Vector,
+        material: Material,
     },
     Miss,
     Intersection,
@@ -75,6 +77,9 @@ mod tests {
             ray: Ray::new(Vector::new(0.0, 0.0, 0.0), Vector::new(0.0, 0.0, 0.0), 0.0),
             point: Vector::new(0.0, 0.0, 0.0),
             surface_normal: Vector::new(0.0, 0.0, 0.0),
+            material: Material::Dielectric {
+                refractive_index: 1.5,
+            },
         };
 
         assert_eq!(HitResult::Miss, HitResult::Miss);
@@ -86,6 +91,9 @@ mod tests {
             ray: Ray::new(Vector::new(0.0, 0.0, 0.0), Vector::new(0.0, 0.0, 0.0), 0.0),
             point: Vector::new(0.0, 0.0, 0.0),
             surface_normal: Vector::new(0.0, 0.0, 0.0),
+            material: Material::Dielectric {
+                refractive_index: 1.5,
+            },
         };
         assert_ne!(hit_result.clone(), other_hit_result.clone());
 
@@ -101,6 +109,9 @@ mod tests {
             ray: Ray::new(Vector::new(0.0, 0.0, 0.0), Vector::new(0.0, 0.0, 0.0), 0.0),
             point: Vector::new(0.0, 0.0, 0.0),
             surface_normal: Vector::new(0.0, 0.0, 0.0),
+            material: Material::Dielectric {
+                refractive_index: 1.5,
+            },
         };
 
         assert!(hit_result < HitResult::Miss);
@@ -111,6 +122,9 @@ mod tests {
             ray: Ray::new(Vector::new(0.0, 0.0, 0.0), Vector::new(0.0, 0.0, 0.0), 0.0),
             point: Vector::new(0.0, 0.0, 0.0),
             surface_normal: Vector::new(0.0, 0.0, 0.0),
+            material: Material::Dielectric {
+                refractive_index: 1.5,
+            },
         };
         assert!(other_hit_result > hit_result);
         assert!(hit_result < other_hit_result);

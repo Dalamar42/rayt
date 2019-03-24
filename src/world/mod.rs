@@ -1,22 +1,21 @@
 use world::background::Background;
-use world::entity::Entity;
+use world::geometry::Geometry;
 
 pub mod background;
-pub mod entity;
 pub mod geometry;
 pub mod materials;
 
 #[derive(Serialize, Deserialize)]
 pub struct World {
     background: Background,
-    volumes: Vec<Entity>,
+    geometries: Vec<Box<dyn Geometry>>,
 }
 
 impl World {
-    pub fn new(background: Background, volumes: Vec<Entity>) -> World {
+    pub fn new(background: Background, geometries: Vec<Box<dyn Geometry>>) -> World {
         World {
             background,
-            volumes,
+            geometries,
         }
     }
 
@@ -24,7 +23,7 @@ impl World {
         &self.background
     }
 
-    pub fn volumes(&self) -> &Vec<Entity> {
-        &self.volumes
+    pub fn geometries(&self) -> &Vec<Box<dyn Geometry>> {
+        &self.geometries
     }
 }

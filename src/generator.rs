@@ -4,9 +4,9 @@ use data::colour::Colour;
 use data::vector::Vector;
 use rand::prelude::*;
 use world::background::Background;
-use world::entity::Entity;
 use world::geometry::sphere::{MovingSphere, Sphere};
-use world::materials::{Dielectric, Lambertian, Metal};
+use world::geometry::Geometry;
+use world::materials::Material;
 use world::World;
 
 pub fn build_book_cover_config() -> ConfigSave {
@@ -30,27 +30,40 @@ pub fn build_book_cover_config() -> ConfigSave {
 
 fn build_book_cover_world() -> World {
     let n = 500;
-    let mut volumes: Vec<Entity> = Vec::with_capacity(n);
+    let mut geometries: Vec<Box<dyn Geometry>> = Vec::with_capacity(n);
 
     // Floor
-    volumes.push(Entity::new(
-        Box::from(Sphere::new(Vector::new(0.0, -1000.0, 0.0), 1000.0)),
-        Box::from(Lambertian::new(Colour::new(0.5, 0.5, 0.5))),
-    ));
+    geometries.push(Box::from(Sphere::new(
+        Vector::new(0.0, -1000.0, 0.0),
+        1000.0,
+        Material::Lambertian {
+            albedo: Colour::new(0.5, 0.5, 0.5),
+        },
+    )));
 
     // 3 big spheres
-    volumes.push(Entity::new(
-        Box::from(Sphere::new(Vector::new(0.0, 1.0, 0.0), 1.0)),
-        Box::from(Dielectric::new(1.5)),
-    ));
-    volumes.push(Entity::new(
-        Box::from(Sphere::new(Vector::new(-4.0, 1.0, 0.0), 1.0)),
-        Box::from(Lambertian::new(Colour::new(0.4, 0.2, 0.1))),
-    ));
-    volumes.push(Entity::new(
-        Box::from(Sphere::new(Vector::new(4.0, 1.0, 0.0), 1.0)),
-        Box::from(Metal::new(Colour::new(0.7, 0.6, 0.5), 0.0)),
-    ));
+    geometries.push(Box::from(Sphere::new(
+        Vector::new(0.0, 1.0, 0.0),
+        1.0,
+        Material::Dielectric {
+            refractive_index: 1.5,
+        },
+    )));
+    geometries.push(Box::from(Sphere::new(
+        Vector::new(-4.0, 1.0, 0.0),
+        1.0,
+        Material::Lambertian {
+            albedo: Colour::new(0.4, 0.2, 0.1),
+        },
+    )));
+    geometries.push(Box::from(Sphere::new(
+        Vector::new(4.0, 1.0, 0.0),
+        1.0,
+        Material::Metal {
+            albedo: Colour::new(0.7, 0.6, 0.5),
+            fuzz: 0.0,
+        },
+    )));
 
     let mut rng = rand::thread_rng();
 
@@ -65,37 +78,41 @@ fn build_book_cover_world() -> World {
 
             if (&centre - Vector::new(4.0, 0.2, 0.0)).len() > 0.9 {
                 if choose_mat < 0.8 {
-                    volumes.push(Entity::new(
-                        Box::from(MovingSphere::new(
-                            centre.clone(),
-                            0.0,
-                            &centre + Vector::new(0.0, 0.5 * rng.gen::<f64>(), 0.0),
-                            1.0,
-                            0.2,
-                        )),
-                        Box::from(Lambertian::new(Colour::new(
-                            rng.gen::<f64>() * rng.gen::<f64>(),
-                            rng.gen::<f64>() * rng.gen::<f64>(),
-                            rng.gen::<f64>() * rng.gen::<f64>(),
-                        ))),
-                    ));
+                    geometries.push(Box::from(MovingSphere::new(
+                        centre.clone(),
+                        0.0,
+                        &centre + Vector::new(0.0, 0.5 * rng.gen::<f64>(), 0.0),
+                        1.0,
+                        0.2,
+                        Material::Lambertian {
+                            albedo: Colour::new(
+                                rng.gen::<f64>() * rng.gen::<f64>(),
+                                rng.gen::<f64>() * rng.gen::<f64>(),
+                                rng.gen::<f64>() * rng.gen::<f64>(),
+                            ),
+                        },
+                    )));
                 } else if choose_mat < 0.95 {
-                    volumes.push(Entity::new(
-                        Box::from(Sphere::new(centre, 0.2)),
-                        Box::from(Metal::new(
-                            Colour::new(
+                    geometries.push(Box::from(Sphere::new(
+                        centre,
+                        0.2,
+                        Material::Metal {
+                            albedo: Colour::new(
                                 0.5 * (1.0 + rng.gen::<f64>()),
                                 0.5 * (1.0 + rng.gen::<f64>()),
                                 0.5 * (1.0 + rng.gen::<f64>()),
                             ),
-                            0.5 * rng.gen::<f64>(),
-                        )),
-                    ));
+                            fuzz: 0.5 * rng.gen::<f64>(),
+                        },
+                    )));
                 } else {
-                    volumes.push(Entity::new(
-                        Box::from(Sphere::new(centre, 0.2)),
-                        Box::from(Dielectric::new(1.5)),
-                    ));
+                    geometries.push(Box::from(Sphere::new(
+                        centre,
+                        0.2,
+                        Material::Dielectric {
+                            refractive_index: 1.5,
+                        },
+                    )));
                 }
             }
         }
@@ -105,5 +122,5 @@ fn build_book_cover_world() -> World {
     let blue = Colour::new(0.5, 0.7, 1.0);
     let background = Background::new(white, blue);
 
-    World::new(background, volumes)
+    World::new(background, geometries)
 }

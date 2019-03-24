@@ -29,54 +29,50 @@ world:
       r: 1.0
       g: 1.0
       b: 1.0
-  volumes:
-    - geometry:
-        type: Sphere
-        centre:
-          x: 0.0
-          y: 0.0
-          z: -1.0
-        radius: 0.5
+  geometries:
+    - type: Sphere
+      centre:
+        x: 0.0
+        y: 0.0
+        z: -1.0
+      radius: 0.5
       material:
-        type: Lambertian
-        albedo:
-          r: 0.1
-          g: 0.2
-          b: 0.5
-    - geometry:
-        type: Sphere
-        centre:
-          x: 0.0
-          y: -100.5
-          z: -1.0
-        radius: 100.0
+        Lambertian:
+          albedo:
+            r: 0.1
+            g: 0.2
+            b: 0.5
+    - type: Sphere
+      centre:
+        x: 0.0
+        y: -100.5
+        z: -1.0
+      radius: 100.0
       material:
-        type: Lambertian
-        albedo:
-          r: 0.8
-          g: 0.8
-          b: 0.0
-    - geometry:
-        type: Sphere
-        centre:
-          x: 1.0
-          y: 0.0
-          z: -1.0
-        radius: 0.5
+        Lambertian:
+          albedo:
+            r: 0.8
+            g: 0.8
+            b: 0.0
+    - type: Sphere
+      centre:
+        x: 1.0
+        y: 0.0
+        z: -1.0
+      radius: 0.5
       material:
-        type: Metal
-        albedo:
-          r: 0.8
-          g: 0.6
-          b: 0.2
-        fuzz: 0.1
-    - geometry:
-        type: Sphere
-        centre:
-          x: -1.0
-          y: 0.0
-          z: -1.0
-        radius: -0.45
+        Metal:
+          albedo:
+            r: 0.8
+            g: 0.6
+            b: 0.2
+          fuzz: 0.1
+    - type: Sphere
+      centre:
+        x: -1.0
+        y: 0.0
+        z: -1.0
+      radius: -0.45
       material:
-        type: Dielectric
-        refractive_index: 1.5
+        Dielectric:
+          refractive_index: 1.5
