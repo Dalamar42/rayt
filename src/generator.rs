@@ -38,8 +38,13 @@ fn build_book_cover_world() -> World {
         Vector::new(0.0, -1000.0, 0.0),
         1000.0,
         Material::Lambertian {
-            albedo: Texture::Constant {
-                colour: Colour::new(0.5, 0.5, 0.5),
+            albedo: Texture::Checker {
+                even: Box::from(Texture::Constant {
+                    colour: Colour::new(0.2, 0.3, 0.1),
+                }),
+                odd: Box::from(Texture::Constant {
+                    colour: Colour::new(0.9, 0.9, 0.9),
+                }),
             },
         },
     )));

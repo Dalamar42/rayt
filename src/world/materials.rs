@@ -115,7 +115,7 @@ fn scatter_lambertian(
 
     Some(ScatterResult {
         ray,
-        attenuation: albedo.value(0.0, 0.0, &hit_point).clone(),
+        attenuation: albedo.value(0.0, 0.0, &hit_point),
     })
 }
 
