@@ -13,7 +13,6 @@ struct Pixel {
 }
 
 pub fn render(config: &Config, progress_bar: &ProgressBar) -> RgbImage {
-
     let pixels: Vec<Pixel> = config
         .camera()
         .pixels(&config)
@@ -32,12 +31,7 @@ pub fn render(config: &Config, progress_bar: &ProgressBar) -> RgbImage {
     image
 }
 
-fn pixel(
-    row: u32,
-    col: u32,
-    config: &Config,
-    progress_bar: &ProgressBar,
-) -> Pixel {
+fn pixel(row: u32, col: u32, config: &Config, progress_bar: &ProgressBar) -> Pixel {
     let rays = config.camera().rays(row, col, &config);
 
     let colour_sum: Colour = rays.iter().map(|ray| colour(&ray, &config, 0)).sum();
@@ -82,11 +76,7 @@ fn background(ray: &Ray, config: &Config) -> Colour {
     let unit_direction = ray.direction().unit_vector();
     let t = 0.5 * (unit_direction.y() + 1.0);
 
-    linear_interpolation(
-        t,
-        &config.background().bottom(),
-        &config.background().top(),
-    )
+    linear_interpolation(t, &config.background().bottom(), &config.background().top())
 }
 
 fn linear_interpolation(t: f64, colour_a: &Colour, colour_b: &Colour) -> Colour {

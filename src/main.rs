@@ -87,7 +87,10 @@ fn run_render(
     println!("{} Loading image yaml...", style("[1/4]").bold().dim());
     let config_save = load_config(config_path)?;
 
-    println!("{} Creating config (constructing BVH)...", style("[2/4]").bold().dim());
+    println!(
+        "{} Creating config (constructing BVH)...",
+        style("[2/4]").bold().dim()
+    );
     let config = config_save.into_config(width, num_of_rays);
 
     println!("{} Rendering...", style("[3/4]").bold().dim());

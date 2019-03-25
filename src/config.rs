@@ -1,7 +1,7 @@
 use camera::{Camera, CameraSave};
-use world::World;
-use world::geometry::bounding_volume_hierarchy::BoundingVolumeHierarchyNode;
 use world::background::Background;
+use world::geometry::bounding_volume_hierarchy::BoundingVolumeHierarchyNode;
+use world::World;
 
 pub struct Config {
     width: u32,
@@ -144,7 +144,10 @@ mod tests {
         let serialised = serde_yaml::to_string(&world).unwrap();
         let mut deserialised: World = serde_yaml::from_str(&serialised).unwrap();
 
-        assert_eq!(world.drain_geometries().len(), deserialised.drain_geometries().len());
+        assert_eq!(
+            world.drain_geometries().len(),
+            deserialised.drain_geometries().len()
+        );
     }
 
     #[test]
