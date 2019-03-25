@@ -1,11 +1,14 @@
 use camera::{Camera, CameraSave};
 use world::World;
+use world::geometry::bounding_volume_hierarchy::BoundingVolumeHierarchyNode;
+use world::background::Background;
 
 pub struct Config {
     width: u32,
     height: u32,
     camera: Camera,
-    world: World,
+    background: Background,
+    bvh: BoundingVolumeHierarchyNode,
     num_of_rays: u64,
 }
 
@@ -17,16 +20,6 @@ pub struct ConfigSave {
 }
 
 impl Config {
-    pub fn from_save(save: ConfigSave, width: u32, num_of_rays: u64) -> Config {
-        Config {
-            width,
-            height: (f64::from(width) / save.aspect) as u32,
-            camera: save.camera.into_camera(),
-            world: save.world,
-            num_of_rays,
-        }
-    }
-
     pub fn width(&self) -> u32 {
         self.width
     }
@@ -39,16 +32,16 @@ impl Config {
         &self.camera
     }
 
-    pub fn world(&self) -> &World {
-        &self.world
-    }
-
-    pub fn world_mut(&mut self) -> &mut World {
-        &mut self.world
-    }
-
     pub fn num_of_rays(&self) -> u64 {
         self.num_of_rays
+    }
+
+    pub fn background(&self) -> &Background {
+        &self.background
+    }
+
+    pub fn bvh(&self) -> &BoundingVolumeHierarchyNode {
+        &self.bvh
     }
 }
 
@@ -58,6 +51,26 @@ impl ConfigSave {
             aspect,
             camera,
             world,
+        }
+    }
+
+    pub fn into_config(mut self, width: u32, num_of_rays: u64) -> Config {
+        let camera = self.camera.into_camera();
+
+        let time_start = camera.time_start();
+        let time_end = camera.time_end();
+
+        let geometries = self.world.drain_geometries();
+
+        let bvh = BoundingVolumeHierarchyNode::new(geometries, time_start, time_end);
+
+        Config {
+            width,
+            height: (f64::from(width) / self.aspect) as u32,
+            camera,
+            background: self.world.background().clone(),
+            bvh,
+            num_of_rays,
         }
     }
 }

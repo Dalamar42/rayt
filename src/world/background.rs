@@ -1,6 +1,6 @@
 use data::colour::Colour;
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Background {
     top: Colour,
     bottom: Colour,
