@@ -157,6 +157,14 @@ impl Camera {
             time,
         }
     }
+
+    pub fn time_start(&self) -> f64 {
+        self.time_start
+    }
+
+    pub fn time_end(&self) -> f64 {
+        self.time_end
+    }
 }
 
 fn random_point_in_unit_disk() -> Vector {

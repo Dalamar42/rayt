@@ -4,7 +4,8 @@ use data::colour::Colour;
 use image::{ImageBuffer, Rgb, RgbImage};
 use indicatif::ProgressBar;
 use rayon::prelude::*;
-use world::geometry::HitResult;
+use world::geometry::bounding_volume_hierarchy::BoundingVolumeHierarchyNode;
+use world::geometry::{Geometry, HitResult};
 
 struct Pixel {
     x: u32,
@@ -12,12 +13,18 @@ struct Pixel {
     colour: Rgb<u8>,
 }
 
-pub fn render(config: &Config, progress_bar: &ProgressBar) -> RgbImage {
+pub fn render(config: &mut Config, progress_bar: &ProgressBar) -> RgbImage {
+    let time_start = config.camera().time_start();
+    let time_end = config.camera().time_end();
+    let geometries = config.world_mut().drain_geometries();
+
+    let bvh = BoundingVolumeHierarchyNode::new(geometries, time_start, time_end);
+
     let pixels: Vec<Pixel> = config
         .camera()
         .pixels(&config)
         .par_iter()
-        .map(|(row, col)| pixel(*row, *col, &config, &progress_bar))
+        .map(|(row, col)| pixel(*row, *col, &config, &bvh, &progress_bar))
         .collect();
 
     progress_bar.finish();
@@ -31,10 +38,16 @@ pub fn render(config: &Config, progress_bar: &ProgressBar) -> RgbImage {
     image
 }
 
-fn pixel(row: u32, col: u32, config: &Config, progress_bar: &ProgressBar) -> Pixel {
+fn pixel(
+    row: u32,
+    col: u32,
+    config: &Config,
+    bvh: &BoundingVolumeHierarchyNode,
+    progress_bar: &ProgressBar,
+) -> Pixel {
     let rays = config.camera().rays(row, col, &config);
 
-    let colour_sum: Colour = rays.iter().map(|ray| colour(&ray, &config, 0)).sum();
+    let colour_sum: Colour = rays.iter().map(|ray| colour(&ray, &config, &bvh, 0)).sum();
     let colour = colour_sum / (rays.len() as f64);
     let colour = colour.gamma_2();
 
@@ -48,33 +61,26 @@ fn pixel(row: u32, col: u32, config: &Config, progress_bar: &ProgressBar) -> Pix
     }
 }
 
-fn colour(ray: &Ray, config: &Config, depth: u64) -> Colour {
+fn colour(ray: &Ray, config: &Config, bvh: &BoundingVolumeHierarchyNode, depth: u64) -> Colour {
     if depth >= 50 {
         return Colour::new(0.0, 0.0, 0.0);
     }
 
-    let maybe_hit_result = config
-        .world()
-        .geometries()
-        .iter()
-        .map(|volume| volume.hit(&ray, 0.001, core::f64::MAX))
-        .min()
-        .into_iter()
-        .filter_map(|hit_result| match hit_result {
-            HitResult::Hit {
-                ray,
-                point,
-                surface_normal,
-                material,
-                ..
-            } => material.scatter(&ray, &point, &surface_normal),
-            HitResult::Miss => None,
-            HitResult::Intersection => unimplemented!(),
-        })
-        .last();
+    let maybe_hit_result = bvh.hit(&ray, 0.001, core::f64::MAX);
 
-    match maybe_hit_result {
-        Some(scatter) => scatter.attenuation() * colour(&scatter.ray(), &config, depth + 1),
+    let maybe_scatter_result = match maybe_hit_result {
+        HitResult::Hit {
+            ray,
+            point,
+            surface_normal,
+            material,
+            ..
+        } => material.scatter(&ray, &point, &surface_normal),
+        HitResult::Miss => None,
+    };
+
+    match maybe_scatter_result {
+        Some(scatter) => scatter.attenuation() * colour(&scatter.ray(), &config, &bvh, depth + 1),
         None => background(&ray, &config),
     }
 }

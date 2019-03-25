@@ -23,7 +23,11 @@ impl World {
         &self.background
     }
 
-    pub fn geometries(&self) -> &Vec<Box<dyn Geometry>> {
-        &self.geometries
+    pub fn drain_geometries(&mut self) -> Vec<Box<dyn Geometry>> {
+        if self.geometries.is_empty() {
+            panic!("Geometries have already been drained")
+        }
+        let range = 0..self.geometries.len();
+        self.geometries.drain(range).collect()
     }
 }

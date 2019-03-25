@@ -43,6 +43,10 @@ impl Config {
         &self.world
     }
 
+    pub fn world_mut(&mut self) -> &mut World {
+        &mut self.world
+    }
+
     pub fn num_of_rays(&self) -> u64 {
         self.num_of_rays
     }
@@ -89,7 +93,7 @@ mod tests {
 
     #[test]
     fn test_serialise_roundtrip_world() {
-        let world = World::new(
+        let mut world = World::new(
             Background::new(Colour::new(1.0, 1.0, 1.0), Colour::new(0.5, 0.0, 0.0)),
             vec![
                 Box::from(Sphere::new(
@@ -125,9 +129,9 @@ mod tests {
         );
 
         let serialised = serde_yaml::to_string(&world).unwrap();
-        let deserialised: World = serde_yaml::from_str(&serialised).unwrap();
+        let mut deserialised: World = serde_yaml::from_str(&serialised).unwrap();
 
-        assert_eq!(world.geometries().len(), deserialised.geometries().len());
+        assert_eq!(world.drain_geometries().len(), deserialised.drain_geometries().len());
     }
 
     #[test]

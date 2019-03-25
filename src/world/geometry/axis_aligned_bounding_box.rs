@@ -1,7 +1,6 @@
 use camera::Ray;
 use data::vector::Vector;
 use std::f64::{INFINITY, NEG_INFINITY};
-use world::geometry::{Geometry, HitResult};
 
 #[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
 pub struct AxisAlignedBoundingBox {
@@ -95,11 +94,8 @@ impl AxisAlignedBoundingBox {
     pub fn max(&self) -> &Vector {
         &self.max
     }
-}
 
-#[typetag::serde]
-impl Geometry for AxisAlignedBoundingBox {
-    fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> HitResult {
+    pub fn intersection(&self, ray: &Ray, tmin: f64, tmax: f64) -> bool {
         let (t0, t1) = single_axis_hit(
             self.min.x(),
             self.max.x(),
@@ -109,7 +105,7 @@ impl Geometry for AxisAlignedBoundingBox {
         let tmin = if t0 > tmin { t0 } else { tmin };
         let tmax = if t1 < tmax { t1 } else { tmax };
         if tmax <= tmin {
-            return HitResult::Miss;
+            return false;
         }
 
         let (t0, t1) = single_axis_hit(
@@ -121,7 +117,7 @@ impl Geometry for AxisAlignedBoundingBox {
         let tmin = if t0 > tmin { t0 } else { tmin };
         let tmax = if t1 < tmax { t1 } else { tmax };
         if tmax <= tmin {
-            return HitResult::Miss;
+            return false;
         }
 
         let (t0, t1) = single_axis_hit(
@@ -133,14 +129,10 @@ impl Geometry for AxisAlignedBoundingBox {
         let tmin = if t0 > tmin { t0 } else { tmin };
         let tmax = if t1 < tmax { t1 } else { tmax };
         if tmax <= tmin {
-            return HitResult::Miss;
+            return false;
         }
 
-        HitResult::Intersection
-    }
-
-    fn bounding_box(&self, time_start: f64, time_end: f64) -> Option<AxisAlignedBoundingBox> {
-        Some(self.clone())
+        true
     }
 }
 

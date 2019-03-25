@@ -1,4 +1,5 @@
 pub mod axis_aligned_bounding_box;
+pub mod bounding_volume_hierarchy;
 pub mod sphere;
 
 use camera::Ray;
@@ -17,7 +18,6 @@ pub enum HitResult {
         material: Material,
     },
     Miss,
-    Intersection,
 }
 
 #[typetag::serde(tag = "type")]
@@ -43,11 +43,6 @@ impl Ord for HitResult {
                 // We should never get a NaN here. Panic if we do
                 distance.partial_cmp(other_distance).unwrap()
             }
-            (HitResult::Intersection, HitResult::Intersection) => Ordering::Equal,
-            (HitResult::Intersection, HitResult::Miss) => Ordering::Less,
-            (HitResult::Miss, HitResult::Intersection) => Ordering::Greater,
-            (HitResult::Intersection, HitResult::Hit { .. }) => Ordering::Greater,
-            (HitResult::Hit { .. }, HitResult::Intersection) => Ordering::Less,
         }
     }
 }
@@ -96,10 +91,6 @@ mod tests {
             },
         };
         assert_ne!(hit_result.clone(), other_hit_result.clone());
-
-        assert_eq!(HitResult::Intersection, HitResult::Intersection);
-        assert_ne!(HitResult::Intersection, HitResult::Miss);
-        assert_ne!(HitResult::Intersection, hit_result);
     }
 
     #[test]
@@ -128,10 +119,5 @@ mod tests {
         };
         assert!(other_hit_result > hit_result);
         assert!(hit_result < other_hit_result);
-
-        assert!(HitResult::Intersection < HitResult::Miss);
-        assert!(HitResult::Miss > HitResult::Intersection);
-        assert!(HitResult::Intersection > hit_result);
-        assert!(hit_result < HitResult::Intersection);
     }
 }

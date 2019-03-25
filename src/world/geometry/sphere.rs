@@ -82,7 +82,7 @@ impl Geometry for Sphere {
         }
     }
 
-    fn bounding_box(&self, time_start: f64, time_end: f64) -> Option<AxisAlignedBoundingBox> {
+    fn bounding_box(&self, _time_start: f64, _time_end: f64) -> Option<AxisAlignedBoundingBox> {
         sphere_bounding_box(&self.centre, self.radius)
     }
 }

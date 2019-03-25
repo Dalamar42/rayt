@@ -85,10 +85,11 @@ fn run_render(
     let started = Instant::now();
 
     println!("{} Loading image yaml...", style("[1/3]").bold().dim());
-    let config = Config::from_save(load_config(config_path)?, width, num_of_rays);
+    let mut config = Config::from_save(load_config(config_path)?, width, num_of_rays);
 
     println!("{} Rendering...", style("[2/3]").bold().dim());
-    let test_image = render(&config, &progress_bar(&config));
+    let progress_bar = progress_bar(&config);
+    let test_image = render(&mut config, &progress_bar);
 
     println!("{} Printing image...", style("[3/3]").bold().dim());
     io::write_image(test_image, output_path)?;
