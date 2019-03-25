@@ -13,8 +13,8 @@ pub struct BoundingVolumeHierarchyNode {
 }
 
 fn compare_setup(
-    left: &Box<dyn Geometry>,
-    right: &Box<dyn Geometry>,
+    left: &dyn Geometry,
+    right: &dyn Geometry,
     time_start: f64,
     time_end: f64,
 ) -> (AxisAlignedBoundingBox, AxisAlignedBoundingBox) {
@@ -34,8 +34,8 @@ fn compare_setup(
 }
 
 fn compare_box_by_x_axis(
-    left: &Box<dyn Geometry>,
-    right: &Box<dyn Geometry>,
+    left: &dyn Geometry,
+    right: &dyn Geometry,
     time_start: f64,
     time_end: f64,
 ) -> Ordering {
@@ -50,8 +50,8 @@ fn compare_box_by_x_axis(
 }
 
 fn compare_box_by_y_axis(
-    left: &Box<dyn Geometry>,
-    right: &Box<dyn Geometry>,
+    left: &dyn Geometry,
+    right: &dyn Geometry,
     time_start: f64,
     time_end: f64,
 ) -> Ordering {
@@ -66,8 +66,8 @@ fn compare_box_by_y_axis(
 }
 
 fn compare_box_by_z_axis(
-    left: &Box<dyn Geometry>,
-    right: &Box<dyn Geometry>,
+    left: &dyn Geometry,
+    right: &dyn Geometry,
     time_start: f64,
     time_end: f64,
 ) -> Ordering {
@@ -97,7 +97,7 @@ impl BoundingVolumeHierarchyNode {
 
         let mut geometries: Vec<Box<dyn Geometry>> = geometries
             .into_iter()
-            .sorted_by(|left, right| sorter(&left, &right, time_start, time_end))
+            .sorted_by(|left, right| sorter(left.as_ref(), right.as_ref(), time_start, time_end))
             .collect();
 
         let size = geometries.len();
