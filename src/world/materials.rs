@@ -2,6 +2,7 @@ use camera::Ray;
 use data::colour::Colour;
 use data::vector::Vector;
 use rand::prelude::*;
+use world::texture::Texture;
 
 #[derive(Debug)]
 pub struct ScatterResult {
@@ -26,7 +27,7 @@ impl ScatterResult {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum Material {
     Lambertian {
-        albedo: Colour,
+        albedo: Texture,
     },
     Metal {
         albedo: Colour,
@@ -102,7 +103,7 @@ fn refract(
 }
 
 fn scatter_lambertian(
-    albedo: &Colour,
+    albedo: &Texture,
     ray: &Ray,
     hit_point: &Vector,
     surface_normal: &Vector,
@@ -114,7 +115,7 @@ fn scatter_lambertian(
 
     Some(ScatterResult {
         ray,
-        attenuation: albedo.clone(),
+        attenuation: albedo.value(0.0, 0.0, &hit_point).clone(),
     })
 }
 

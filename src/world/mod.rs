@@ -4,6 +4,7 @@ use world::geometry::Geometry;
 pub mod background;
 pub mod geometry;
 pub mod materials;
+pub mod texture;
 
 #[derive(Serialize, Deserialize)]
 pub struct World {

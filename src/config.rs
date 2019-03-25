@@ -83,6 +83,7 @@ mod tests {
     use world::background::Background;
     use world::geometry::sphere::Sphere;
     use world::materials::Material;
+    use world::texture::Texture;
 
     #[test]
     fn test_serialise_roundtrip_camera() {
@@ -113,14 +114,18 @@ mod tests {
                     Vector::new(0.0, 0.0, -1.0),
                     0.5,
                     Material::Lambertian {
-                        albedo: Colour::new(0.1, 0.2, 0.5),
+                        albedo: Texture::Constant {
+                            colour: Colour::new(0.1, 0.2, 0.5),
+                        },
                     },
                 )),
                 Box::from(Sphere::new(
                     Vector::new(0.0, -100.5, -1.0),
                     100.0,
                     Material::Lambertian {
-                        albedo: Colour::new(0.8, 0.8, 0.0),
+                        albedo: Texture::Constant {
+                            colour: Colour::new(0.8, 0.8, 0.0),
+                        },
                     },
                 )),
                 Box::from(Sphere::new(
@@ -169,7 +174,9 @@ mod tests {
                 Vector::new(0.0, 0.0, -1.0),
                 0.5,
                 Material::Lambertian {
-                    albedo: Colour::new(0.1, 0.2, 0.5),
+                    albedo: Texture::Constant {
+                        colour: Colour::new(0.1, 0.2, 0.5),
+                    },
                 },
             ))],
         );

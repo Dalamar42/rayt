@@ -7,6 +7,7 @@ use world::background::Background;
 use world::geometry::sphere::{MovingSphere, Sphere};
 use world::geometry::Geometry;
 use world::materials::Material;
+use world::texture::Texture;
 use world::World;
 
 pub fn build_book_cover_config() -> ConfigSave {
@@ -37,7 +38,9 @@ fn build_book_cover_world() -> World {
         Vector::new(0.0, -1000.0, 0.0),
         1000.0,
         Material::Lambertian {
-            albedo: Colour::new(0.5, 0.5, 0.5),
+            albedo: Texture::Constant {
+                colour: Colour::new(0.5, 0.5, 0.5),
+            },
         },
     )));
 
@@ -53,7 +56,9 @@ fn build_book_cover_world() -> World {
         Vector::new(-4.0, 1.0, 0.0),
         1.0,
         Material::Lambertian {
-            albedo: Colour::new(0.4, 0.2, 0.1),
+            albedo: Texture::Constant {
+                colour: Colour::new(0.4, 0.2, 0.1),
+            },
         },
     )));
     geometries.push(Box::from(Sphere::new(
@@ -85,11 +90,13 @@ fn build_book_cover_world() -> World {
                         1.0,
                         0.2,
                         Material::Lambertian {
-                            albedo: Colour::new(
-                                rng.gen::<f64>() * rng.gen::<f64>(),
-                                rng.gen::<f64>() * rng.gen::<f64>(),
-                                rng.gen::<f64>() * rng.gen::<f64>(),
-                            ),
+                            albedo: Texture::Constant {
+                                colour: Colour::new(
+                                    rng.gen::<f64>() * rng.gen::<f64>(),
+                                    rng.gen::<f64>() * rng.gen::<f64>(),
+                                    rng.gen::<f64>() * rng.gen::<f64>(),
+                                ),
+                            },
                         },
                     )));
                 } else if choose_mat < 0.95 {
