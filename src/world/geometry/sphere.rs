@@ -31,6 +31,7 @@ fn sphere_hit(ray: &Ray, centre: &Vector, radius: f64, tmin: f64, tmax: f64) -> 
 }
 
 fn sphere_bounding_box(centre: &Vector, radius: f64) -> Option<AxisAlignedBoundingBox> {
+    let radius = radius.abs();
     Some(AxisAlignedBoundingBox::new(
         centre - Vector::new(radius, radius, radius),
         centre + Vector::new(radius, radius, radius),
