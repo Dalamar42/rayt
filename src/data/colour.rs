@@ -2,7 +2,7 @@ use image::Rgb;
 use std::iter::Sum;
 use std::ops;
 
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 pub struct Colour {
     r: f64,
     g: f64,
@@ -24,6 +24,27 @@ impl Colour {
 
     pub fn b(&self) -> f64 {
         self.b
+    }
+
+    pub fn len(&self) -> f64 {
+        (&self).len_squared().sqrt()
+    }
+
+    pub fn len_squared(&self) -> f64 {
+        self.r * self.r + self.g * self.g + self.b * self.b
+    }
+
+    pub fn unit_vector(&self) -> Colour {
+        let k = 1.0 / &self.len();
+        Colour {
+            r: self.r * k,
+            g: self.g * k,
+            b: self.b * k,
+        }
+    }
+
+    pub fn dot(lhs: &Colour, rhs: &Colour) -> f64 {
+        lhs.r * rhs.r + lhs.g * rhs.g + lhs.b * rhs.b
     }
 
     pub fn into_rgb(self) -> Rgb<u8> {
@@ -250,6 +271,7 @@ impl ops::Div<f64> for Colour {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use assert_approx_eq::assert_approx_eq;
 
     #[test]
     fn test_colour_into_rgb() {
@@ -264,6 +286,22 @@ mod tests {
         assert_eq!(rgb[0], 255);
         assert_eq!(rgb[1], 127);
         assert_eq!(rgb[2], 0);
+    }
+
+    #[test]
+    fn test_colour_len() {
+        let colour = Colour::new(1.0, 2.0, 3.0);
+
+        let expected_result = 3.7416573867739413;
+
+        assert_approx_eq!(colour.len(), expected_result);
+    }
+
+    #[test]
+    fn test_colour_unit_vector() {
+        let colour = Colour::new(1.0, 2.0, 3.0);
+
+        assert_approx_eq!(colour.unit_vector().len(), 1.0)
     }
 
     #[test]
