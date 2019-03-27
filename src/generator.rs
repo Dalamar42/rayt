@@ -7,10 +7,116 @@ use world::background::Background;
 use world::geometry::sphere::{MovingSphere, Sphere};
 use world::geometry::Geometry;
 use world::materials::Material;
-use world::texture::Texture;
+use world::texture::{build_noise_texture, Texture};
 use world::World;
+use std::str::FromStr;
 
-pub fn build_book_cover_config() -> ConfigSave {
+pub enum Scene {
+    Basic,
+    Cover,
+    CoverWithMotionBlur,
+    CoverWithChecker,
+    Perlin,
+}
+
+impl FromStr for Scene {
+    type Err = ();
+
+    fn from_str(scene: &str) -> Result<Scene, ()> {
+        match scene {
+            "basic" => Ok(Scene::Basic),
+            "cover" => Ok(Scene::Cover),
+            "cover_with_motion_blur" => Ok(Scene::CoverWithMotionBlur),
+            "cover_with_checker" => Ok(Scene::CoverWithChecker),
+            "perlin" => Ok(Scene::Perlin),
+            _ => Err(()),
+        }
+    }
+}
+
+impl ToString for Scene {
+    fn to_string(&self) -> String {
+        match self {
+            Scene::Basic => String::from("basic"),
+            Scene::Cover => String::from("cover"),
+            Scene::CoverWithMotionBlur => String::from("cover_with_motion_blur"),
+            Scene::CoverWithChecker => String::from("cover_with_checker"),
+            Scene::Perlin => String::from("perlin"),
+        }
+    }
+}
+
+pub fn build_scene_config(scene: &Scene) -> ConfigSave {
+    match scene {
+        Scene::Basic => build_basic_config(),
+        Scene::Cover => build_book_cover_config(false, false),
+        Scene::CoverWithMotionBlur => build_book_cover_config(true, false),
+        Scene::CoverWithChecker => build_book_cover_config(true, true),
+        Scene::Perlin => build_perlin_demo_config(),
+    }
+}
+
+fn build_basic_config() -> ConfigSave {
+    let aspect = 2.0;
+
+    let camera = CameraSave::new(
+        &Vector::new(0.0, 0.2, 3.0),
+        &Vector::new(0.0, 0.0, -1.0),
+        &Vector::new(0.0, 1.0, 0.0),
+        35.0,
+        aspect,
+        0.1,
+        4.0,
+        0.0,
+        1.0,
+    );
+
+    let mut geometries: Vec<Box<dyn Geometry>> = Vec::with_capacity(4);
+
+    geometries.push(Box::from(Sphere::new(
+        Vector::new(0.0, 0.0, -1.0),
+        0.5,
+        Material::Lambertian {
+            albedo: Texture::Constant {
+                colour: Colour::new(0.1, 0.2, 0.5),
+            },
+        },
+    )));
+    geometries.push(Box::from(Sphere::new(
+        Vector::new(0.0, -100.5, -1.0),
+        100.0,
+        Material::Lambertian {
+            albedo: Texture::Constant {
+                colour: Colour::new(0.8, 0.8, 0.0),
+            },
+        },
+    )));
+    geometries.push(Box::from(Sphere::new(
+        Vector::new(1.0, 0.0, -1.0),
+        0.5,
+        Material::Metal {
+            albedo: Colour::new(0.8, 0.6, 0.2),
+            fuzz: 0.1,
+        },
+    )));
+    geometries.push(Box::from(Sphere::new(
+        Vector::new(-1.0, 0.0, -1.0),
+        -0.45,
+        Material::Dielectric{
+            refractive_index: 1.5
+        },
+    )));
+
+    let white = Colour::new(1.0, 1.0, 1.0);
+    let blue = Colour::new(0.5, 0.7, 1.0);
+    let background = Background::new(blue, white);
+
+    let world = World::new(background, geometries);
+
+    ConfigSave::new(aspect, camera, world)
+}
+
+fn build_book_cover_config(motion_blur: bool, checker_texture: bool) -> ConfigSave {
     let aspect = 1.5;
 
     let camera = CameraSave::new(
@@ -24,28 +130,31 @@ pub fn build_book_cover_config() -> ConfigSave {
         0.0,
         1.0,
     );
-    let world = build_book_cover_world();
 
-    ConfigSave::new(aspect, camera, world)
-}
-
-fn build_book_cover_world() -> World {
     let n = 500;
     let mut geometries: Vec<Box<dyn Geometry>> = Vec::with_capacity(n);
 
     // Floor
+    let floor_material = if checker_texture {
+        Texture::Checker {
+            even: Box::from(Texture::Constant {
+                colour: Colour::new(0.2, 0.3, 0.1),
+            }),
+            odd: Box::from(Texture::Constant {
+                colour: Colour::new(0.9, 0.9, 0.9),
+            }),
+        }
+    } else {
+        Texture::Constant {
+            colour: Colour::new(0.5, 0.5, 0.5),
+        }
+    };
+
     geometries.push(Box::from(Sphere::new(
         Vector::new(0.0, -1000.0, 0.0),
         1000.0,
         Material::Lambertian {
-            albedo: Texture::Checker {
-                even: Box::from(Texture::Constant {
-                    colour: Colour::new(0.2, 0.3, 0.1),
-                }),
-                odd: Box::from(Texture::Constant {
-                    colour: Colour::new(0.9, 0.9, 0.9),
-                }),
-            },
+            albedo: floor_material,
         },
     )));
 
@@ -88,22 +197,38 @@ fn build_book_cover_world() -> World {
 
             if (&centre - Vector::new(4.0, 0.2, 0.0)).len() > 0.9 {
                 if choose_mat < 0.8 {
-                    geometries.push(Box::from(MovingSphere::new(
-                        centre.clone(),
-                        0.0,
-                        &centre + Vector::new(0.0, 0.5 * rng.gen::<f64>(), 0.0),
-                        1.0,
-                        0.2,
-                        Material::Lambertian {
-                            albedo: Texture::Constant {
-                                colour: Colour::new(
-                                    rng.gen::<f64>() * rng.gen::<f64>(),
-                                    rng.gen::<f64>() * rng.gen::<f64>(),
-                                    rng.gen::<f64>() * rng.gen::<f64>(),
-                                ),
+                    if motion_blur {
+                        geometries.push(Box::from(MovingSphere::new(
+                            centre.clone(),
+                            0.0,
+                            &centre + Vector::new(0.0, 0.5 * rng.gen::<f64>(), 0.0),
+                            1.0,
+                            0.2,
+                            Material::Lambertian {
+                                albedo: Texture::Constant {
+                                    colour: Colour::new(
+                                        rng.gen::<f64>() * rng.gen::<f64>(),
+                                        rng.gen::<f64>() * rng.gen::<f64>(),
+                                        rng.gen::<f64>() * rng.gen::<f64>(),
+                                    ),
+                                },
                             },
-                        },
-                    )));
+                        )));
+                    } else {
+                        geometries.push(Box::from(Sphere::new(
+                            centre.clone(),
+                            0.2,
+                            Material::Lambertian {
+                                albedo: Texture::Constant {
+                                    colour: Colour::new(
+                                        rng.gen::<f64>() * rng.gen::<f64>(),
+                                        rng.gen::<f64>() * rng.gen::<f64>(),
+                                        rng.gen::<f64>() * rng.gen::<f64>(),
+                                    ),
+                                },
+                            },
+                        )));
+                    }
                 } else if choose_mat < 0.95 {
                     geometries.push(Box::from(Sphere::new(
                         centre,
@@ -134,5 +259,48 @@ fn build_book_cover_world() -> World {
     let blue = Colour::new(0.5, 0.7, 1.0);
     let background = Background::new(white, blue);
 
-    World::new(background, geometries)
+    let world = World::new(background, geometries);
+
+    ConfigSave::new(aspect, camera, world)
+}
+
+fn build_perlin_demo_config() -> ConfigSave {
+    let aspect = 1.5;
+
+    let camera = CameraSave::new(
+        &Vector::new(13.0, 2.0, 3.0),
+        &Vector::new(0.0, 0.0, 0.0),
+        &Vector::new(0.0, 1.0, 0.0),
+        20.0,
+        aspect,
+        0.0,
+        10.0,
+        0.0,
+        1.0,
+    );
+
+    let mut geometries: Vec<Box<dyn Geometry>> = Vec::with_capacity(2);
+
+    geometries.push(Box::from(Sphere::new(
+        Vector::new(0.0, -1000.0, 0.0),
+        1000.0,
+        Material::Lambertian {
+            albedo: build_noise_texture(5.0),
+        },
+    )));
+    geometries.push(Box::from(Sphere::new(
+        Vector::new(0.0, 2.0, 0.0),
+        2.0,
+        Material::Lambertian {
+            albedo: build_noise_texture(5.0),
+        },
+    )));
+
+    let white = Colour::new(1.0, 1.0, 1.0);
+    let blue = Colour::new(0.5, 0.7, 1.0);
+    let background = Background::new(white, blue);
+
+    let world = World::new(background, geometries);
+
+    ConfigSave::new(aspect, camera, world)
 }

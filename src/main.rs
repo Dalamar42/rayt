@@ -29,7 +29,7 @@ use cli::{get_cli_config, CliCommand};
 use config::Config;
 use console::style;
 use failure::Error;
-use generator::build_book_cover_config;
+use generator::{build_scene_config, Scene};
 use indicatif::{HumanDuration, ProgressBar, ProgressStyle};
 use io::{load_config, save_config};
 use renderer::render;
@@ -63,8 +63,8 @@ fn run() -> Result<(), Error> {
                 *num_of_threads,
             )?;
         }
-        CliCommand::GENERATE => {
-            run_generate(&cli_config.config_path())?;
+        CliCommand::GENERATE { scene } => {
+            run_generate(&scene, &cli_config.config_path())?;
         }
     };
 
@@ -105,8 +105,8 @@ fn run_render(
     Ok(())
 }
 
-fn run_generate(config_path: &str) -> Result<(), Error> {
-    let config_save = build_book_cover_config();
+fn run_generate(scene: &Scene, config_path: &str) -> Result<(), Error> {
+    let config_save = build_scene_config(scene);
     save_config(config_path, config_save)?;
     Ok(())
 }

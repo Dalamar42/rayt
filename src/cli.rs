@@ -2,6 +2,7 @@ use clap::{App, AppSettings, Arg, ArgMatches, SubCommand};
 use failure::Error;
 use io::SUPPORTED_IMAGE_EXT;
 use std::str::FromStr;
+use generator::Scene;
 
 pub enum CliCommand {
     RENDER {
@@ -10,7 +11,9 @@ pub enum CliCommand {
         num_of_rays: u64,
         num_of_threads: usize,
     },
-    GENERATE,
+    GENERATE {
+        scene: Scene,
+    },
 }
 
 pub struct CliConfig {
@@ -87,7 +90,23 @@ pub fn get_cli_config() -> Result<CliConfig, Error> {
                         .default_value("4")
                         .help("the number of threads to create for the renderer"),
                 ),
-            SubCommand::with_name("generate").about("generate a random image config yaml"),
+            SubCommand::with_name("generate")
+                .about("generate a random image config yaml")
+                .arg(
+                    Arg::with_name("scene")
+                        .short("s")
+                        .long("scene")
+                        .takes_value(true)
+                        .required(true)
+                        .possible_values(&[
+                            &Scene::Basic.to_string(),
+                            &Scene::Cover.to_string(),
+                            &Scene::CoverWithMotionBlur.to_string(),
+                            &Scene::CoverWithChecker.to_string(),
+                            &Scene::Perlin.to_string(),
+                        ])
+                        .help("the name of the scene to generate"),
+                ),
         ])
         .get_matches();
 
@@ -123,9 +142,11 @@ pub fn get_cli_config() -> Result<CliConfig, Error> {
             config_path,
         });
     }
-    if matches.subcommand_matches("generate").is_some() {
+    if let Some(subcommand) = matches.subcommand_matches("generate") {
+        let scene = parse::<Scene>(subcommand, "scene")?;
+
         return Ok(CliConfig {
-            command: CliCommand::GENERATE,
+            command: CliCommand::GENERATE { scene },
             config_path,
         });
     }
