@@ -39,9 +39,11 @@ world:
       material:
         Lambertian:
           albedo:
-            r: 0.1
-            g: 0.2
-            b: 0.5
+            Constant:
+              colour:
+                r: 0.1
+                g: 0.2
+                b: 0.5
     - type: Sphere
       centre:
         x: 0.0
@@ -51,9 +53,11 @@ world:
       material:
         Lambertian:
           albedo:
-            r: 0.8
-            g: 0.8
-            b: 0.0
+            Constant:
+              colour:
+                r: 0.8
+                g: 0.8
+                b: 0.0
     - type: Sphere
       centre:
         x: 1.0
