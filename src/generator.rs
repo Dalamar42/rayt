@@ -7,9 +7,10 @@ use world::background::Background;
 use world::geometry::sphere::{MovingSphere, Sphere};
 use world::geometry::Geometry;
 use world::materials::Material;
-use world::texture::{build_noise_texture, Texture};
+use world::texture::{Texture};
 use world::World;
 use std::str::FromStr;
+use world::texture::perlin::build_noise_config;
 
 pub enum Scene {
     Basic,
@@ -285,14 +286,24 @@ fn build_perlin_demo_config() -> ConfigSave {
         Vector::new(0.0, -1000.0, 0.0),
         1000.0,
         Material::Lambertian {
-            albedo: build_noise_texture(5.0),
+            albedo: Texture::Noise {
+                base_colour: Colour::new(1.0, 1.0, 1.0),
+                scale: 5.0,
+                noisiness: 10.0,
+                noise_config: build_noise_config(),
+            },
         },
     )));
     geometries.push(Box::from(Sphere::new(
         Vector::new(0.0, 2.0, 0.0),
         2.0,
         Material::Lambertian {
-            albedo: build_noise_texture(5.0),
+            albedo: Texture::Noise {
+                base_colour: Colour::new(1.0, 1.0, 1.0),
+                scale: 5.0,
+                noisiness: 10.0,
+                noise_config: build_noise_config(),
+            },
         },
     )));
 

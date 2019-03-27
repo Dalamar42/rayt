@@ -1,61 +1,17 @@
+use rand::prelude::*;
 use data::colour::Colour;
 use data::vector::Vector;
-use rand::prelude::*;
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub enum Texture {
-    Constant {
-        colour: Colour,
-    },
-    Checker {
-        even: Box<Texture>,
-        odd: Box<Texture>,
-    },
-    Noise {
-        ran: Vec<Colour>,
-        perm_x: Vec<usize>,
-        perm_y: Vec<usize>,
-        perm_z: Vec<usize>,
-        scale: f64,
-    },
+pub struct NoiseConfig {
+    ran: Vec<Colour>,
+    perm_x: Vec<usize>,
+    perm_y: Vec<usize>,
+    perm_z: Vec<usize>,
 }
 
-impl Texture {
-    pub fn value(&self, u: f64, v: f64, p: &Vector) -> Colour {
-        match self {
-            Texture::Constant { colour } => colour.clone(),
-            Texture::Checker { odd, even } => checker_texture(&odd, &even, u, v, &p),
-            Texture::Noise {
-                ran,
-                perm_x,
-                perm_y,
-                perm_z,
-                scale,
-            } => {
-                let base = Colour::new(1.0, 1.0, 1.0);
-                let noise = turbulence(&ran, &perm_x, &perm_y, &perm_z, &p, 7);
-                let mult = 0.5 * (1.0 + f64::sin(scale * p.z() + 10.0 * noise));
-
-                mult * base
-            },
-        }
-    }
-}
-
-fn checker_texture(odd: &Texture, even: &Texture, u: f64, v: f64, p: &Vector) -> Colour {
-    let sines = f64::sin(10.0 * p.x()) * f64::sin(10.0 * p.y()) * f64::sin(10.0 * p.z());
-    if sines < 0.0 {
-        odd.value(u, v, &p)
-    } else {
-        even.value(u, v, &p)
-    }
-}
-
-fn turbulence(
-    ran: &Vec<Colour>,
-    perm_x: &Vec<usize>,
-    perm_y: &Vec<usize>,
-    perm_z: &Vec<usize>,
+pub fn perlin_turbulence(
+    config: &NoiseConfig,
     p: &Vector,
     depth: u8,
 ) -> f64 {
@@ -63,10 +19,8 @@ fn turbulence(
     let mut weight = 1.0;
     let mut p = p.clone();
 
-    for i in 0..depth {
-        accum += weight * perlin_noise(
-            ran, perm_x, perm_y, perm_z, &p,
-        );
+    for _ in 0..depth {
+        accum += weight * perlin_noise(config, &p);
         weight *= 0.5;
         p = p * 2.0;
     }
@@ -75,10 +29,7 @@ fn turbulence(
 }
 
 fn perlin_noise(
-    ran: &Vec<Colour>,
-    perm_x: &Vec<usize>,
-    perm_y: &Vec<usize>,
-    perm_z: &Vec<usize>,
+    config: &NoiseConfig,
     p: &Vector,
 ) -> f64 {
     let u = p.x() - p.x().floor();
@@ -97,9 +48,11 @@ fn perlin_noise(
                 let idx_j = (j + dj) & 255;
                 let idx_k = (k + dk) & 255;
 
-                let idx = perm_x[idx_i as usize] ^ perm_y[idx_j as usize] ^ perm_z[idx_k as usize];
+                let idx = config.perm_x[idx_i as usize]
+                    ^ config.perm_y[idx_j as usize]
+                    ^ config.perm_z[idx_k as usize];
 
-                c[di as usize][dj as usize][dk as usize] = ran[idx];
+                c[di as usize][dj as usize][dk as usize] = config.ran[idx];
             }
         }
     }
@@ -136,13 +89,12 @@ fn perlin_interpolation(c: [[[Colour; 2]; 2]; 2], u: f64, v: f64, w: f64) -> f64
     accum
 }
 
-pub fn build_noise_texture(scale: f64) -> Texture {
-    Texture::Noise {
+pub fn build_noise_config() -> NoiseConfig {
+    NoiseConfig {
         ran: perlin_generate().to_vec(),
         perm_x: perlin_generate_perm().to_vec(),
         perm_y: perlin_generate_perm().to_vec(),
         perm_z: perlin_generate_perm().to_vec(),
-        scale,
     }
 }
 
@@ -156,7 +108,7 @@ fn perlin_generate() -> [Colour; 256] {
             -1.0 + 2.0 * rng.gen::<f64>(),
             -1.0 + 2.0 * rng.gen::<f64>(),
         )
-        .unit_vector();
+            .unit_vector();
     }
 
     p

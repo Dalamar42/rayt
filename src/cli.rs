@@ -1,8 +1,8 @@
 use clap::{App, AppSettings, Arg, ArgMatches, SubCommand};
 use failure::Error;
+use generator::Scene;
 use io::SUPPORTED_IMAGE_EXT;
 use std::str::FromStr;
-use generator::Scene;
 
 pub enum CliCommand {
     RENDER {
