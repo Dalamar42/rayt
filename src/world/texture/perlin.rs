@@ -1,6 +1,6 @@
-use rand::prelude::*;
 use data::colour::Colour;
 use data::vector::Vector;
+use rand::prelude::*;
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct NoiseConfig {
@@ -10,11 +10,7 @@ pub struct NoiseConfig {
     perm_z: Vec<usize>,
 }
 
-pub fn perlin_turbulence(
-    config: &NoiseConfig,
-    p: &Vector,
-    depth: u8,
-) -> f64 {
+pub fn perlin_turbulence(config: &NoiseConfig, p: &Vector, depth: u8) -> f64 {
     let mut accum = 0.0;
     let mut weight = 1.0;
     let mut p = p.clone();
@@ -28,10 +24,7 @@ pub fn perlin_turbulence(
     accum.abs()
 }
 
-fn perlin_noise(
-    config: &NoiseConfig,
-    p: &Vector,
-) -> f64 {
+fn perlin_noise(config: &NoiseConfig, p: &Vector) -> f64 {
     let u = p.x() - p.x().floor();
     let v = p.y() - p.y().floor();
     let w = p.z() - p.z().floor();
@@ -108,7 +101,7 @@ fn perlin_generate() -> [Colour; 256] {
             -1.0 + 2.0 * rng.gen::<f64>(),
             -1.0 + 2.0 * rng.gen::<f64>(),
         )
-            .unit_vector();
+        .unit_vector();
     }
 
     p

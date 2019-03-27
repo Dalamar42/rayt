@@ -2,7 +2,7 @@ pub mod perlin;
 
 use data::colour::Colour;
 use data::vector::Vector;
-use world::texture::perlin::{NoiseConfig, perlin_turbulence};
+use world::texture::perlin::{perlin_turbulence, NoiseConfig};
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum Texture {

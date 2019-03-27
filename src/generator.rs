@@ -3,14 +3,14 @@ use config::ConfigSave;
 use data::colour::Colour;
 use data::vector::Vector;
 use rand::prelude::*;
+use std::str::FromStr;
 use world::background::Background;
 use world::geometry::sphere::{MovingSphere, Sphere};
 use world::geometry::Geometry;
 use world::materials::Material;
-use world::texture::{Texture};
-use world::World;
-use std::str::FromStr;
 use world::texture::perlin::build_noise_config;
+use world::texture::Texture;
+use world::World;
 
 pub enum Scene {
     Basic,
@@ -103,8 +103,8 @@ fn build_basic_config() -> ConfigSave {
     geometries.push(Box::from(Sphere::new(
         Vector::new(-1.0, 0.0, -1.0),
         -0.45,
-        Material::Dielectric{
-            refractive_index: 1.5
+        Material::Dielectric {
+            refractive_index: 1.5,
         },
     )));
 
