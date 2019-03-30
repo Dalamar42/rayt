@@ -2,6 +2,8 @@ use data::colour::Colour;
 use data::vector::Vector;
 use rand::prelude::*;
 
+const RAN_SIZE: usize = 256;
+
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct NoiseConfig {
     ran: Vec<Colour>,
@@ -10,28 +12,28 @@ pub struct NoiseConfig {
     perm_z: Vec<usize>,
 }
 
-pub fn perlin_turbulence(config: &NoiseConfig, p: &Vector, depth: u8) -> f64 {
+pub fn perlin_turbulence(config: &NoiseConfig, point: &Vector, depth: u8) -> f64 {
     let mut accum = 0.0;
     let mut weight = 1.0;
-    let mut p = p.clone();
+    let mut point = *point;
 
     for _ in 0..depth {
-        accum += weight * perlin_noise(config, &p);
+        accum += weight * perlin_noise(config, &point);
         weight *= 0.5;
-        p = p * 2.0;
+        point = point * 2.0;
     }
 
     accum.abs()
 }
 
-fn perlin_noise(config: &NoiseConfig, p: &Vector) -> f64 {
-    let u = p.x() - p.x().floor();
-    let v = p.y() - p.y().floor();
-    let w = p.z() - p.z().floor();
+fn perlin_noise(config: &NoiseConfig, point: &Vector) -> f64 {
+    let u = point.x() - point.x().floor();
+    let v = point.y() - point.y().floor();
+    let w = point.z() - point.z().floor();
 
-    let i = p.x().floor() as i64;
-    let j = p.y().floor() as i64;
-    let k = p.z().floor() as i64;
+    let i = point.x().floor() as i64;
+    let j = point.y().floor() as i64;
+    let k = point.z().floor() as i64;
 
     let mut c: [[[Colour; 2]; 2]; 2] = [[[Colour::new(0.0, 0.0, 0.0); 2]; 2]; 2];
     for di in 0..2 {
@@ -60,11 +62,9 @@ fn perlin_interpolation(c: [[[Colour; 2]; 2]; 2], u: f64, v: f64, w: f64) -> f64
 
     let mut accum = 0.0;
 
-    for i in 0..2 {
-        for j in 0..2 {
-            for k in 0..2 {
-                let ran = &c[i][j][k];
-
+    for (i, i_axis) in c.iter().enumerate() {
+        for (j, j_axis) in i_axis.iter().enumerate() {
+            for (k, ran) in j_axis.iter().enumerate() {
                 let i = i as f64;
                 let j = j as f64;
                 let k = k as f64;
@@ -84,19 +84,19 @@ fn perlin_interpolation(c: [[[Colour; 2]; 2]; 2], u: f64, v: f64, w: f64) -> f64
 
 pub fn build_noise_config() -> NoiseConfig {
     NoiseConfig {
-        ran: perlin_generate().to_vec(),
+        ran: perlin_generate_ran().to_vec(),
         perm_x: perlin_generate_perm().to_vec(),
         perm_y: perlin_generate_perm().to_vec(),
         perm_z: perlin_generate_perm().to_vec(),
     }
 }
 
-fn perlin_generate() -> [Colour; 256] {
+fn perlin_generate_ran() -> [Colour; RAN_SIZE] {
     let mut rng = rand::thread_rng();
 
-    let mut p = [Colour::new(0.0, 0.0, 0.0); 256];
-    for i in 0..256 {
-        p[i] = Colour::new(
+    let mut ran = [Colour::new(0.0, 0.0, 0.0); RAN_SIZE];
+    for item in ran.iter_mut() {
+        *item = Colour::new(
             -1.0 + 2.0 * rng.gen::<f64>(),
             -1.0 + 2.0 * rng.gen::<f64>(),
             -1.0 + 2.0 * rng.gen::<f64>(),
@@ -104,25 +104,23 @@ fn perlin_generate() -> [Colour; 256] {
         .unit_vector();
     }
 
-    p
+    ran
 }
 
-fn permute(p: &mut [usize; 256]) {
+fn permute(perm: &mut [usize; RAN_SIZE]) {
     let mut rng = rand::thread_rng();
 
-    for i in (0..256).rev() {
+    for i in (0..RAN_SIZE).rev() {
         let target = rng.gen::<usize>() % (i + 1);
-        let tmp = p[i];
-        p[i] = p[target];
-        p[target] = tmp;
+        perm.swap(i, target);
     }
 }
 
-fn perlin_generate_perm() -> [usize; 256] {
-    let mut p: [usize; 256] = [0; 256];
-    for i in 0..256 {
-        p[i] = i;
+fn perlin_generate_perm() -> [usize; RAN_SIZE] {
+    let mut perm = [0; RAN_SIZE];
+    for (i, item) in perm.iter_mut().enumerate() {
+        *item = i;
     }
-    permute(&mut p);
-    p
+    permute(&mut perm);
+    perm
 }

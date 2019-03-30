@@ -53,9 +53,9 @@ fn colour(ray: &Ray, config: &Config, depth: u64) -> Colour {
         return Colour::new(0.0, 0.0, 0.0);
     }
 
-    let maybe_hit_result = config.bvh().hit(&ray, 0.001, core::f64::MAX);
+    let hit_result = config.bvh().hit(&ray, 0.001, core::f64::MAX);
 
-    let maybe_scatter_result = match maybe_hit_result {
+    let maybe_scatter_result = match hit_result {
         HitResult::Hit {
             ray,
             point,

@@ -196,13 +196,13 @@ fn build_book_cover_config(motion_blur: bool, checker_texture: bool) -> ConfigSa
                 f64::from(b) + 0.9 * rng.gen::<f64>(),
             );
 
-            if (&centre - Vector::new(4.0, 0.2, 0.0)).len() > 0.9 {
+            if (centre - Vector::new(4.0, 0.2, 0.0)).len() > 0.9 {
                 if choose_mat < 0.8 {
                     if motion_blur {
                         geometries.push(Box::from(MovingSphere::new(
-                            centre.clone(),
+                            centre,
                             0.0,
-                            &centre + Vector::new(0.0, 0.5 * rng.gen::<f64>(), 0.0),
+                            centre + Vector::new(0.0, 0.5 * rng.gen::<f64>(), 0.0),
                             1.0,
                             0.2,
                             Material::Lambertian {
@@ -217,7 +217,7 @@ fn build_book_cover_config(motion_blur: bool, checker_texture: bool) -> ConfigSa
                         )));
                     } else {
                         geometries.push(Box::from(Sphere::new(
-                            centre.clone(),
+                            centre,
                             0.2,
                             Material::Lambertian {
                                 albedo: Texture::Constant {

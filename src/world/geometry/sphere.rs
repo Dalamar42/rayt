@@ -57,7 +57,7 @@ impl Sphere {
     fn surface_normal(&self, ray: &Ray, distance: f64) -> Vector {
         // We divide by radius instead of taking the unit vector so that a negative
         // radius sphere will have a surface normal that points inward
-        (ray.point(distance) - &self.centre) / self.radius
+        (ray.point(distance) - self.centre) / self.radius
     }
 }
 
@@ -119,14 +119,14 @@ impl MovingSphere {
 
     fn centre(&self, time: f64) -> Vector {
         let time_fraction = (time - self.time_start) / (self.time_end - self.time_start);
-        &self.centre_start + time_fraction * (&self.centre_end - &self.centre_start)
+        self.centre_start + time_fraction * (self.centre_end - self.centre_start)
     }
 
     fn surface_normal(&self, ray: &Ray, distance: f64) -> Vector {
         // We divide by radius instead of taking the unit vector so that a negative
         // radius sphere will have a surface normal that points inward
         let centre = self.centre(ray.time());
-        (ray.point(distance) - &centre) / self.radius
+        (ray.point(distance) - centre) / self.radius
     }
 }
 

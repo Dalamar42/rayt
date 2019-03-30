@@ -65,7 +65,7 @@ fn random_point_in_unit_sphere() -> Vector {
     let centre = Vector::new(1.0, 1.0, 1.0);
 
     loop {
-        let point = 2.0 * Vector::new(rng.gen(), rng.gen(), rng.gen()) - &centre;
+        let point = 2.0 * Vector::new(rng.gen(), rng.gen(), rng.gen()) - centre;
         if point.len_squared() < 1.0 {
             return point;
         }
@@ -111,7 +111,7 @@ fn scatter_lambertian(
     let diffuse = random_point_in_unit_sphere();
     let target = hit_point + surface_normal + diffuse;
 
-    let ray = Ray::new(hit_point.clone(), target - hit_point, ray.time());
+    let ray = Ray::new(*hit_point, target - hit_point, ray.time());
 
     Some(ScatterResult {
         ray,
@@ -130,7 +130,7 @@ fn scatter_metal(
     let reflected = reflect(&unit_vector, &surface_normal);
 
     let ray = Ray::new(
-        hit_point.clone(),
+        *hit_point,
         reflected + fuzz * random_point_in_unit_sphere(),
         ray.time(),
     );
@@ -141,7 +141,7 @@ fn scatter_metal(
 
     Some(ScatterResult {
         ray,
-        attenuation: albedo.clone(),
+        attenuation: *albedo,
     })
 }
 
@@ -167,8 +167,8 @@ fn scatter_dielectric(
 
     let uvn = Vector::dot(&unit_vector, &surface_normal);
 
-    // Determine whether we are going from air to the entity or vv
-    // TODO This current does not support refraction from inside one entity to another
+    // Determine whether we are going from air to the geometry or vv
+    // This current does not support refraction from inside one geometry to another
     let (sign, n_i, n_t) = if uvn > 0.0 {
         (-1.0, refractive_index, REFRACTIVE_INDEX_OF_AIR)
     } else {
@@ -187,8 +187,8 @@ fn scatter_dielectric(
     };
 
     let ray = match maybe_refracted {
-        Some(refracted) => Ray::new(hit_point.clone(), refracted, ray.time()),
-        None => Ray::new(hit_point.clone(), reflected, ray.time()),
+        Some(refracted) => Ray::new(*hit_point, refracted, ray.time()),
+        None => Ray::new(*hit_point, reflected, ray.time()),
     };
 
     Some(ScatterResult {

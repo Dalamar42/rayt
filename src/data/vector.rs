@@ -1,6 +1,6 @@
 use std::ops;
 
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 pub struct Vector {
     x: f64,
     y: f64,
