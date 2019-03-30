@@ -1,7 +1,7 @@
 use camera::{Camera, CameraSave};
 use world::background::Background;
 use world::geometry::bounding_volume_hierarchy::BoundingVolumeHierarchyNode;
-use world::World;
+use world::WorldSave;
 
 pub struct Config {
     width: u32,
@@ -16,7 +16,7 @@ pub struct Config {
 pub struct ConfigSave {
     aspect: f64,
     camera: CameraSave,
-    world: World,
+    world: WorldSave,
 }
 
 impl Config {
@@ -46,7 +46,7 @@ impl Config {
 }
 
 impl ConfigSave {
-    pub fn new(aspect: f64, camera: CameraSave, world: World) -> ConfigSave {
+    pub fn new(aspect: f64, camera: CameraSave, world: WorldSave) -> ConfigSave {
         ConfigSave {
             aspect,
             camera,
@@ -107,7 +107,7 @@ mod tests {
 
     #[test]
     fn test_serialise_roundtrip_world() {
-        let mut world = World::new(
+        let mut world = WorldSave::new(
             Background::new(Colour::new(1.0, 1.0, 1.0), Colour::new(0.5, 0.0, 0.0)),
             vec![
                 Box::from(Sphere::new(
@@ -147,7 +147,7 @@ mod tests {
         );
 
         let serialised = serde_yaml::to_string(&world).unwrap();
-        let mut deserialised: World = serde_yaml::from_str(&serialised).unwrap();
+        let mut deserialised: WorldSave = serde_yaml::from_str(&serialised).unwrap();
 
         assert_eq!(
             world.drain_geometries().len(),
@@ -168,7 +168,7 @@ mod tests {
             0.0,
             1.0,
         );
-        let world = World::new(
+        let world = WorldSave::new(
             Background::new(Colour::new(1.0, 1.0, 1.0), Colour::new(0.5, 0.0, 0.0)),
             vec![Box::from(Sphere::new(
                 Vector::new(0.0, 0.0, -1.0),

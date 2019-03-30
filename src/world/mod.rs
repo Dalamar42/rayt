@@ -7,14 +7,14 @@ pub mod materials;
 pub mod texture;
 
 #[derive(Serialize, Deserialize)]
-pub struct World {
+pub struct WorldSave {
     background: Background,
     geometries: Vec<Box<dyn Geometry>>,
 }
 
-impl World {
-    pub fn new(background: Background, geometries: Vec<Box<dyn Geometry>>) -> World {
-        World {
+impl WorldSave {
+    pub fn new(background: Background, geometries: Vec<Box<dyn Geometry>>) -> WorldSave {
+        WorldSave {
             background,
             geometries,
         }

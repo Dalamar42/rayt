@@ -10,7 +10,7 @@ use world::geometry::Geometry;
 use world::materials::Material;
 use world::texture::perlin::build_noise_config;
 use world::texture::Texture;
-use world::World;
+use world::WorldSave;
 
 pub enum Scene {
     Basic,
@@ -112,7 +112,7 @@ fn build_basic_config() -> ConfigSave {
     let blue = Colour::new(0.5, 0.7, 1.0);
     let background = Background::new(blue, white);
 
-    let world = World::new(background, geometries);
+    let world = WorldSave::new(background, geometries);
 
     ConfigSave::new(aspect, camera, world)
 }
@@ -260,7 +260,7 @@ fn build_book_cover_config(motion_blur: bool, checker_texture: bool) -> ConfigSa
     let blue = Colour::new(0.5, 0.7, 1.0);
     let background = Background::new(white, blue);
 
-    let world = World::new(background, geometries);
+    let world = WorldSave::new(background, geometries);
 
     ConfigSave::new(aspect, camera, world)
 }
@@ -311,7 +311,7 @@ fn build_perlin_demo_config() -> ConfigSave {
     let blue = Colour::new(0.5, 0.7, 1.0);
     let background = Background::new(white, blue);
 
-    let world = World::new(background, geometries);
+    let world = WorldSave::new(background, geometries);
 
     ConfigSave::new(aspect, camera, world)
 }
