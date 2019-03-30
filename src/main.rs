@@ -25,7 +25,7 @@ mod io;
 mod renderer;
 mod world;
 
-use cli::{get_cli_config, CliCommand};
+use cli::{get_cli_config, CliCommand, ConfigPath, OutputPath};
 use config::Config;
 use console::style;
 use failure::Error;
@@ -72,9 +72,9 @@ fn run() -> Result<(), Error> {
 }
 
 fn run_render(
-    config_path: &str,
+    config_path: &ConfigPath,
     width: u32,
-    output_path: &str,
+    output_path: &OutputPath,
     num_of_rays: u64,
     num_of_threads: usize,
 ) -> Result<(), Error> {
@@ -105,7 +105,7 @@ fn run_render(
     Ok(())
 }
 
-fn run_generate(scene: &Scene, config_path: &str) -> Result<(), Error> {
+fn run_generate(scene: &Scene, config_path: &ConfigPath) -> Result<(), Error> {
     let config_save = build_scene_config(scene);
     save_config(config_path, config_save)?;
     Ok(())

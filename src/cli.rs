@@ -4,10 +4,25 @@ use generator::Scene;
 use io::SUPPORTED_IMAGE_EXT;
 use std::str::FromStr;
 
+pub struct ConfigPath(String);
+pub struct OutputPath(String);
+
+impl ConfigPath {
+    pub fn path(&self) -> &str {
+        &self.0
+    }
+}
+
+impl OutputPath {
+    pub fn path(&self) -> &str {
+        &self.0
+    }
+}
+
 pub enum CliCommand {
     RENDER {
         width: u32,
-        output_path: String,
+        output_path: OutputPath,
         num_of_rays: u64,
         num_of_threads: usize,
     },
@@ -18,7 +33,7 @@ pub enum CliCommand {
 
 pub struct CliConfig {
     command: CliCommand,
-    config_path: String,
+    config_path: ConfigPath,
 }
 
 impl CliConfig {
@@ -26,7 +41,7 @@ impl CliConfig {
         &self.command
     }
 
-    pub fn config_path(&self) -> &str {
+    pub fn config_path(&self) -> &ConfigPath {
         &self.config_path
     }
 }
@@ -135,11 +150,11 @@ pub fn get_cli_config() -> Result<CliConfig, Error> {
         return Ok(CliConfig {
             command: CliCommand::RENDER {
                 width,
-                output_path,
+                output_path: OutputPath(output_path),
                 num_of_rays,
                 num_of_threads,
             },
-            config_path,
+            config_path: ConfigPath(config_path),
         });
     }
     if let Some(subcommand) = matches.subcommand_matches("generate") {
@@ -147,7 +162,7 @@ pub fn get_cli_config() -> Result<CliConfig, Error> {
 
         return Ok(CliConfig {
             command: CliCommand::GENERATE { scene },
-            config_path,
+            config_path: ConfigPath(config_path),
         });
     }
 
