@@ -47,7 +47,7 @@ impl Colour {
         lhs.r * rhs.r + lhs.g * rhs.g + lhs.b * rhs.b
     }
 
-    pub fn into_rgb(self) -> Rgb<u8> {
+    pub fn to_rgb(&self) -> Rgb<u8> {
         assert!(0.0 <= self.r && self.r <= 1.0);
         assert!(0.0 <= self.g && self.g <= 1.0);
         assert!(0.0 <= self.b && self.b <= 1.0);
@@ -281,7 +281,7 @@ mod tests {
             b: 0.0,
         };
 
-        let rgb = colour.into_rgb();
+        let rgb = colour.to_rgb();
 
         assert_eq!(rgb[0], 255);
         assert_eq!(rgb[1], 127);

@@ -95,10 +95,10 @@ fn run_render(
 
     println!("{} Rendering...", style("[3/4]").bold().dim());
     let progress_bar = progress_bar(&config);
-    let test_image = render(&config, &progress_bar);
+    let image = render(&config, &progress_bar);
 
     println!("{} Printing image...", style("[4/4]").bold().dim());
-    io::write_image(test_image, output_path)?;
+    io::write_image(image, output_path)?;
 
     println!("Done in {}", HumanDuration(started.elapsed()));
 

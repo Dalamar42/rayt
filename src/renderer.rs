@@ -1,18 +1,12 @@
 use camera::Ray;
 use config::Config;
 use data::colour::Colour;
-use image::{ImageBuffer, Rgb, RgbImage};
+use data::image::{Image, Pixel};
 use indicatif::ProgressBar;
 use rayon::prelude::*;
 use world::geometry::{Geometry, HitResult};
 
-struct Pixel {
-    x: u32,
-    y: u32,
-    colour: Rgb<u8>,
-}
-
-pub fn render(config: &Config, progress_bar: &ProgressBar) -> RgbImage {
+pub fn render(config: &Config, progress_bar: &ProgressBar) -> Image {
     let pixels: Vec<Pixel> = config
         .camera()
         .pixels(&config)
@@ -22,13 +16,7 @@ pub fn render(config: &Config, progress_bar: &ProgressBar) -> RgbImage {
 
     progress_bar.finish();
 
-    let mut image: RgbImage = ImageBuffer::new(config.width(), config.height());
-
-    for pixel in pixels {
-        image.put_pixel(pixel.x, pixel.y, pixel.colour);
-    }
-
-    image
+    Image::new(config.width(), config.height(), pixels)
 }
 
 fn pixel(row: u32, col: u32, config: &Config, progress_bar: &ProgressBar) -> Pixel {
@@ -41,11 +29,7 @@ fn pixel(row: u32, col: u32, config: &Config, progress_bar: &ProgressBar) -> Pix
     progress_bar.inc(1);
 
     // Translate into the coordinate system expected by the image crate
-    Pixel {
-        x: col,
-        y: config.height() - row - 1,
-        colour: colour.into_rgb(),
-    }
+    Pixel::new(col, row, colour)
 }
 
 fn colour(ray: &Ray, config: &Config, depth: u64) -> Colour {
