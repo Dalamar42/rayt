@@ -1,5 +1,6 @@
 use camera::Ray;
 use data::vector::Vector;
+use std::f64::consts::PI;
 use world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
 use world::geometry::{Geometry, HitResult};
 use world::materials::Material;
@@ -38,6 +39,17 @@ fn sphere_bounding_box(centre: &Vector, radius: f64) -> Option<AxisAlignedBoundi
     ))
 }
 
+fn sphere_texture_coords(hit_point: &Vector, centre: &Vector, radius: f64) -> (f64, f64) {
+    let point = (hit_point - centre) / radius;
+    let phi = f64::atan2(point.z(), point.x());
+    let theta = f64::asin(point.y());
+
+    let u = 1.0 - (phi + PI) / (2.0 * PI);
+    let v = (theta + PI / 2.0) / PI;
+
+    (u, v)
+}
+
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct Sphere {
     centre: Vector,
@@ -74,12 +86,15 @@ impl Geometry for Sphere {
         let point = ray.point(distance);
         let surface_normal = self.surface_normal(&ray, distance);
 
+        let texture_coords = sphere_texture_coords(&point, &self.centre, self.radius);
+
         HitResult::Hit {
             distance,
             ray: ray.clone(),
             point,
             surface_normal,
             material: self.material.clone(),
+            texture_coords,
         }
     }
 
@@ -144,12 +159,15 @@ impl Geometry for MovingSphere {
         let point = ray.point(distance);
         let surface_normal = self.surface_normal(&ray, distance);
 
+        let texture_coords = sphere_texture_coords(&point, &centre, self.radius);
+
         HitResult::Hit {
             distance,
             ray: ray.clone(),
             point,
             surface_normal,
             material: self.material.clone(),
+            texture_coords,
         }
     }
 
@@ -186,6 +204,7 @@ mod tests {
                 ray: _,
                 surface_normal: _,
                 material: _,
+                texture_coords: _,
             } => {
                 assert_approx_eq!(distance, 1.0);
             }
@@ -213,6 +232,7 @@ mod tests {
                 ray: _,
                 surface_normal: _,
                 material: _,
+                texture_coords: _,
             } => {
                 assert_approx_eq!(distance, 1.0);
             }
@@ -240,6 +260,7 @@ mod tests {
                 ray: _,
                 surface_normal,
                 material: _,
+                texture_coords: _,
             } => {
                 assert_eq!(surface_normal, Vector::new(-1.0, 0.0, 0.0));
             }
@@ -267,6 +288,7 @@ mod tests {
                 ray: _,
                 surface_normal,
                 material: _,
+                texture_coords: _,
             } => {
                 assert_eq!(surface_normal, Vector::new(1.0, 0.0, 0.0));
             }

@@ -175,6 +175,7 @@ impl Geometry for BoundingVolumeHierarchyNode {
                     point,
                     surface_normal,
                     material,
+                    texture_coords,
                 },
             ) => HitResult::Hit {
                 distance,
@@ -182,6 +183,7 @@ impl Geometry for BoundingVolumeHierarchyNode {
                 point,
                 surface_normal,
                 material,
+                texture_coords,
             },
             (
                 HitResult::Hit {
@@ -190,6 +192,7 @@ impl Geometry for BoundingVolumeHierarchyNode {
                     point,
                     surface_normal,
                     material,
+                    texture_coords,
                 },
                 HitResult::Miss,
             ) => HitResult::Hit {
@@ -198,6 +201,7 @@ impl Geometry for BoundingVolumeHierarchyNode {
                 point,
                 surface_normal,
                 material,
+                texture_coords,
             },
             (
                 HitResult::Hit {
@@ -206,6 +210,7 @@ impl Geometry for BoundingVolumeHierarchyNode {
                     point: pl,
                     surface_normal: sl,
                     material: ml,
+                    texture_coords: tl,
                 },
                 HitResult::Hit {
                     distance: dr,
@@ -213,6 +218,7 @@ impl Geometry for BoundingVolumeHierarchyNode {
                     point: pr,
                     surface_normal: sr,
                     material: mr,
+                    texture_coords: tr,
                 },
             ) => {
                 if dl < dr {
@@ -222,6 +228,7 @@ impl Geometry for BoundingVolumeHierarchyNode {
                         point: pl,
                         surface_normal: sl,
                         material: ml,
+                        texture_coords: tl,
                     }
                 } else {
                     HitResult::Hit {
@@ -230,6 +237,7 @@ impl Geometry for BoundingVolumeHierarchyNode {
                         point: pr,
                         surface_normal: sr,
                         material: mr,
+                        texture_coords: tr,
                     }
                 }
             }

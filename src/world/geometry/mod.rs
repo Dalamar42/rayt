@@ -16,6 +16,7 @@ pub enum HitResult {
         point: Vector,
         surface_normal: Vector,
         material: Material,
+        texture_coords: (f64, f64),
     },
     Miss,
 }
@@ -75,6 +76,7 @@ mod tests {
             material: Material::Dielectric {
                 refractive_index: 1.5,
             },
+            texture_coords: (1.0, 0.5),
         };
 
         assert_eq!(HitResult::Miss, HitResult::Miss);
@@ -89,6 +91,7 @@ mod tests {
             material: Material::Dielectric {
                 refractive_index: 1.5,
             },
+            texture_coords: (1.0, 0.5),
         };
         assert_ne!(hit_result.clone(), other_hit_result.clone());
     }
@@ -103,6 +106,7 @@ mod tests {
             material: Material::Dielectric {
                 refractive_index: 1.5,
             },
+            texture_coords: (1.0, 0.5),
         };
 
         assert!(hit_result < HitResult::Miss);
@@ -116,6 +120,7 @@ mod tests {
             material: Material::Dielectric {
                 refractive_index: 1.5,
             },
+            texture_coords: (1.0, 0.5),
         };
         assert!(other_hit_result > hit_result);
         assert!(hit_result < other_hit_result);
