@@ -16,7 +16,7 @@ pub fn render(config: &Config, progress_bar: &ProgressBar) -> Image {
 
     progress_bar.finish();
 
-    Image::new(config.width(), config.height(), pixels)
+    Image::from(&pixels)
 }
 
 fn pixel(row: u32, col: u32, config: &Config, progress_bar: &ProgressBar) -> Pixel {
@@ -29,7 +29,7 @@ fn pixel(row: u32, col: u32, config: &Config, progress_bar: &ProgressBar) -> Pix
     progress_bar.inc(1);
 
     // Translate into the coordinate system expected by the image crate
-    Pixel::new(col, row, colour)
+    Pixel::new(row, col, colour)
 }
 
 fn colour(ray: &Ray, config: &Config, depth: u64) -> Colour {
