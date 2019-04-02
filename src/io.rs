@@ -1,4 +1,4 @@
-use cli::{ConfigPath, OutputPath};
+use cli::{ConfigPath, ImagePath, OutputPath};
 use config::ConfigSave;
 use data::image::Image;
 use failure::Error;
@@ -8,6 +8,11 @@ pub const SUPPORTED_IMAGE_EXT: [&str; 4] = [".ppm", ".jpeg", ".jpg", ".png"];
 
 pub fn write_image(image: Image, output_path: &OutputPath) -> std::io::Result<()> {
     image.into_rgb_image().save(output_path.path())
+}
+
+pub fn load_image(image_path: &ImagePath) -> Result<Image, Error> {
+    let image = image::open(image_path.path())?;
+    Ok(Image::from(&image))
 }
 
 pub fn save_config(config_path: &ConfigPath, config_save: ConfigSave) -> Result<(), Error> {

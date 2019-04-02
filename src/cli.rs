@@ -6,6 +6,7 @@ use std::str::FromStr;
 
 pub struct ConfigPath(String);
 pub struct OutputPath(String);
+pub struct ImagePath(String);
 
 impl ConfigPath {
     pub fn path(&self) -> &str {
@@ -19,6 +20,16 @@ impl OutputPath {
     }
 }
 
+impl ImagePath {
+    pub fn path(&self) -> &str {
+        &self.0
+    }
+
+    pub fn file_name(&self) -> &str {
+        &self.0.split('/').last().unwrap()
+    }
+}
+
 pub enum CliCommand {
     RENDER {
         width: u32,
@@ -28,6 +39,7 @@ pub enum CliCommand {
     },
     GENERATE {
         scene: Scene,
+        asset_paths: Vec<ImagePath>,
     },
 }
 
@@ -121,6 +133,18 @@ pub fn get_cli_config() -> Result<CliConfig, Error> {
                             &Scene::Perlin.to_string(),
                         ])
                         .help("the name of the scene to generate"),
+                )
+                .arg(
+                    Arg::with_name("asset")
+                        .short("a")
+                        .long("asset")
+                        .takes_value(true)
+                        .required(false)
+                        .multiple(true)
+                        .help(
+                            "the paths to image assets needed by the selected scene. The \
+                             filename must be unique amongst all loaded assets",
+                        ),
                 ),
         ])
         .get_matches();
@@ -159,9 +183,14 @@ pub fn get_cli_config() -> Result<CliConfig, Error> {
     }
     if let Some(subcommand) = matches.subcommand_matches("generate") {
         let scene = parse::<Scene>(subcommand, "scene")?;
+        let asset_paths: Vec<ImagePath> = subcommand
+            .values_of("asset")
+            .unwrap_or_default()
+            .map(|path| ImagePath(String::from(path)))
+            .collect();
 
         return Ok(CliConfig {
-            command: CliCommand::GENERATE { scene },
+            command: CliCommand::GENERATE { scene, asset_paths },
             config_path: ConfigPath(config_path),
         });
     }

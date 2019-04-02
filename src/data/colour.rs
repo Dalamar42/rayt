@@ -2,6 +2,8 @@ use image::Rgb;
 use std::iter::Sum;
 use std::ops;
 
+const RGB_MULT: f64 = 255.99;
+
 #[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 pub struct Colour {
     r: f64,
@@ -52,12 +54,10 @@ impl Colour {
         assert!(0.0 <= self.g && self.g <= 1.0);
         assert!(0.0 <= self.b && self.b <= 1.0);
 
-        let mult: f64 = 255.99;
-
         Rgb([
-            (mult * self.r) as u8,
-            (mult * self.g) as u8,
-            (mult * self.b) as u8,
+            (RGB_MULT * self.r) as u8,
+            (RGB_MULT * self.g) as u8,
+            (RGB_MULT * self.b) as u8,
         ])
     }
 
@@ -66,6 +66,16 @@ impl Colour {
             r: self.r.sqrt(),
             g: self.g.sqrt(),
             b: self.b.sqrt(),
+        }
+    }
+}
+
+impl From<&Rgb<u8>> for Colour {
+    fn from(rgb: &Rgb<u8>) -> Self {
+        Colour {
+            r: f64::from(rgb[0]) / RGB_MULT,
+            g: f64::from(rgb[1]) / RGB_MULT,
+            b: f64::from(rgb[2]) / RGB_MULT,
         }
     }
 }

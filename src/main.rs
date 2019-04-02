@@ -25,14 +25,16 @@ mod io;
 mod renderer;
 mod world;
 
-use cli::{get_cli_config, CliCommand, ConfigPath, OutputPath};
+use cli::{get_cli_config, CliCommand, ConfigPath, ImagePath, OutputPath};
 use config::Config;
 use console::style;
+use data::image::Image;
 use failure::Error;
 use generator::{build_scene_config, Scene};
 use indicatif::{HumanDuration, ProgressBar, ProgressStyle};
-use io::{load_config, save_config};
+use io::{load_config, load_image, save_config};
 use renderer::render;
+use std::collections::HashMap;
 use std::process;
 use std::time::Instant;
 
@@ -63,8 +65,8 @@ fn run() -> Result<(), Error> {
                 *num_of_threads,
             )?;
         }
-        CliCommand::GENERATE { scene } => {
-            run_generate(&scene, &cli_config.config_path())?;
+        CliCommand::GENERATE { scene, asset_paths } => {
+            run_generate(&scene, &asset_paths, &cli_config.config_path())?;
         }
     };
 
@@ -105,8 +107,21 @@ fn run_render(
     Ok(())
 }
 
-fn run_generate(scene: &Scene, config_path: &ConfigPath) -> Result<(), Error> {
-    let config_save = build_scene_config(scene);
+fn run_generate(
+    scene: &Scene,
+    asset_paths: &[ImagePath],
+    config_path: &ConfigPath,
+) -> Result<(), Error> {
+    let mut assets: HashMap<String, Image> = HashMap::new();
+    for asset_path in asset_paths {
+        assets.insert(
+            String::from(asset_path.file_name()),
+            load_image(asset_path)?,
+        );
+    }
+
+    let config_save = build_scene_config(scene, &assets);
+
     save_config(config_path, config_save)?;
     Ok(())
 }

@@ -1,8 +1,10 @@
 use camera::CameraSave;
 use config::ConfigSave;
 use data::colour::Colour;
+use data::image::Image;
 use data::vector::Vector;
 use rand::prelude::*;
+use std::collections::HashMap;
 use std::str::FromStr;
 use world::background::Background;
 use world::geometry::sphere::{MovingSphere, Sphere};
@@ -47,7 +49,7 @@ impl ToString for Scene {
     }
 }
 
-pub fn build_scene_config(scene: &Scene) -> ConfigSave {
+pub fn build_scene_config(scene: &Scene, _assets: &HashMap<String, Image>) -> ConfigSave {
     match scene {
         Scene::Basic => build_basic_config(),
         Scene::Cover => build_book_cover_config(false, false),

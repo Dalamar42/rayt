@@ -1,5 +1,5 @@
 use data::colour::Colour;
-use image::{ImageBuffer, Rgb, RgbImage};
+use image::{DynamicImage, ImageBuffer, Rgb, RgbImage};
 
 pub struct Pixel {
     x: u32,
@@ -16,16 +16,6 @@ pub struct Image {
 impl Pixel {
     pub fn new(x: u32, y: u32, colour: Colour) -> Pixel {
         Pixel { x, y, colour }
-    }
-
-    fn output_x(&self, _width: u32, _height: u32) -> u32 {
-        // Translate into the coordinate system expected by the image crate
-        self.x
-    }
-
-    fn output_y(&self, _width: u32, height: u32) -> u32 {
-        // Translate into the coordinate system expected by the image crate
-        height - self.y - 1
     }
 
     pub fn output_colour(&self) -> Rgb<u8> {
@@ -46,13 +36,31 @@ impl Image {
         let mut image: RgbImage = ImageBuffer::new(self.width, self.height);
 
         for pixel in self.pixels {
-            image.put_pixel(
-                pixel.output_x(self.width, self.height),
-                pixel.output_y(self.width, self.height),
-                pixel.output_colour(),
-            );
+            // Translate into the coordinate system expected by the image crate
+            image.put_pixel(pixel.x, self.height - pixel.y - 1, pixel.output_colour());
         }
 
         image
+    }
+}
+
+impl From<&DynamicImage> for Image {
+    fn from(image: &DynamicImage) -> Self {
+        let image = image.to_rgb();
+        let (width, height) = image.dimensions();
+
+        let mut pixels: Vec<Pixel> = vec![];
+        for x in 0..width {
+            for y in 0..height {
+                let rgb = image.get_pixel(x, y);
+                let colour = Colour::from(rgb);
+
+                // Translate into the coordinate system expected by the image crate
+                let pixel = Pixel::new(x, height - y - 1, colour);
+                pixels.push(pixel);
+            }
+        }
+
+        Image::new(width, height, pixels)
     }
 }
