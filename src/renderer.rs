@@ -45,8 +45,9 @@ fn colour(ray: &Ray, config: &Config, depth: u64) -> Colour {
             point,
             surface_normal,
             material,
+            texture_coords,
             ..
-        } => material.scatter(&ray, &point, &surface_normal),
+        } => material.scatter(&ray, &point, &surface_normal, texture_coords),
         HitResult::Miss => None,
     };
 

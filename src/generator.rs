@@ -20,6 +20,7 @@ pub enum Scene {
     CoverWithMotionBlur,
     CoverWithChecker,
     Perlin,
+    Earth,
 }
 
 impl FromStr for Scene {
@@ -32,6 +33,7 @@ impl FromStr for Scene {
             "cover_with_motion_blur" => Ok(Scene::CoverWithMotionBlur),
             "cover_with_checker" => Ok(Scene::CoverWithChecker),
             "perlin" => Ok(Scene::Perlin),
+            "earth" => Ok(Scene::Earth),
             _ => Err(()),
         }
     }
@@ -45,17 +47,19 @@ impl ToString for Scene {
             Scene::CoverWithMotionBlur => String::from("cover_with_motion_blur"),
             Scene::CoverWithChecker => String::from("cover_with_checker"),
             Scene::Perlin => String::from("perlin"),
+            Scene::Earth => String::from("earth"),
         }
     }
 }
 
-pub fn build_scene_config(scene: &Scene, _assets: &HashMap<String, Image>) -> ConfigSave {
+pub fn build_scene_config(scene: &Scene, assets: &HashMap<String, Image>) -> ConfigSave {
     match scene {
         Scene::Basic => build_basic_config(),
         Scene::Cover => build_book_cover_config(false, false),
         Scene::CoverWithMotionBlur => build_book_cover_config(true, false),
         Scene::CoverWithChecker => build_book_cover_config(true, true),
         Scene::Perlin => build_perlin_demo_config(),
+        Scene::Earth => build_earth_config(assets),
     }
 }
 
@@ -312,6 +316,42 @@ fn build_perlin_demo_config() -> ConfigSave {
     let white = Colour::new(1.0, 1.0, 1.0);
     let blue = Colour::new(0.5, 0.7, 1.0);
     let background = Background::new(white, blue);
+
+    let world = WorldSave::new(background, geometries);
+
+    ConfigSave::new(aspect, camera, world)
+}
+
+fn build_earth_config(assets: &HashMap<String, Image>) -> ConfigSave {
+    let aspect = 2.0;
+
+    let camera = CameraSave::new(
+        &Vector::new(0.0, 0.2, 3.0),
+        &Vector::new(0.0, 0.0, -1.0),
+        &Vector::new(0.0, 1.0, 0.0),
+        35.0,
+        aspect,
+        0.1,
+        4.0,
+        0.0,
+        1.0,
+    );
+
+    let mut geometries: Vec<Box<dyn Geometry>> = Vec::with_capacity(4);
+
+    geometries.push(Box::from(Sphere::new(
+        Vector::new(0.0, 0.0, -1.0),
+        1.0,
+        Material::Lambertian {
+            albedo: Texture::Image {
+                image: assets["earth_small.jpg"].clone(),
+            },
+        },
+    )));
+
+    let white = Colour::new(1.0, 1.0, 1.0);
+    let blue = Colour::new(0.5, 0.7, 1.0);
+    let background = Background::new(blue, white);
 
     let world = WorldSave::new(background, geometries);
 

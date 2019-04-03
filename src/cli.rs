@@ -131,6 +131,7 @@ pub fn get_cli_config() -> Result<CliConfig, Error> {
                             &Scene::CoverWithMotionBlur.to_string(),
                             &Scene::CoverWithChecker.to_string(),
                             &Scene::Perlin.to_string(),
+                            &Scene::Earth.to_string(),
                         ])
                         .help("the name of the scene to generate"),
                 )

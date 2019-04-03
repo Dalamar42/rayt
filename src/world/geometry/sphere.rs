@@ -41,13 +41,20 @@ fn sphere_bounding_box(centre: &Vector, radius: f64) -> Option<AxisAlignedBoundi
 
 fn sphere_texture_coords(hit_point: &Vector, centre: &Vector, radius: f64) -> (f64, f64) {
     let point = (hit_point - centre) / radius;
-    let phi = f64::atan2(point.z(), point.x());
-    let theta = f64::asin(point.y());
 
-    let u = 1.0 - (phi + PI) / (2.0 * PI);
-    let v = (theta + PI / 2.0) / PI;
+    let theta = PI - f64::acos(point.y());
+    let phi = f64::atan2(point.x(), point.z());
 
-    (u, v)
+    let row = theta / PI;
+    let mut col = phi / (2.0 * PI) + 0.25;
+
+    // Rotate frame so the middle of the image texture is facing the camera
+    col += 0.25;
+    if col > 1.0 {
+        col -= 1.0;
+    }
+
+    (row, col)
 }
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
@@ -329,5 +336,31 @@ mod tests {
             AxisAlignedBoundingBox::new(Vector::new(-1.0, -1.0, -1.0), Vector::new(2.0, 2.0, 2.0));
 
         assert_eq!(sphere.bounding_box(0.0, 1.0), Some(expected_box));
+    }
+
+    #[test]
+    fn test_sphere_texture_coords() {
+        let centre = Vector::new(0.0, 0.0, 0.0);
+        let radius = 1.0;
+
+        let (row, col) = sphere_texture_coords(&Vector::new(0.0, 0.0, 1.0), &centre, radius);
+        assert_approx_eq!(row, 0.5);
+        assert_approx_eq!(col, 0.5);
+
+        let (row, col) = sphere_texture_coords(&Vector::new(1.0, 0.0, 0.0), &centre, radius);
+        assert_approx_eq!(row, 0.5);
+        assert_approx_eq!(col, 0.75);
+
+        let (row, col) = sphere_texture_coords(&Vector::new(-1.0, 0.0, 0.0), &centre, radius);
+        assert_approx_eq!(row, 0.5);
+        assert_approx_eq!(col, 0.25);
+
+        let (row, col) = sphere_texture_coords(&Vector::new(0.0, 1.0, 0.0), &centre, radius);
+        assert_approx_eq!(row, 1.0);
+        assert_approx_eq!(col, 0.5);
+
+        let (row, col) = sphere_texture_coords(&Vector::new(0.0, -1.0, 0.0), &centre, radius);
+        assert_approx_eq!(row, 0.0);
+        assert_approx_eq!(col, 0.5);
     }
 }

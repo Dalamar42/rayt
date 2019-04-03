@@ -112,6 +112,7 @@ fn run_generate(
     asset_paths: &[ImagePath],
     config_path: &ConfigPath,
 ) -> Result<(), Error> {
+    println!("{} Loading assets...", style("[1/3]").bold().dim());
     let mut assets: HashMap<String, Image> = HashMap::new();
     for asset_path in asset_paths {
         assets.insert(
@@ -120,8 +121,10 @@ fn run_generate(
         );
     }
 
+    println!("{} Generating scene...", style("[2/3]").bold().dim());
     let config_save = build_scene_config(scene, &assets);
 
+    println!("{} Writing image yaml...", style("[3/3]").bold().dim());
     save_config(config_path, config_save)?;
     Ok(())
 }

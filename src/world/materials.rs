@@ -45,16 +45,23 @@ impl Material {
         ray: &Ray,
         hit_point: &Vector,
         surface_normal: &Vector,
+        texture_coords: (f64, f64),
     ) -> Option<ScatterResult> {
         match self {
             Material::Lambertian { albedo } => {
-                scatter_lambertian(&albedo, ray, hit_point, surface_normal)
+                scatter_lambertian(
+                    &albedo, ray, hit_point, surface_normal, texture_coords,
+                )
             }
             Material::Metal { albedo, fuzz } => {
-                scatter_metal(&albedo, *fuzz, ray, hit_point, surface_normal)
+                scatter_metal(
+                    &albedo, *fuzz, ray, hit_point, surface_normal, texture_coords,
+                )
             }
             Material::Dielectric { refractive_index } => {
-                scatter_dielectric(*refractive_index, ray, hit_point, surface_normal)
+                scatter_dielectric(
+                    *refractive_index, ray, hit_point, surface_normal, texture_coords,
+                )
             }
         }
     }
@@ -107,6 +114,7 @@ fn scatter_lambertian(
     ray: &Ray,
     hit_point: &Vector,
     surface_normal: &Vector,
+    texture_coords: (f64, f64),
 ) -> Option<ScatterResult> {
     let diffuse = random_point_in_unit_sphere();
     let target = hit_point + surface_normal + diffuse;
@@ -115,7 +123,7 @@ fn scatter_lambertian(
 
     Some(ScatterResult {
         ray,
-        attenuation: albedo.value(0.0, 0.0, &hit_point),
+        attenuation: albedo.value(texture_coords, &hit_point),
     })
 }
 
@@ -125,6 +133,7 @@ fn scatter_metal(
     ray: &Ray,
     hit_point: &Vector,
     surface_normal: &Vector,
+    _texture_coords: (f64, f64),
 ) -> Option<ScatterResult> {
     let unit_vector = ray.direction().unit_vector();
     let reflected = reflect(&unit_vector, &surface_normal);
@@ -159,6 +168,7 @@ fn scatter_dielectric(
     ray: &Ray,
     hit_point: &Vector,
     surface_normal: &Vector,
+    _texture_coords: (f64, f64),
 ) -> Option<ScatterResult> {
     let unit_vector = ray.direction().unit_vector();
     let reflected = reflect(&unit_vector, &surface_normal);
