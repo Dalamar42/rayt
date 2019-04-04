@@ -18,7 +18,7 @@ pub enum Scene {
     CoverWithMotionBlur,
     CoverWithChecker,
     Perlin,
-    Earth,
+    Planets,
 }
 
 impl FromStr for Scene {
@@ -31,7 +31,7 @@ impl FromStr for Scene {
             "cover_with_motion_blur" => Ok(Scene::CoverWithMotionBlur),
             "cover_with_checker" => Ok(Scene::CoverWithChecker),
             "perlin" => Ok(Scene::Perlin),
-            "earth" => Ok(Scene::Earth),
+            "planets" => Ok(Scene::Planets),
             _ => Err(()),
         }
     }
@@ -45,7 +45,7 @@ impl ToString for Scene {
             Scene::CoverWithMotionBlur => String::from("cover_with_motion_blur"),
             Scene::CoverWithChecker => String::from("cover_with_checker"),
             Scene::Perlin => String::from("perlin"),
-            Scene::Earth => String::from("earth"),
+            Scene::Planets => String::from("planets"),
         }
     }
 }
@@ -57,7 +57,7 @@ pub fn build_scene_config(scene: &Scene) -> ConfigSave {
         Scene::CoverWithMotionBlur => build_book_cover_config(true, false),
         Scene::CoverWithChecker => build_book_cover_config(true, true),
         Scene::Perlin => build_perlin_demo_config(),
-        Scene::Earth => build_earth_config(),
+        Scene::Planets => build_planets_config(),
     }
 }
 
@@ -320,16 +320,16 @@ fn build_perlin_demo_config() -> ConfigSave {
     ConfigSave::new(aspect, camera, world)
 }
 
-fn build_earth_config() -> ConfigSave {
+fn build_planets_config() -> ConfigSave {
     let aspect = 2.0;
 
     let camera = CameraSave::new(
-        &Vector::new(0.0, 0.2, 3.0),
+        &Vector::new(1.0, 0.2, 7.5),
         &Vector::new(0.0, 0.0, -1.0),
         &Vector::new(0.0, 1.0, 0.0),
         35.0,
         aspect,
-        0.1,
+        0.0,
         4.0,
         0.0,
         1.0,
@@ -338,7 +338,16 @@ fn build_earth_config() -> ConfigSave {
     let mut geometries: Vec<Box<dyn Geometry>> = Vec::with_capacity(4);
 
     geometries.push(Box::from(Sphere::new(
-        Vector::new(0.0, 0.0, -1.0),
+        Vector::new(-1.0, 0.0, -6.0),
+        4.0,
+        Material::Lambertian {
+            albedo: Texture::Image {
+                asset_name: String::from("jupiter.jpg"),
+            },
+        },
+    )));
+    geometries.push(Box::from(Sphere::new(
+        Vector::new(2.0, 1.0, -1.0),
         1.0,
         Material::Lambertian {
             albedo: Texture::Image {
@@ -346,10 +355,36 @@ fn build_earth_config() -> ConfigSave {
             },
         },
     )));
+    geometries.push(Box::from(Sphere::new(
+        Vector::new(3.5, 0.7, -1.0),
+        0.3,
+        Material::Lambertian {
+            albedo: Texture::Image {
+                asset_name: String::from("moon.jpg"),
+            },
+        },
+    )));
+    geometries.push(Box::from(Sphere::new(
+        Vector::new(-1.5, -1.0, -1.0),
+        0.8,
+        Material::Lambertian {
+            albedo: Texture::Image {
+                asset_name: String::from("mars.jpg"),
+            },
+        },
+    )));
+    geometries.push(Box::from(Sphere::new(
+        Vector::new(1.7, -1.3, -1.0),
+        0.7,
+        Material::Lambertian {
+            albedo: Texture::Image {
+                asset_name: String::from("europa.jpg"),
+            },
+        },
+    )));
 
-    let white = Colour::new(1.0, 1.0, 1.0);
-    let blue = Colour::new(0.5, 0.7, 1.0);
-    let background = Background::new(blue, white);
+    let background_colour = Colour::new(1.0, 1.0, 1.0);
+    let background = Background::new(background_colour, background_colour);
 
     let world = WorldSave::new(background, geometries);
 
