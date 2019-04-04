@@ -84,4 +84,4 @@ world:
         Lambertian:
           albedo:
             Image:
-              asset_name: europa.jpg
+              asset_name: earth_night.jpg

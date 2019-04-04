@@ -378,7 +378,7 @@ fn build_planets_config() -> ConfigSave {
         0.7,
         Material::Lambertian {
             albedo: Texture::Image {
-                asset_name: String::from("europa.jpg"),
+                asset_name: String::from("earth_night.jpg"),
             },
         },
     )));
