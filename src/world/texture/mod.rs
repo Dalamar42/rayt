@@ -1,8 +1,10 @@
 pub mod perlin;
 
+use data::assets::Assets;
 use data::colour::Colour;
 use data::image::Image;
 use data::vector::Vector;
+use failure::Error;
 use world::texture::perlin::{perlin_turbulence, NoiseConfig};
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -21,35 +23,54 @@ pub enum Texture {
         noise_config: NoiseConfig,
     },
     Image {
-        image: Image,
+        asset_name: String,
     },
 }
 
 impl Texture {
-    pub fn value(&self, texture_coords: (f64, f64), point: &Vector) -> Colour {
+    pub fn value(&self, texture_coords: (f64, f64), point: &Vector, assets: &Assets) -> Colour {
         match self {
             Texture::Constant { colour } => *colour,
-            Texture::Checker { odd, even } => checker_texture(&odd, &even, texture_coords, &point),
+            Texture::Checker { odd, even } => {
+                checker_texture(&odd, &even, texture_coords, &point, &assets)
+            }
             Texture::Noise {
                 base_colour,
                 scale,
                 noisiness,
                 noise_config,
             } => noise_texture(&base_colour, *scale, *noisiness, &noise_config, &point),
-            Texture::Image { image } => image_texture(&image, texture_coords),
+            Texture::Image { asset_name } => {
+                let image = assets.get_asset(asset_name);
+                image_texture(image, texture_coords)
+            }
+        }
+    }
+
+    pub fn validate(&self, assets: &Assets) -> Result<(), Error> {
+        match self {
+            Texture::Image { asset_name } => {
+                assets.validate(&asset_name)?;
+                Ok(())
+            }
+            _ => Ok(()),
         }
     }
 }
 
 fn checker_texture(
-    odd: &Texture, even: &Texture, texture_coords: (f64, f64), point: &Vector,
+    odd: &Texture,
+    even: &Texture,
+    texture_coords: (f64, f64),
+    point: &Vector,
+    assets: &Assets,
 ) -> Colour {
     let sines =
         f64::sin(10.0 * point.x()) * f64::sin(10.0 * point.y()) * f64::sin(10.0 * point.z());
     if sines < 0.0 {
-        odd.value(texture_coords, &point)
+        odd.value(texture_coords, &point, &assets)
     } else {
-        even.value(texture_coords, &point)
+        even.value(texture_coords, &point, &assets)
     }
 }
 

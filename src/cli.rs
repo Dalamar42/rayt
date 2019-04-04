@@ -36,10 +36,10 @@ pub enum CliCommand {
         output_path: OutputPath,
         num_of_rays: u64,
         num_of_threads: usize,
+        asset_paths: Vec<ImagePath>,
     },
     GENERATE {
         scene: Scene,
-        asset_paths: Vec<ImagePath>,
     },
 }
 
@@ -116,6 +116,18 @@ pub fn get_cli_config() -> Result<CliConfig, Error> {
                         .required(true)
                         .default_value("4")
                         .help("the number of threads to create for the renderer"),
+                )
+                .arg(
+                    Arg::with_name("asset")
+                        .short("a")
+                        .long("asset")
+                        .takes_value(true)
+                        .required(false)
+                        .multiple(true)
+                        .help(
+                            "the paths to image assets needed by the selected scene. The \
+                             filename must be unique amongst all loaded assets",
+                        ),
                 ),
             SubCommand::with_name("generate")
                 .about("generate a random image config yaml")
@@ -134,18 +146,6 @@ pub fn get_cli_config() -> Result<CliConfig, Error> {
                             &Scene::Earth.to_string(),
                         ])
                         .help("the name of the scene to generate"),
-                )
-                .arg(
-                    Arg::with_name("asset")
-                        .short("a")
-                        .long("asset")
-                        .takes_value(true)
-                        .required(false)
-                        .multiple(true)
-                        .help(
-                            "the paths to image assets needed by the selected scene. The \
-                             filename must be unique amongst all loaded assets",
-                        ),
                 ),
         ])
         .get_matches();
@@ -162,6 +162,11 @@ pub fn get_cli_config() -> Result<CliConfig, Error> {
         let output_path = String::from(subcommand.value_of("output_path").unwrap());
         let num_of_rays = parse::<u64>(subcommand, "rays")?;
         let num_of_threads = parse::<usize>(subcommand, "threads")?;
+        let asset_paths: Vec<ImagePath> = subcommand
+            .values_of("asset")
+            .unwrap_or_default()
+            .map(|path| ImagePath(String::from(path)))
+            .collect();
 
         ensure!(
             SUPPORTED_IMAGE_EXT
@@ -178,20 +183,16 @@ pub fn get_cli_config() -> Result<CliConfig, Error> {
                 output_path: OutputPath(output_path),
                 num_of_rays,
                 num_of_threads,
+                asset_paths,
             },
             config_path: ConfigPath(config_path),
         });
     }
     if let Some(subcommand) = matches.subcommand_matches("generate") {
         let scene = parse::<Scene>(subcommand, "scene")?;
-        let asset_paths: Vec<ImagePath> = subcommand
-            .values_of("asset")
-            .unwrap_or_default()
-            .map(|path| ImagePath(String::from(path)))
-            .collect();
 
         return Ok(CliConfig {
-            command: CliCommand::GENERATE { scene, asset_paths },
+            command: CliCommand::GENERATE { scene },
             config_path: ConfigPath(config_path),
         });
     }

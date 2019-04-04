@@ -1,3 +1,5 @@
+use data::assets::Assets;
+use failure::Error;
 use world::background::Background;
 use world::geometry::Geometry;
 
@@ -30,5 +32,12 @@ impl WorldSave {
         }
         let range = 0..self.geometries.len();
         self.geometries.drain(range).collect()
+    }
+
+    pub fn validate(&self, assets: &Assets) -> Result<(), Error> {
+        for geometry in &self.geometries {
+            geometry.validate(assets)?
+        }
+        Ok(())
     }
 }

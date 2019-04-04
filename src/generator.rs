@@ -1,10 +1,8 @@
 use camera::CameraSave;
 use config::ConfigSave;
 use data::colour::Colour;
-use data::image::Image;
 use data::vector::Vector;
 use rand::prelude::*;
-use std::collections::HashMap;
 use std::str::FromStr;
 use world::background::Background;
 use world::geometry::sphere::{MovingSphere, Sphere};
@@ -52,14 +50,14 @@ impl ToString for Scene {
     }
 }
 
-pub fn build_scene_config(scene: &Scene, assets: &HashMap<String, Image>) -> ConfigSave {
+pub fn build_scene_config(scene: &Scene) -> ConfigSave {
     match scene {
         Scene::Basic => build_basic_config(),
         Scene::Cover => build_book_cover_config(false, false),
         Scene::CoverWithMotionBlur => build_book_cover_config(true, false),
         Scene::CoverWithChecker => build_book_cover_config(true, true),
         Scene::Perlin => build_perlin_demo_config(),
-        Scene::Earth => build_earth_config(assets),
+        Scene::Earth => build_earth_config(),
     }
 }
 
@@ -322,7 +320,7 @@ fn build_perlin_demo_config() -> ConfigSave {
     ConfigSave::new(aspect, camera, world)
 }
 
-fn build_earth_config(assets: &HashMap<String, Image>) -> ConfigSave {
+fn build_earth_config() -> ConfigSave {
     let aspect = 2.0;
 
     let camera = CameraSave::new(
@@ -344,7 +342,7 @@ fn build_earth_config(assets: &HashMap<String, Image>) -> ConfigSave {
         1.0,
         Material::Lambertian {
             albedo: Texture::Image {
-                image: assets["earth_small.jpg"].clone(),
+                asset_name: String::from("earth.jpg"),
             },
         },
     )));

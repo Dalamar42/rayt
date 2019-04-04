@@ -1,4 +1,6 @@
 use camera::{Camera, CameraSave};
+use data::assets::Assets;
+use failure::Error;
 use world::background::Background;
 use world::geometry::bounding_volume_hierarchy::BoundingVolumeHierarchyNode;
 use world::WorldSave;
@@ -10,6 +12,7 @@ pub struct Config {
     background: Background,
     bvh: BoundingVolumeHierarchyNode,
     num_of_rays: u64,
+    assets: Assets,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -43,6 +46,10 @@ impl Config {
     pub fn bvh(&self) -> &BoundingVolumeHierarchyNode {
         &self.bvh
     }
+
+    pub fn assets(&self) -> &Assets {
+        &self.assets
+    }
 }
 
 impl ConfigSave {
@@ -54,7 +61,7 @@ impl ConfigSave {
         }
     }
 
-    pub fn into_config(mut self, width: u32, num_of_rays: u64) -> Config {
+    pub fn into_config(mut self, width: u32, num_of_rays: u64, assets: Assets) -> Config {
         let camera = self.camera.into_camera();
 
         let time_start = camera.time_start();
@@ -71,7 +78,12 @@ impl ConfigSave {
             background: self.world.background().clone(),
             bvh,
             num_of_rays,
+            assets,
         }
+    }
+
+    pub fn validate(&self, assets: &Assets) -> Result<(), Error> {
+        self.world.validate(assets)
     }
 }
 

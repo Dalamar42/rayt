@@ -28,13 +28,12 @@ mod world;
 use cli::{get_cli_config, CliCommand, ConfigPath, ImagePath, OutputPath};
 use config::Config;
 use console::style;
-use data::image::Image;
+use data::assets::Assets;
 use failure::Error;
 use generator::{build_scene_config, Scene};
 use indicatif::{HumanDuration, ProgressBar, ProgressStyle};
-use io::{load_config, load_image, save_config};
+use io::{load_config, save_config};
 use renderer::render;
-use std::collections::HashMap;
 use std::process;
 use std::time::Instant;
 
@@ -56,6 +55,7 @@ fn run() -> Result<(), Error> {
             output_path,
             num_of_rays,
             num_of_threads,
+            asset_paths,
         } => {
             run_render(
                 &cli_config.config_path(),
@@ -63,10 +63,11 @@ fn run() -> Result<(), Error> {
                 &output_path,
                 *num_of_rays,
                 *num_of_threads,
+                asset_paths,
             )?;
         }
-        CliCommand::GENERATE { scene, asset_paths } => {
-            run_generate(&scene, &asset_paths, &cli_config.config_path())?;
+        CliCommand::GENERATE { scene } => {
+            run_generate(&scene, &cli_config.config_path())?;
         }
     };
 
@@ -79,6 +80,7 @@ fn run_render(
     output_path: &OutputPath,
     num_of_rays: u64,
     num_of_threads: usize,
+    asset_paths: &[ImagePath],
 ) -> Result<(), Error> {
     rayon::ThreadPoolBuilder::new()
         .num_threads(num_of_threads)
@@ -86,20 +88,25 @@ fn run_render(
 
     let started = Instant::now();
 
-    println!("{} Loading image yaml...", style("[1/4]").bold().dim());
+    let mut step_logger = StepLogger::new(6);
+
+    step_logger.log("Loading image yaml");
     let config_save = load_config(config_path)?;
 
-    println!(
-        "{} Creating config (constructing BVH)...",
-        style("[2/4]").bold().dim()
-    );
-    let config = config_save.into_config(width, num_of_rays);
+    step_logger.log("Loading assets");
+    let assets = Assets::new(asset_paths)?;
 
-    println!("{} Rendering...", style("[3/4]").bold().dim());
+    step_logger.log("Validating assets");
+    config_save.validate(&assets)?;
+
+    step_logger.log("Creating config (constructing BVH)");
+    let config = config_save.into_config(width, num_of_rays, assets);
+
+    step_logger.log("Rendering");
     let progress_bar = progress_bar(&config);
     let image = render(&config, &progress_bar);
 
-    println!("{} Printing image...", style("[4/4]").bold().dim());
+    step_logger.log("Printing image");
     io::write_image(image, output_path)?;
 
     println!("Done in {}", HumanDuration(started.elapsed()));
@@ -107,24 +114,13 @@ fn run_render(
     Ok(())
 }
 
-fn run_generate(
-    scene: &Scene,
-    asset_paths: &[ImagePath],
-    config_path: &ConfigPath,
-) -> Result<(), Error> {
-    println!("{} Loading assets...", style("[1/3]").bold().dim());
-    let mut assets: HashMap<String, Image> = HashMap::new();
-    for asset_path in asset_paths {
-        assets.insert(
-            String::from(asset_path.file_name()),
-            load_image(asset_path)?,
-        );
-    }
+fn run_generate(scene: &Scene, config_path: &ConfigPath) -> Result<(), Error> {
+    let mut step_logger = StepLogger::new(2);
 
-    println!("{} Generating scene...", style("[2/3]").bold().dim());
-    let config_save = build_scene_config(scene, &assets);
+    step_logger.log("Generating scene");
+    let config_save = build_scene_config(scene);
 
-    println!("{} Writing image yaml...", style("[3/3]").bold().dim());
+    step_logger.log("Writing image yaml");
     save_config(config_path, config_save)?;
     Ok(())
 }
@@ -140,4 +136,34 @@ fn progress_bar(config: &Config) -> ProgressBar {
     progress_bar.set_draw_delta(bar_size / 1000);
 
     progress_bar
+}
+
+struct StepLogger {
+    step: u8,
+    num_of_steps: u8,
+}
+
+impl StepLogger {
+    fn new(num_of_steps: u8) -> StepLogger {
+        StepLogger {
+            step: 1,
+            num_of_steps,
+        }
+    }
+
+    fn log(&mut self, msg: &str) {
+        assert!(self.step <= self.num_of_steps);
+
+        println!(
+            "{}{}{}{}{} {}...",
+            style("[").bold().dim(),
+            style(self.step.to_string()).bold().dim(),
+            style("/").bold().dim(),
+            style(self.num_of_steps.to_string()).bold().dim(),
+            style("]").bold().dim(),
+            msg,
+        );
+
+        self.step += 1
+    }
 }

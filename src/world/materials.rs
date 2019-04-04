@@ -1,6 +1,8 @@
 use camera::Ray;
+use data::assets::Assets;
 use data::colour::Colour;
 use data::vector::Vector;
+use failure::Error;
 use rand::prelude::*;
 use world::texture::Texture;
 
@@ -46,23 +48,42 @@ impl Material {
         hit_point: &Vector,
         surface_normal: &Vector,
         texture_coords: (f64, f64),
+        assets: &Assets,
     ) -> Option<ScatterResult> {
         match self {
+            Material::Lambertian { albedo } => scatter_lambertian(
+                &albedo,
+                ray,
+                hit_point,
+                surface_normal,
+                texture_coords,
+                assets,
+            ),
+            Material::Metal { albedo, fuzz } => scatter_metal(
+                &albedo,
+                *fuzz,
+                ray,
+                hit_point,
+                surface_normal,
+                texture_coords,
+            ),
+            Material::Dielectric { refractive_index } => scatter_dielectric(
+                *refractive_index,
+                ray,
+                hit_point,
+                surface_normal,
+                texture_coords,
+            ),
+        }
+    }
+
+    pub fn validate(&self, assets: &Assets) -> Result<(), Error> {
+        match self {
             Material::Lambertian { albedo } => {
-                scatter_lambertian(
-                    &albedo, ray, hit_point, surface_normal, texture_coords,
-                )
+                albedo.validate(assets)?;
+                Ok(())
             }
-            Material::Metal { albedo, fuzz } => {
-                scatter_metal(
-                    &albedo, *fuzz, ray, hit_point, surface_normal, texture_coords,
-                )
-            }
-            Material::Dielectric { refractive_index } => {
-                scatter_dielectric(
-                    *refractive_index, ray, hit_point, surface_normal, texture_coords,
-                )
-            }
+            _ => Ok(()),
         }
     }
 }
@@ -115,6 +136,7 @@ fn scatter_lambertian(
     hit_point: &Vector,
     surface_normal: &Vector,
     texture_coords: (f64, f64),
+    assets: &Assets,
 ) -> Option<ScatterResult> {
     let diffuse = random_point_in_unit_sphere();
     let target = hit_point + surface_normal + diffuse;
@@ -123,7 +145,7 @@ fn scatter_lambertian(
 
     Some(ScatterResult {
         ray,
-        attenuation: albedo.value(texture_coords, &hit_point),
+        attenuation: albedo.value(texture_coords, &hit_point, &assets),
     })
 }
 

@@ -1,5 +1,7 @@
 use camera::Ray;
+use data::assets::Assets;
 use data::vector::Vector;
+use failure::Error;
 use std::f64::consts::PI;
 use world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
 use world::geometry::{Geometry, HitResult};
@@ -108,6 +110,10 @@ impl Geometry for Sphere {
     fn bounding_box(&self, _time_start: f64, _time_end: f64) -> Option<AxisAlignedBoundingBox> {
         sphere_bounding_box(&self.centre, self.radius)
     }
+
+    fn validate(&self, assets: &Assets) -> Result<(), Error> {
+        Ok(self.material.validate(assets)?)
+    }
 }
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
@@ -183,6 +189,10 @@ impl Geometry for MovingSphere {
         let box_end = sphere_bounding_box(&self.centre(time_end), self.radius);
 
         AxisAlignedBoundingBox::surrounding(&box_start, &box_end)
+    }
+
+    fn validate(&self, assets: &Assets) -> Result<(), Error> {
+        self.material.validate(assets)
     }
 }
 

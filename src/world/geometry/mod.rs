@@ -3,7 +3,9 @@ pub mod bounding_volume_hierarchy;
 pub mod sphere;
 
 use camera::Ray;
+use data::assets::Assets;
 use data::vector::Vector;
+use failure::Error;
 use std::cmp::Ordering;
 use world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
 use world::materials::Material;
@@ -26,6 +28,8 @@ pub trait Geometry: Sync {
     fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> HitResult;
 
     fn bounding_box(&self, time_start: f64, time_end: f64) -> Option<AxisAlignedBoundingBox>;
+
+    fn validate(&self, assets: &Assets) -> Result<(), Error>;
 }
 
 impl Ord for HitResult {
