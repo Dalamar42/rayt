@@ -1,23 +1,23 @@
 [package]
-name = "ray-tracing-in-a-weekend"
+name = "rayt"
 version = "0.1.0"
 authors = ["Thomas Maroulis <thomasmaroulis@gmail.com>"]
 
 [dependencies]
-assert_approx_eq = "1.1.0"
-itertools = "0.8.0"
-rand = "0.6.5"
-rayon = "1.0.3"
-indicatif = "0.11.0"
-console = "0.7.5"
-clap = "~2.32"
-serde = "1.0.89"
-serde_yaml = "0.8.8"
-serde_derive = "1.0.89"
-typetag = "0.1.1"
-failure = "0.1.5"
-failure_derive = "0.1.5"
-image = "0.21.0"
+assert_approx_eq = "^1.1.0"
+itertools = "^0.8.0"
+rand = "^0.6.5"
+rayon = "^1.0.3"
+indicatif = "^0.11.0"
+console = "^0.7.5"
+clap = "^2.32"
+serde = "^1.0.89"
+serde_yaml = "^0.8.8"
+serde_derive = "^1.0.89"
+typetag = "^0.1.1"
+failure = "^0.1.5"
+failure_derive = "^0.1.5"
+image = "^0.21.0"
 
 [profile.release]
 debug = true
