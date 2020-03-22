@@ -90,6 +90,7 @@ impl ConfigSave {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use camera::Lens;
     use data::colour::Colour;
     use data::vector::Vector;
     use world::background::Background;
@@ -103,10 +104,8 @@ mod tests {
             &Vector::new(13.0, 2.0, 3.0),
             &Vector::new(0.0, 0.0, 0.0),
             &Vector::new(0.0, 1.0, 0.0),
-            20.0,
             1.5,
-            0.1,
-            10.0,
+            Lens::new(20.0, 0.1, 10.0),
             0.0,
             1.0,
         );
@@ -173,10 +172,8 @@ mod tests {
             &Vector::new(13.0, 2.0, 3.0),
             &Vector::new(0.0, 0.0, 0.0),
             &Vector::new(0.0, 1.0, 0.0),
-            20.0,
             1.5,
-            0.1,
-            10.0,
+            Lens::new(20.0, 0.1, 10.0),
             0.0,
             1.0,
         );

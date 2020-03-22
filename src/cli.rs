@@ -137,14 +137,7 @@ pub fn get_cli_config() -> Result<CliConfig, Error> {
                         .long("scene")
                         .takes_value(true)
                         .required(true)
-                        .possible_values(&[
-                            &Scene::Basic.to_string(),
-                            &Scene::Cover.to_string(),
-                            &Scene::CoverWithMotionBlur.to_string(),
-                            &Scene::CoverWithChecker.to_string(),
-                            &Scene::Perlin.to_string(),
-                            &Scene::Planets.to_string(),
-                        ])
+                        .possible_values(&Scene::variants())
                         .help("the name of the scene to generate"),
                 ),
         ])

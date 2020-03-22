@@ -1,10 +1,11 @@
-use camera::CameraSave;
+use camera::{CameraSave, Lens};
 use config::ConfigSave;
 use data::colour::Colour;
 use data::vector::Vector;
 use rand::prelude::*;
-use std::str::FromStr;
 use world::background::Background;
+use world::geometry::flip_normals::FlipNormals;
+use world::geometry::rectangle::{XyRect, XzRect, YzRect};
 use world::geometry::sphere::{MovingSphere, Sphere};
 use world::geometry::Geometry;
 use world::materials::Material;
@@ -12,41 +13,17 @@ use world::texture::perlin::build_noise_config;
 use world::texture::Texture;
 use world::WorldSave;
 
-pub enum Scene {
-    Basic,
-    Cover,
-    CoverWithMotionBlur,
-    CoverWithChecker,
-    Perlin,
-    Planets,
-}
-
-impl FromStr for Scene {
-    type Err = ();
-
-    fn from_str(scene: &str) -> Result<Scene, ()> {
-        match scene {
-            "basic" => Ok(Scene::Basic),
-            "cover" => Ok(Scene::Cover),
-            "cover_with_motion_blur" => Ok(Scene::CoverWithMotionBlur),
-            "cover_with_checker" => Ok(Scene::CoverWithChecker),
-            "perlin" => Ok(Scene::Perlin),
-            "planets" => Ok(Scene::Planets),
-            _ => Err(()),
-        }
-    }
-}
-
-impl ToString for Scene {
-    fn to_string(&self) -> String {
-        match self {
-            Scene::Basic => String::from("basic"),
-            Scene::Cover => String::from("cover"),
-            Scene::CoverWithMotionBlur => String::from("cover_with_motion_blur"),
-            Scene::CoverWithChecker => String::from("cover_with_checker"),
-            Scene::Perlin => String::from("perlin"),
-            Scene::Planets => String::from("planets"),
-        }
+arg_enum! {
+    #[derive(Debug)]
+    pub enum Scene {
+        Basic,
+        Cover,
+        CoverWithMotionBlur,
+        CoverWithChecker,
+        Perlin,
+        Planets,
+        SimpleLight,
+        CornellBox,
     }
 }
 
@@ -58,6 +35,8 @@ pub fn build_scene_config(scene: &Scene) -> ConfigSave {
         Scene::CoverWithChecker => build_book_cover_config(true, true),
         Scene::Perlin => build_perlin_demo_config(),
         Scene::Planets => build_planets_config(),
+        Scene::SimpleLight => build_simple_light_config(),
+        Scene::CornellBox => build_cornell_box_config(),
     }
 }
 
@@ -68,10 +47,8 @@ fn build_basic_config() -> ConfigSave {
         &Vector::new(0.0, 0.2, 3.0),
         &Vector::new(0.0, 0.0, -1.0),
         &Vector::new(0.0, 1.0, 0.0),
-        35.0,
         aspect,
-        0.1,
-        4.0,
+        Lens::new(35.0, 0.1, 4.0),
         0.0,
         1.0,
     );
@@ -128,10 +105,8 @@ fn build_book_cover_config(motion_blur: bool, checker_texture: bool) -> ConfigSa
         &Vector::new(13.0, 2.0, 3.0),
         &Vector::new(0.0, 0.0, 0.0),
         &Vector::new(0.0, 1.0, 0.0),
-        20.0,
         aspect,
-        0.1,
-        10.0,
+        Lens::new(20.0, 0.1, 10.0),
         0.0,
         1.0,
     );
@@ -276,10 +251,8 @@ fn build_perlin_demo_config() -> ConfigSave {
         &Vector::new(13.0, 2.0, 3.0),
         &Vector::new(0.0, 0.0, 0.0),
         &Vector::new(0.0, 1.0, 0.0),
-        20.0,
         aspect,
-        0.0,
-        10.0,
+        Lens::new(20.0, 0.0, 10.0),
         0.0,
         1.0,
     );
@@ -327,10 +300,8 @@ fn build_planets_config() -> ConfigSave {
         &Vector::new(1.0, 0.2, 7.5),
         &Vector::new(0.0, 0.0, -1.0),
         &Vector::new(0.0, 1.0, 0.0),
-        35.0,
         aspect,
-        0.0,
-        4.0,
+        Lens::new(45.0, 0.0, 4.0),
         0.0,
         1.0,
     );
@@ -385,6 +356,149 @@ fn build_planets_config() -> ConfigSave {
 
     let background_colour = Colour::new(1.0, 1.0, 1.0);
     let background = Background::new(background_colour, background_colour);
+
+    let world = WorldSave::new(background, geometries);
+
+    ConfigSave::new(aspect, camera, world)
+}
+
+fn build_simple_light_config() -> ConfigSave {
+    let aspect = 1.5;
+
+    let camera = CameraSave::new(
+        &Vector::new(13.0, 3.5, 3.0),
+        &Vector::new(0.0, 1.5, 0.0),
+        &Vector::new(0.0, 1.0, 0.0),
+        aspect,
+        Lens::new(40.0, 0.0, 10.0),
+        0.0,
+        1.0,
+    );
+
+    let mut geometries: Vec<Box<dyn Geometry>> = Vec::with_capacity(4);
+
+    geometries.push(Box::from(Sphere::new(
+        Vector::new(0.0, -1000.0, 0.0),
+        1000.0,
+        Material::Lambertian {
+            albedo: Texture::Noise {
+                base_colour: Colour::new(1.0, 1.0, 1.0),
+                scale: 5.0,
+                noisiness: 10.0,
+                noise_config: build_noise_config(),
+            },
+        },
+    )));
+    geometries.push(Box::from(Sphere::new(
+        Vector::new(0.0, 2.0, 0.0),
+        2.0,
+        Material::Lambertian {
+            albedo: Texture::Noise {
+                base_colour: Colour::new(1.0, 1.0, 1.0),
+                scale: 5.0,
+                noisiness: 10.0,
+                noise_config: build_noise_config(),
+            },
+        },
+    )));
+    geometries.push(Box::from(Sphere::new(
+        Vector::new(0.0, 7.0, 0.0),
+        2.0,
+        Material::DiffuseLight {
+            texture: Texture::Constant {
+                colour: Colour::new(4.0, 4.0, 4.0),
+            },
+        },
+    )));
+    geometries.push(Box::from(XyRect::new(
+        (3.0, 5.0),
+        (1.0, 3.0),
+        -2.0,
+        Material::DiffuseLight {
+            texture: Texture::Constant {
+                colour: Colour::new(4.0, 4.0, 4.0),
+            },
+        },
+    )));
+
+    let black = Colour::new(0.0, 0.0, 0.0);
+    let background = Background::new(black, black);
+
+    let world = WorldSave::new(background, geometries);
+
+    ConfigSave::new(aspect, camera, world)
+}
+
+fn build_cornell_box_config() -> ConfigSave {
+    let aspect = 1.0;
+
+    let camera = CameraSave::new(
+        &Vector::new(278.0, 278.0, -800.0),
+        &Vector::new(278.0, 278.0, 0.0),
+        &Vector::new(0.0, 1.0, 0.0),
+        aspect,
+        Lens::new(40.0, 0.0, 10.0),
+        0.0,
+        1.0,
+    );
+
+    let mut geometries: Vec<Box<dyn Geometry>> = Vec::with_capacity(6);
+
+    let red = Material::Lambertian {
+        albedo: Texture::Constant {
+            colour: Colour::new(0.65, 0.05, 0.05),
+        },
+    };
+    let white = Material::Lambertian {
+        albedo: Texture::Constant {
+            colour: Colour::new(0.73, 0.73, 0.73),
+        },
+    };
+    let green = Material::Lambertian {
+        albedo: Texture::Constant {
+            colour: Colour::new(0.12, 0.45, 0.15),
+        },
+    };
+    let light = Material::DiffuseLight {
+        texture: Texture::Constant {
+            colour: Colour::new(15.0, 15.0, 15.0),
+        },
+    };
+
+    geometries.push(Box::new(FlipNormals::new(Box::new(YzRect::new(
+        (0.0, 555.0),
+        (0.0, 555.0),
+        555.0,
+        green,
+    )))));
+    geometries.push(Box::new(YzRect::new((0.0, 555.0), (0.0, 555.0), 0.0, red)));
+    geometries.push(Box::new(FlipNormals::new(Box::new(XzRect::new(
+        (213.0, 343.0),
+        (227.0, 332.0),
+        554.0,
+        light,
+    )))));
+    geometries.push(Box::new(FlipNormals::new(Box::new(XzRect::new(
+        (0.0, 555.0),
+        (0.0, 555.0),
+        555.0,
+        white.clone(),
+    )))));
+    geometries.push(Box::new(XzRect::new(
+        (0.0, 555.0),
+        (0.0, 555.0),
+        0.0,
+        white.clone(),
+    )));
+    geometries.push(Box::new(FlipNormals::new(Box::new(XyRect::new(
+        (0.0, 555.0),
+        (0.0, 555.0),
+        555.0,
+        white,
+    )))));
+
+    let black = Colour::new(0.0, 0.0, 0.0);
+    let background = Background::new(black, black);
 
     let world = WorldSave::new(background, geometries);
 

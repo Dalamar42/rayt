@@ -48,6 +48,23 @@ pub struct Camera {
 }
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
+pub struct Lens {
+    vertical_fov: f64,
+    aperture: f64,
+    focus_distance: f64,
+}
+
+impl Lens {
+    pub fn new(vertical_fov: f64, aperture: f64, focus_distance: f64) -> Lens {
+        Lens {
+            vertical_fov,
+            aperture,
+            focus_distance,
+        }
+    }
+}
+
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct CameraSave {
     look_from: Vector,
     look_at: Vector,
@@ -61,15 +78,12 @@ pub struct CameraSave {
 }
 
 impl CameraSave {
-    #[allow(clippy::too_many_arguments)]
     pub fn new(
         look_from: &Vector,
         look_at: &Vector,
         view_up: &Vector,
-        vertical_fov: f64,
         aspect: f64,
-        aperture: f64,
-        focus_distance: f64,
+        lens: Lens,
         time_start: f64,
         time_end: f64,
     ) -> CameraSave {
@@ -77,10 +91,10 @@ impl CameraSave {
             look_from: *look_from,
             look_at: *look_at,
             view_up: *view_up,
-            vertical_fov,
+            vertical_fov: lens.vertical_fov,
             aspect,
-            aperture,
-            focus_distance,
+            aperture: lens.aperture,
+            focus_distance: lens.focus_distance,
             time_start,
             time_end,
         }

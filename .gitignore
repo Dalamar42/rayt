@@ -3,6 +3,7 @@
 
 # Output images
 *.ppm
+output/
 
 # Flamegraphs
 *.svg

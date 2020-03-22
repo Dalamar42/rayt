@@ -1,0 +1,124 @@
+---
+aspect: 1.0
+camera:
+  look_from:
+    x: 278.0
+    y: 278.0
+    z: -800.0
+  look_at:
+    x: 278.0
+    y: 278.0
+    z: 0.0
+  view_up:
+    x: 0.0
+    y: 1.0
+    z: 0.0
+  vertical_fov: 40.0
+  aspect: 1.0
+  aperture: 0.0
+  focus_distance: 10.0
+  time_start: 0.0
+  time_end: 1.0
+world:
+  background:
+    top:
+      r: 0.0
+      g: 0.0
+      b: 0.0
+    bottom:
+      r: 0.0
+      g: 0.0
+      b: 0.0
+  geometries:
+    - type: FlipNormals
+      geometry:
+        type: YzRect
+        y0: 0.0
+        y1: 555.0
+        z0: 0.0
+        z1: 555.0
+        k: 555.0
+        material:
+          Lambertian:
+            albedo:
+              Constant:
+                colour:
+                  r: 0.12
+                  g: 0.45
+                  b: 0.15
+    - type: YzRect
+      y0: 0.0
+      y1: 555.0
+      z0: 0.0
+      z1: 555.0
+      k: 0.0
+      material:
+        Lambertian:
+          albedo:
+            Constant:
+              colour:
+                r: 0.65
+                g: 0.05
+                b: 0.05
+    - type: FlipNormals
+      geometry:
+        type: XzRect
+        x0: 213.0
+        x1: 343.0
+        z0: 227.0
+        z1: 332.0
+        k: 554.0
+        material:
+          DiffuseLight:
+            texture:
+              Constant:
+                colour:
+                  r: 15.0
+                  g: 15.0
+                  b: 15.0
+    - type: FlipNormals
+      geometry:
+        type: XzRect
+        x0: 0.0
+        x1: 555.0
+        z0: 0.0
+        z1: 555.0
+        k: 555.0
+        material:
+          Lambertian:
+            albedo:
+              Constant:
+                colour:
+                  r: 0.73
+                  g: 0.73
+                  b: 0.73
+    - type: XzRect
+      x0: 0.0
+      x1: 555.0
+      z0: 0.0
+      z1: 555.0
+      k: 0.0
+      material:
+        Lambertian:
+          albedo:
+            Constant:
+              colour:
+                r: 0.73
+                g: 0.73
+                b: 0.73
+    - type: FlipNormals
+      geometry:
+        type: XyRect
+        x0: 0.0
+        x1: 555.0
+        y0: 0.0
+        y1: 555.0
+        k: 555.0
+        material:
+          Lambertian:
+            albedo:
+              Constant:
+                colour:
+                  r: 0.73
+                  g: 0.73
+                  b: 0.73
