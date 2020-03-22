@@ -1,8 +1,10 @@
 use image::Rgb;
+use std::cmp::min;
 use std::iter::Sum;
 use std::ops;
 
 const RGB_MULT: f64 = 255.99;
+const RGB_MAX: u64 = 255;
 
 #[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 pub struct Colour {
@@ -37,7 +39,7 @@ impl Colour {
     }
 
     pub fn unit_vector(&self) -> Colour {
-        let k = 1.0 / &self.len();
+        let k = 1.0 / self.len();
         Colour {
             r: self.r * k,
             g: self.g * k,
@@ -50,15 +52,20 @@ impl Colour {
     }
 
     pub fn to_rgb(&self) -> Rgb<u8> {
-        assert!(0.0 <= self.r && self.r <= 1.0);
-        assert!(0.0 <= self.g && self.g <= 1.0);
-        assert!(0.0 <= self.b && self.b <= 1.0);
+        assert!(0.0 <= self.r);
+        assert!(0.0 <= self.g);
+        assert!(0.0 <= self.b);
 
-        Rgb([
-            (RGB_MULT * self.r) as u8,
-            (RGB_MULT * self.g) as u8,
-            (RGB_MULT * self.b) as u8,
-        ])
+        let r = (RGB_MULT * self.r) as u64;
+        let g = (RGB_MULT * self.g) as u64;
+        let b = (RGB_MULT * self.b) as u64;
+
+        // Lights can be brighter than (1.0, 1.0, 1.0) so we must cap to max value for RGB
+        let r = min(r, RGB_MAX) as u8;
+        let g = min(g, RGB_MAX) as u8;
+        let b = min(b, RGB_MAX) as u8;
+
+        Rgb([r, g, b])
     }
 
     pub fn gamma_2(self) -> Colour {
