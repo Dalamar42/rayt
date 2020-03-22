@@ -39,6 +39,9 @@ pub enum Material {
         // Air: 1.0, Glass: 1.3-1.7, Diamond: 2.4
         refractive_index: f64,
     },
+    DiffuseLight {
+        texture: Texture,
+    },
 }
 
 impl Material {
@@ -74,6 +77,14 @@ impl Material {
                 surface_normal,
                 texture_coords,
             ),
+            Material::DiffuseLight { .. } => None,
+        }
+    }
+
+    pub fn emitted(&self, texture_coords: (f64, f64), point: &Vector, assets: &Assets) -> Colour {
+        match self {
+            Material::DiffuseLight { texture } => texture.value(texture_coords, point, assets),
+            _ => Colour::new(0.0, 0.0, 0.0),
         }
     }
 

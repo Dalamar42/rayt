@@ -6,6 +6,8 @@ use indicatif::ProgressBar;
 use rayon::prelude::*;
 use world::geometry::{Geometry, HitResult};
 
+const MAX_SCATTER_DEPTH: u64 = 50;
+
 pub fn render(config: &Config, progress_bar: &ProgressBar) -> Image {
     let pixels: Vec<Pixel> = config
         .camera()
@@ -33,13 +35,10 @@ fn pixel(row: u32, col: u32, config: &Config, progress_bar: &ProgressBar) -> Pix
 }
 
 fn colour(ray: &Ray, config: &Config, depth: u64) -> Colour {
-    if depth >= 50 {
-        return Colour::new(0.0, 0.0, 0.0);
-    }
-
     let hit_result = config.bvh().hit(&ray, 0.001, core::f64::MAX);
 
-    let maybe_scatter_result = match hit_result {
+    match hit_result {
+        HitResult::Miss => background(&ray, &config),
         HitResult::Hit {
             ray,
             point,
@@ -47,19 +46,27 @@ fn colour(ray: &Ray, config: &Config, depth: u64) -> Colour {
             material,
             texture_coords,
             ..
-        } => material.scatter(
-            &ray,
-            &point,
-            &surface_normal,
-            texture_coords,
-            &config.assets(),
-        ),
-        HitResult::Miss => None,
-    };
+        } => {
+            let emitted = material.emitted(texture_coords, &point, &config.assets());
 
-    match maybe_scatter_result {
-        Some(scatter) => scatter.attenuation() * colour(&scatter.ray(), &config, depth + 1),
-        None => background(&ray, &config),
+            if depth >= MAX_SCATTER_DEPTH {
+                return emitted;
+            }
+
+            let maybe_scatter = material.scatter(
+                &ray,
+                &point,
+                &surface_normal,
+                texture_coords,
+                &config.assets(),
+            );
+            match maybe_scatter {
+                Some(scatter) => {
+                    emitted + scatter.attenuation() * colour(&scatter.ray(), &config, depth + 1)
+                }
+                None => emitted,
+            }
+        }
     }
 }
 
