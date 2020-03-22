@@ -17,25 +17,11 @@ impl FlipNormals {
 
 #[typetag::serde]
 impl Geometry for FlipNormals {
-    fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> HitResult {
-        match self.geometry.hit(ray, tmin, tmax) {
-            HitResult::Miss => HitResult::Miss,
-            HitResult::Hit {
-                distance,
-                ray,
-                point,
-                surface_normal,
-                material,
-                texture_coords,
-            } => HitResult::Hit {
-                distance,
-                ray,
-                point,
-                surface_normal: -surface_normal,
-                material,
-                texture_coords,
-            },
-        }
+    fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<HitResult> {
+        self.geometry.hit(ray, tmin, tmax).map(|hit| HitResult {
+            surface_normal: -hit.surface_normal,
+            ..hit
+        })
     }
 
     fn bounding_box(&self, time_start: f64, time_end: f64) -> Option<AxisAlignedBoundingBox> {

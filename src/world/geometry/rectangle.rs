@@ -38,21 +38,21 @@ impl XyRect {
 
 #[typetag::serde]
 impl Geometry for XyRect {
-    fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> HitResult {
+    fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<HitResult> {
         let distance = (self.k - ray.origin().z()) / ray.direction().z();
 
         if distance < tmin || distance > tmax {
-            return HitResult::Miss;
+            return None;
         }
 
         let x = ray.origin().x() + distance * ray.direction().x();
         let y = ray.origin().y() + distance * ray.direction().y();
 
         if x < self.x0 || x > self.x1 || y < self.y0 || y > self.y1 {
-            return HitResult::Miss;
+            return None;
         }
 
-        HitResult::Hit {
+        Some(HitResult {
             distance,
             ray: ray.clone(),
             point: ray.point(distance),
@@ -62,7 +62,7 @@ impl Geometry for XyRect {
                 (x - self.x0) / (self.x1 - self.x0),
                 (y - self.y0) / (self.y1 - self.y0),
             ),
-        }
+        })
     }
 
     fn bounding_box(&self, _time_start: f64, _time_end: f64) -> Option<AxisAlignedBoundingBox> {
@@ -109,21 +109,21 @@ impl XzRect {
 
 #[typetag::serde]
 impl Geometry for XzRect {
-    fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> HitResult {
+    fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<HitResult> {
         let distance = (self.k - ray.origin().y()) / ray.direction().y();
 
         if distance < tmin || distance > tmax {
-            return HitResult::Miss;
+            return None;
         }
 
         let x = ray.origin().x() + distance * ray.direction().x();
         let z = ray.origin().z() + distance * ray.direction().z();
 
         if x < self.x0 || x > self.x1 || z < self.z0 || z > self.z1 {
-            return HitResult::Miss;
+            return None;
         }
 
-        HitResult::Hit {
+        Some(HitResult {
             distance,
             ray: ray.clone(),
             point: ray.point(distance),
@@ -133,7 +133,7 @@ impl Geometry for XzRect {
                 (x - self.x0) / (self.x1 - self.x0),
                 (z - self.z0) / (self.z1 - self.z0),
             ),
-        }
+        })
     }
 
     fn bounding_box(&self, _time_start: f64, _time_end: f64) -> Option<AxisAlignedBoundingBox> {
@@ -180,21 +180,21 @@ impl YzRect {
 
 #[typetag::serde]
 impl Geometry for YzRect {
-    fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> HitResult {
+    fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<HitResult> {
         let distance = (self.k - ray.origin().x()) / ray.direction().x();
 
         if distance < tmin || distance > tmax {
-            return HitResult::Miss;
+            return None;
         }
 
         let y = ray.origin().y() + distance * ray.direction().y();
         let z = ray.origin().z() + distance * ray.direction().z();
 
         if y < self.y0 || y > self.y1 || z < self.z0 || z > self.z1 {
-            return HitResult::Miss;
+            return None;
         }
 
-        HitResult::Hit {
+        Some(HitResult {
             distance,
             ray: ray.clone(),
             point: ray.point(distance),
@@ -204,7 +204,7 @@ impl Geometry for YzRect {
                 (y - self.y0) / (self.y1 - self.y0),
                 (z - self.z0) / (self.z1 - self.z0),
             ),
-        }
+        })
     }
 
     fn bounding_box(&self, _time_start: f64, _time_end: f64) -> Option<AxisAlignedBoundingBox> {
@@ -238,14 +238,8 @@ mod tests {
         };
         let ray = Ray::new(Vector::new(0.5, 0.5, 1.0), Vector::new(0.0, 0.0, -1.0), 0.0);
 
-        let hit_result = rect.hit(&ray, 0.0, core::f64::MAX);
-
-        match hit_result {
-            HitResult::Hit { distance, .. } => {
-                assert_approx_eq!(distance, 1.0);
-            }
-            _ => panic!(),
-        }
+        let hit_result = rect.hit(&ray, 0.0, core::f64::MAX).unwrap();
+        assert_approx_eq!(hit_result.distance, 1.0);
     }
 
     #[test]
@@ -262,14 +256,8 @@ mod tests {
         };
         let ray = Ray::new(Vector::new(0.5, 0.5, 1.0), Vector::new(0.0, 0.0, -1.0), 0.0);
 
-        let hit_result = rect.hit(&ray, 0.0, core::f64::MAX);
-
-        match hit_result {
-            HitResult::Hit { surface_normal, .. } => {
-                assert_eq!(surface_normal, Vector::new(0.0, 0.0, 1.0));
-            }
-            _ => panic!(),
-        }
+        let hit_result = rect.hit(&ray, 0.0, core::f64::MAX).unwrap();
+        assert_eq!(hit_result.surface_normal, Vector::new(0.0, 0.0, 1.0));
     }
 
     #[test]
@@ -307,16 +295,10 @@ mod tests {
         };
         let ray = Ray::new(Vector::new(0.5, 0.5, 1.0), Vector::new(0.0, 0.0, -1.0), 0.0);
 
-        let hit_result = rect.hit(&ray, 0.0, core::f64::MAX);
-
-        match hit_result {
-            HitResult::Hit { texture_coords, .. } => {
-                let (u, v) = texture_coords;
-                assert_approx_eq!(u, 0.5);
-                assert_approx_eq!(v, 0.5);
-            }
-            _ => panic!(),
-        }
+        let hit_result = rect.hit(&ray, 0.0, core::f64::MAX).unwrap();
+        let (u, v) = hit_result.texture_coords;
+        assert_approx_eq!(u, 0.5);
+        assert_approx_eq!(v, 0.5);
     }
 
     #[test]
@@ -333,14 +315,8 @@ mod tests {
         };
         let ray = Ray::new(Vector::new(0.5, 1.0, 0.5), Vector::new(0.0, -1.0, 0.0), 0.0);
 
-        let hit_result = rect.hit(&ray, 0.0, core::f64::MAX);
-
-        match hit_result {
-            HitResult::Hit { distance, .. } => {
-                assert_approx_eq!(distance, 1.0);
-            }
-            _ => panic!(),
-        }
+        let hit_result = rect.hit(&ray, 0.0, core::f64::MAX).unwrap();
+        assert_approx_eq!(hit_result.distance, 1.0);
     }
 
     #[test]
@@ -357,14 +333,8 @@ mod tests {
         };
         let ray = Ray::new(Vector::new(0.5, 1.0, 0.5), Vector::new(0.0, -1.0, 0.0), 0.0);
 
-        let hit_result = rect.hit(&ray, 0.0, core::f64::MAX);
-
-        match hit_result {
-            HitResult::Hit { surface_normal, .. } => {
-                assert_eq!(surface_normal, Vector::new(0.0, 1.0, 0.0));
-            }
-            _ => panic!(),
-        }
+        let hit_result = rect.hit(&ray, 0.0, core::f64::MAX).unwrap();
+        assert_eq!(hit_result.surface_normal, Vector::new(0.0, 1.0, 0.0));
     }
 
     #[test]
@@ -402,16 +372,10 @@ mod tests {
         };
         let ray = Ray::new(Vector::new(0.5, 1.0, 0.5), Vector::new(0.0, -1.0, 0.0), 0.0);
 
-        let hit_result = rect.hit(&ray, 0.0, core::f64::MAX);
-
-        match hit_result {
-            HitResult::Hit { texture_coords, .. } => {
-                let (u, v) = texture_coords;
-                assert_approx_eq!(u, 0.5);
-                assert_approx_eq!(v, 0.5);
-            }
-            _ => panic!(),
-        }
+        let hit_result = rect.hit(&ray, 0.0, core::f64::MAX).unwrap();
+        let (u, v) = hit_result.texture_coords;
+        assert_approx_eq!(u, 0.5);
+        assert_approx_eq!(v, 0.5);
     }
 
     #[test]
@@ -428,14 +392,8 @@ mod tests {
         };
         let ray = Ray::new(Vector::new(1.0, 0.5, 0.5), Vector::new(-1.0, 0.0, 0.0), 0.0);
 
-        let hit_result = rect.hit(&ray, 0.0, core::f64::MAX);
-
-        match hit_result {
-            HitResult::Hit { distance, .. } => {
-                assert_approx_eq!(distance, 1.0);
-            }
-            _ => panic!(),
-        }
+        let hit_result = rect.hit(&ray, 0.0, core::f64::MAX).unwrap();
+        assert_approx_eq!(hit_result.distance, 1.0);
     }
 
     #[test]
@@ -452,14 +410,8 @@ mod tests {
         };
         let ray = Ray::new(Vector::new(1.0, 0.5, 0.5), Vector::new(-1.0, 0.0, 0.0), 0.0);
 
-        let hit_result = rect.hit(&ray, 0.0, core::f64::MAX);
-
-        match hit_result {
-            HitResult::Hit { surface_normal, .. } => {
-                assert_eq!(surface_normal, Vector::new(1.0, 0.0, 0.0));
-            }
-            _ => panic!(),
-        }
+        let hit_result = rect.hit(&ray, 0.0, core::f64::MAX).unwrap();
+        assert_eq!(hit_result.surface_normal, Vector::new(1.0, 0.0, 0.0));
     }
 
     #[test]
@@ -497,15 +449,9 @@ mod tests {
         };
         let ray = Ray::new(Vector::new(1.0, 0.5, 0.5), Vector::new(-1.0, 0.0, 0.0), 0.0);
 
-        let hit_result = rect.hit(&ray, 0.0, core::f64::MAX);
-
-        match hit_result {
-            HitResult::Hit { texture_coords, .. } => {
-                let (u, v) = texture_coords;
-                assert_approx_eq!(u, 0.5);
-                assert_approx_eq!(v, 0.5);
-            }
-            _ => panic!(),
-        }
+        let hit_result = rect.hit(&ray, 0.0, core::f64::MAX).unwrap();
+        let (u, v) = hit_result.texture_coords;
+        assert_approx_eq!(u, 0.5);
+        assert_approx_eq!(v, 0.5);
     }
 }

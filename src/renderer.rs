@@ -4,7 +4,7 @@ use data::colour::Colour;
 use data::image::{Image, Pixel};
 use indicatif::ProgressBar;
 use rayon::prelude::*;
-use world::geometry::{Geometry, HitResult};
+use world::geometry::Geometry;
 
 const MAX_SCATTER_DEPTH: u64 = 50;
 
@@ -35,39 +35,32 @@ fn pixel(row: u32, col: u32, config: &Config, progress_bar: &ProgressBar) -> Pix
 }
 
 fn colour(ray: &Ray, config: &Config, depth: u64) -> Colour {
-    let hit_result = config.bvh().hit(&ray, 0.001, core::f64::MAX);
-
-    match hit_result {
-        HitResult::Miss => background(&ray, &config),
-        HitResult::Hit {
-            ray,
-            point,
-            surface_normal,
-            material,
-            texture_coords,
-            ..
-        } => {
-            let emitted = material.emitted(texture_coords, &point, &config.assets());
+    config
+        .bvh()
+        .hit(&ray, 0.001, core::f64::MAX)
+        .map(|hit| {
+            let emitted = hit
+                .material
+                .emitted(hit.texture_coords, &hit.point, &config.assets());
 
             if depth >= MAX_SCATTER_DEPTH {
                 return emitted;
             }
 
-            let maybe_scatter = material.scatter(
-                &ray,
-                &point,
-                &surface_normal,
-                texture_coords,
-                &config.assets(),
-            );
-            match maybe_scatter {
-                Some(scatter) => {
+            hit.material
+                .scatter(
+                    &hit.ray,
+                    &hit.point,
+                    &hit.surface_normal,
+                    hit.texture_coords,
+                    &config.assets(),
+                )
+                .map(|scatter| {
                     emitted + scatter.attenuation() * colour(&scatter.ray(), &config, depth + 1)
-                }
-                None => emitted,
-            }
-        }
-    }
+                })
+                .unwrap_or(emitted)
+        })
+        .unwrap_or_else(|| background(&ray, &config))
 }
 
 fn background(ray: &Ray, config: &Config) -> Colour {

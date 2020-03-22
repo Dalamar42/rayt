@@ -75,13 +75,12 @@ impl Cube {
 
 #[typetag::serde]
 impl Geometry for Cube {
-    fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> HitResult {
+    fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<HitResult> {
         self.rectangles
             .iter()
-            .map(|rect| rect.hit(ray, tmin, tmax))
+            .flat_map(|rect| rect.hit(ray, tmin, tmax))
             .sorted()
             .min()
-            .unwrap_or(HitResult::Miss)
     }
 
     fn bounding_box(&self, _time_start: f64, _time_end: f64) -> Option<AxisAlignedBoundingBox> {
@@ -112,31 +111,16 @@ mod tests {
         );
 
         let ray = Ray::new(Vector::new(2.0, 0.5, 0.5), Vector::new(-1.0, 0.0, 0.0), 0.0);
-        let hit_result = cube.hit(&ray, 0.0, core::f64::MAX);
-        match hit_result {
-            HitResult::Hit { distance, .. } => {
-                assert_approx_eq!(distance, 1.0);
-            }
-            _ => panic!(),
-        }
+        let hit_result = cube.hit(&ray, 0.0, core::f64::MAX).unwrap();
+        assert_approx_eq!(hit_result.distance, 1.0);
 
         let ray = Ray::new(Vector::new(-1.0, 0.5, 0.5), Vector::new(1.0, 0.0, 0.0), 0.0);
-        let hit_result = cube.hit(&ray, 0.0, core::f64::MAX);
-        match hit_result {
-            HitResult::Hit { distance, .. } => {
-                assert_approx_eq!(distance, 1.0);
-            }
-            _ => panic!(),
-        }
+        let hit_result = cube.hit(&ray, 0.0, core::f64::MAX).unwrap();
+        assert_approx_eq!(hit_result.distance, 1.0);
 
         let ray = Ray::new(Vector::new(0.5, 2.0, 0.5), Vector::new(0.0, -1.0, 0.0), 0.0);
-        let hit_result = cube.hit(&ray, 0.0, core::f64::MAX);
-        match hit_result {
-            HitResult::Hit { distance, .. } => {
-                assert_approx_eq!(distance, 1.0);
-            }
-            _ => panic!(),
-        }
+        let hit_result = cube.hit(&ray, 0.0, core::f64::MAX).unwrap();
+        assert_approx_eq!(hit_result.distance, 1.0);
     }
 
     #[test]
@@ -150,14 +134,8 @@ mod tests {
         );
 
         let ray = Ray::new(Vector::new(2.0, 0.5, 0.5), Vector::new(-1.0, 0.0, 0.0), 0.0);
-        let hit_result = cube.hit(&ray, 0.0, core::f64::MAX);
-
-        match hit_result {
-            HitResult::Hit { surface_normal, .. } => {
-                assert_eq!(surface_normal, Vector::new(1.0, 0.0, 0.0));
-            }
-            _ => panic!(),
-        }
+        let hit_result = cube.hit(&ray, 0.0, core::f64::MAX).unwrap();
+        assert_eq!(hit_result.surface_normal, Vector::new(1.0, 0.0, 0.0));
     }
 
     #[test]
@@ -187,15 +165,9 @@ mod tests {
         );
 
         let ray = Ray::new(Vector::new(2.0, 0.5, 0.5), Vector::new(-1.0, 0.0, 0.0), 0.0);
-        let hit_result = cube.hit(&ray, 0.0, core::f64::MAX);
-
-        match hit_result {
-            HitResult::Hit { texture_coords, .. } => {
-                let (u, v) = texture_coords;
-                assert_approx_eq!(u, 0.5);
-                assert_approx_eq!(v, 0.5);
-            }
-            _ => panic!(),
-        }
+        let hit_result = cube.hit(&ray, 0.0, core::f64::MAX).unwrap();
+        let (u, v) = hit_result.texture_coords;
+        assert_approx_eq!(u, 0.5);
+        assert_approx_eq!(v, 0.5);
     }
 }

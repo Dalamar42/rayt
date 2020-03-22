@@ -153,94 +153,29 @@ impl BoundingVolumeHierarchyNode {
 
 #[typetag::serde]
 impl Geometry for BoundingVolumeHierarchyNode {
-    fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> HitResult {
+    fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<HitResult> {
         if !self.bounding_box.intersection(&ray, tmin, tmax) {
-            return HitResult::Miss;
+            return None;
         }
 
         let hit_left = match &self.left {
             Some(geometry) => geometry.hit(&ray, tmin, tmax),
-            None => HitResult::Miss,
+            None => None,
         };
         let hit_right = match &self.right {
             Some(geometry) => geometry.hit(&ray, tmin, tmax),
-            None => HitResult::Miss,
+            None => None,
         };
 
         match (hit_left, hit_right) {
-            (HitResult::Miss, HitResult::Miss) => HitResult::Miss,
-            (
-                HitResult::Miss,
-                HitResult::Hit {
-                    distance,
-                    ray,
-                    point,
-                    surface_normal,
-                    material,
-                    texture_coords,
-                },
-            ) => HitResult::Hit {
-                distance,
-                ray,
-                point,
-                surface_normal,
-                material,
-                texture_coords,
-            },
-            (
-                HitResult::Hit {
-                    distance,
-                    ray,
-                    point,
-                    surface_normal,
-                    material,
-                    texture_coords,
-                },
-                HitResult::Miss,
-            ) => HitResult::Hit {
-                distance,
-                ray,
-                point,
-                surface_normal,
-                material,
-                texture_coords,
-            },
-            (
-                HitResult::Hit {
-                    distance: dl,
-                    ray: rl,
-                    point: pl,
-                    surface_normal: sl,
-                    material: ml,
-                    texture_coords: tl,
-                },
-                HitResult::Hit {
-                    distance: dr,
-                    ray: rr,
-                    point: pr,
-                    surface_normal: sr,
-                    material: mr,
-                    texture_coords: tr,
-                },
-            ) => {
-                if dl < dr {
-                    HitResult::Hit {
-                        distance: dl,
-                        ray: rl,
-                        point: pl,
-                        surface_normal: sl,
-                        material: ml,
-                        texture_coords: tl,
-                    }
+            (None, None) => None,
+            (None, Some(hit)) => Some(hit),
+            (Some(hit), None) => Some(hit),
+            (Some(left_hit), Some(right_hit)) => {
+                if left_hit.distance < right_hit.distance {
+                    Some(left_hit)
                 } else {
-                    HitResult::Hit {
-                        distance: dr,
-                        ray: rr,
-                        point: pr,
-                        surface_normal: sr,
-                        material: mr,
-                        texture_coords: tr,
-                    }
+                    Some(right_hit)
                 }
             }
         }

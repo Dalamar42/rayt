@@ -28,34 +28,20 @@ impl RotateY {
 
 #[typetag::serde]
 impl Geometry for RotateY {
-    fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> HitResult {
+    fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<HitResult> {
         let origin = ray.origin().rotate_y(-self.angle);
         let direction = ray.direction().rotate_y(-self.angle);
         let rotated_ray = Ray::new(origin, direction, ray.time());
 
-        match self.geometry.hit(&rotated_ray, tmin, tmax) {
-            HitResult::Miss => HitResult::Miss,
-            HitResult::Hit {
-                distance,
-                ray,
+        self.geometry.hit(&rotated_ray, tmin, tmax).map(|hit| {
+            let point = hit.point.rotate_y(self.angle);
+            let surface_normal = hit.surface_normal.rotate_y(self.angle);
+            HitResult {
                 point,
                 surface_normal,
-                material,
-                texture_coords,
-            } => {
-                let point = point.rotate_y(self.angle);
-                let surface_normal = surface_normal.rotate_y(self.angle);
-
-                HitResult::Hit {
-                    distance,
-                    ray,
-                    point,
-                    surface_normal,
-                    material,
-                    texture_coords,
-                }
+                ..hit
             }
-        }
+        })
     }
 
     fn bounding_box(&self, time_start: f64, time_end: f64) -> Option<AxisAlignedBoundingBox> {
@@ -108,23 +94,13 @@ mod tests {
         );
 
         let ray = Ray::new(Vector::new(3.0, 0.5, 0.5), Vector::new(-1.0, 0.0, 0.0), 0.0);
-        let hit_result = cube.hit(&ray, 0.0, core::f64::MAX);
-        match hit_result {
-            HitResult::Hit { distance, .. } => {
-                assert_approx_eq!(distance, 1.0);
-            }
-            _ => panic!(),
-        }
+        let hit_result = cube.hit(&ray, 0.0, core::f64::MAX).unwrap();
+        assert_approx_eq!(hit_result.distance, 1.0);
 
         let rotated_cube = cube.rotate_y(-90.0).unwrap();
 
-        let hit_result = rotated_cube.hit(&ray, 0.0, core::f64::MAX);
-        match hit_result {
-            HitResult::Hit { distance, .. } => {
-                assert_approx_eq!(distance, 3.0);
-            }
-            _ => panic!(),
-        }
+        let hit_result = rotated_cube.hit(&ray, 0.0, core::f64::MAX).unwrap();
+        assert_approx_eq!(hit_result.distance, 3.0);
     }
 
     #[test]
@@ -138,27 +114,17 @@ mod tests {
         );
 
         let ray = Ray::new(Vector::new(3.0, 0.5, 0.5), Vector::new(-1.0, 0.0, 0.0), 0.0);
-        let hit_result = cube.hit(&ray, 0.0, core::f64::MAX);
-        match hit_result {
-            HitResult::Hit { surface_normal, .. } => {
-                assert_approx_eq!(surface_normal.x(), 1.0);
-                assert_approx_eq!(surface_normal.y(), 0.0);
-                assert_approx_eq!(surface_normal.z(), 0.0);
-            }
-            _ => panic!(),
-        }
+        let hit_result = cube.hit(&ray, 0.0, core::f64::MAX).unwrap();
+        assert_approx_eq!(hit_result.surface_normal.x(), 1.0);
+        assert_approx_eq!(hit_result.surface_normal.y(), 0.0);
+        assert_approx_eq!(hit_result.surface_normal.z(), 0.0);
 
         let rotated_cube = cube.rotate_y(-90.0).unwrap();
 
-        let hit_result = rotated_cube.hit(&ray, 0.0, core::f64::MAX);
-        match hit_result {
-            HitResult::Hit { surface_normal, .. } => {
-                assert_approx_eq!(surface_normal.x(), 1.0);
-                assert_approx_eq!(surface_normal.y(), 0.0);
-                assert_approx_eq!(surface_normal.z(), 0.0);
-            }
-            _ => panic!(),
-        }
+        let hit_result = rotated_cube.hit(&ray, 0.0, core::f64::MAX).unwrap();
+        assert_approx_eq!(hit_result.surface_normal.x(), 1.0);
+        assert_approx_eq!(hit_result.surface_normal.y(), 0.0);
+        assert_approx_eq!(hit_result.surface_normal.z(), 0.0);
     }
 
     #[test]
@@ -202,26 +168,16 @@ mod tests {
         );
 
         let ray = Ray::new(Vector::new(3.0, 0.5, 0.5), Vector::new(-1.0, 0.0, 0.0), 0.0);
-        let hit_result = cube.hit(&ray, 0.0, core::f64::MAX);
-        match hit_result {
-            HitResult::Hit { texture_coords, .. } => {
-                let (u, v) = texture_coords;
-                assert_approx_eq!(u, 0.5);
-                assert_approx_eq!(v, 0.5);
-            }
-            _ => panic!(),
-        }
+        let hit_result = cube.hit(&ray, 0.0, core::f64::MAX).unwrap();
+        let (u, v) = hit_result.texture_coords;
+        assert_approx_eq!(u, 0.5);
+        assert_approx_eq!(v, 0.5);
 
         let rotated_cube = cube.rotate_y(-90.0).unwrap();
 
-        let hit_result = rotated_cube.hit(&ray, 0.0, core::f64::MAX);
-        match hit_result {
-            HitResult::Hit { texture_coords, .. } => {
-                let (u, v) = texture_coords;
-                assert_approx_eq!(u, 0.25);
-                assert_approx_eq!(v, 0.5);
-            }
-            _ => panic!(),
-        }
+        let hit_result = rotated_cube.hit(&ray, 0.0, core::f64::MAX).unwrap();
+        let (u, v) = hit_result.texture_coords;
+        assert_approx_eq!(u, 0.25);
+        assert_approx_eq!(v, 0.5);
     }
 }
