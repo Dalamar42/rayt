@@ -61,6 +61,7 @@ pub struct CameraSave {
 }
 
 impl CameraSave {
+    #[allow(clippy::too_many_arguments)]
     pub fn new(
         look_from: &Vector,
         look_at: &Vector,

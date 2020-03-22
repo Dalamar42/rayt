@@ -181,7 +181,7 @@ mod tests {
 
         assert_eq!(
             Some(expected_box),
-            AxisAlignedBoundingBox::surrounding_many(&vec![Some(box_a), Some(box_b), Some(box_c),]),
+            AxisAlignedBoundingBox::surrounding_many(&[Some(box_a), Some(box_b), Some(box_c),]),
         );
     }
 
@@ -194,7 +194,7 @@ mod tests {
 
         assert_eq!(
             None,
-            AxisAlignedBoundingBox::surrounding_many(&vec![Some(box_a), Some(box_b), None,]),
+            AxisAlignedBoundingBox::surrounding_many(&[Some(box_a), Some(box_b), None,]),
         );
     }
 }

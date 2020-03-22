@@ -302,7 +302,7 @@ mod tests {
     fn test_colour_len() {
         let colour = Colour::new(1.0, 2.0, 3.0);
 
-        let expected_result = 3.7416573867739413;
+        let expected_result = 3.741_657_386_773_941_3;
 
         assert_approx_eq!(colour.len(), expected_result);
     }
@@ -358,10 +358,10 @@ mod tests {
             b: 2.0,
         };
 
-        assert_eq!(colour_a.clone() + colour_b.clone(), expected_result);
-        assert_eq!(&colour_a + colour_b.clone(), expected_result);
-        assert_eq!(colour_a.clone() + &colour_b, expected_result);
-        assert_eq!(&colour_a + &colour_b, expected_result);
+        assert_eq!(colour_a + colour_b, expected_result);
+        assert_eq!(colour_a + colour_b, expected_result);
+        assert_eq!(colour_a + colour_b, expected_result);
+        assert_eq!(colour_a + colour_b, expected_result);
     }
 
     #[test]
@@ -383,10 +383,10 @@ mod tests {
             b: 0.0,
         };
 
-        assert_eq!(colour_a.clone() * colour_b.clone(), expected_result);
-        assert_eq!(&colour_a * colour_b.clone(), expected_result);
-        assert_eq!(colour_a.clone() * &colour_b, expected_result);
-        assert_eq!(&colour_a * &colour_b, expected_result);
+        assert_eq!(colour_a * colour_b, expected_result);
+        assert_eq!(colour_a * colour_b, expected_result);
+        assert_eq!(colour_a * colour_b, expected_result);
+        assert_eq!(colour_a * colour_b, expected_result);
     }
 
     #[test]
@@ -404,10 +404,10 @@ mod tests {
             b: 4.0,
         };
 
-        assert_eq!(colour.clone() + scalar, expected_result);
-        assert_eq!(&colour + scalar, expected_result);
-        assert_eq!(scalar + colour.clone(), expected_result);
-        assert_eq!(scalar + &colour, expected_result);
+        assert_eq!(colour + scalar, expected_result);
+        assert_eq!(colour + scalar, expected_result);
+        assert_eq!(scalar + colour, expected_result);
+        assert_eq!(scalar + colour, expected_result);
     }
 
     #[test]
@@ -425,10 +425,10 @@ mod tests {
             b: 4.0,
         };
 
-        assert_eq!(colour.clone() * scalar, expected_result);
-        assert_eq!(&colour * scalar, expected_result);
-        assert_eq!(scalar * colour.clone(), expected_result);
-        assert_eq!(scalar * &colour, expected_result);
+        assert_eq!(colour * scalar, expected_result);
+        assert_eq!(colour * scalar, expected_result);
+        assert_eq!(scalar * colour, expected_result);
+        assert_eq!(scalar * colour, expected_result);
     }
 
     #[test]
@@ -446,7 +446,7 @@ mod tests {
             b: 1.0,
         };
 
-        assert_eq!(colour.clone() / scalar, expected_result);
-        assert_eq!(&colour / scalar, expected_result);
+        assert_eq!(colour / scalar, expected_result);
+        assert_eq!(colour / scalar, expected_result);
     }
 }

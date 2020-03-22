@@ -275,7 +275,7 @@ mod tests {
             z: 3.0,
         };
 
-        let expected_result = 3.7416573867739413;
+        let expected_result = 3.741_657_386_773_941_3;
 
         assert_approx_eq!(vector.len(), expected_result);
     }
@@ -310,10 +310,10 @@ mod tests {
             z: 2.0,
         };
 
-        assert_eq!(vector_a.clone() + vector_b.clone(), expected_result);
-        assert_eq!(&vector_a + vector_b.clone(), expected_result);
-        assert_eq!(vector_a.clone() + &vector_b, expected_result);
-        assert_eq!(&vector_a + &vector_b, expected_result);
+        assert_eq!(vector_a + vector_b, expected_result);
+        assert_eq!(vector_a + vector_b, expected_result);
+        assert_eq!(vector_a + vector_b, expected_result);
+        assert_eq!(vector_a + vector_b, expected_result);
     }
 
     #[test]
@@ -335,10 +335,10 @@ mod tests {
             z: 2.0,
         };
 
-        assert_eq!(vector_a.clone() - vector_b.clone(), expected_result);
-        assert_eq!(&vector_a - vector_b.clone(), expected_result);
-        assert_eq!(vector_a.clone() - &vector_b, expected_result);
-        assert_eq!(&vector_a - &vector_b, expected_result);
+        assert_eq!(vector_a - vector_b, expected_result);
+        assert_eq!(vector_a - vector_b, expected_result);
+        assert_eq!(vector_a - vector_b, expected_result);
+        assert_eq!(vector_a - vector_b, expected_result);
     }
 
     #[test]
@@ -355,7 +355,7 @@ mod tests {
             z: -2.0,
         };
 
-        assert_eq!(-vector.clone(), expected_result);
+        assert_eq!(-vector, expected_result);
         assert_eq!(-&vector, expected_result);
     }
 
@@ -374,10 +374,10 @@ mod tests {
             z: 4.0,
         };
 
-        assert_eq!(vector.clone() + scalar, expected_result);
-        assert_eq!(&vector + scalar, expected_result);
-        assert_eq!(scalar + vector.clone(), expected_result);
-        assert_eq!(scalar + &vector, expected_result);
+        assert_eq!(vector + scalar, expected_result);
+        assert_eq!(vector + scalar, expected_result);
+        assert_eq!(scalar + vector, expected_result);
+        assert_eq!(scalar + vector, expected_result);
     }
 
     #[test]
@@ -395,10 +395,10 @@ mod tests {
             z: 4.0,
         };
 
-        assert_eq!(vector.clone() * scalar, expected_result);
-        assert_eq!(&vector * scalar, expected_result);
-        assert_eq!(scalar * vector.clone(), expected_result);
-        assert_eq!(scalar * &vector, expected_result);
+        assert_eq!(vector * scalar, expected_result);
+        assert_eq!(vector * scalar, expected_result);
+        assert_eq!(scalar * vector, expected_result);
+        assert_eq!(scalar * vector, expected_result);
     }
 
     #[test]
@@ -416,8 +416,8 @@ mod tests {
             z: 1.0,
         };
 
-        assert_eq!(vector.clone() / scalar, expected_result);
-        assert_eq!(&vector / scalar, expected_result);
+        assert_eq!(vector / scalar, expected_result);
+        assert_eq!(vector / scalar, expected_result);
     }
 
     #[test]

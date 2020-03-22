@@ -10,6 +10,7 @@ use std::cmp::Ordering;
 use world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
 use world::materials::Material;
 
+#[allow(clippy::large_enum_variant)]
 #[derive(Debug, Clone)]
 pub enum HitResult {
     Hit {
@@ -97,7 +98,7 @@ mod tests {
             },
             texture_coords: (1.0, 0.5),
         };
-        assert_ne!(hit_result.clone(), other_hit_result.clone());
+        assert_ne!(hit_result, other_hit_result);
     }
 
     #[test]

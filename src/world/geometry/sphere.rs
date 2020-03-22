@@ -215,17 +215,10 @@ mod tests {
         let hit_result = sphere.hit(&ray, 0.0, core::f64::MAX);
 
         match hit_result {
-            HitResult::Hit {
-                distance,
-                point: _,
-                ray: _,
-                surface_normal: _,
-                material: _,
-                texture_coords: _,
-            } => {
+            HitResult::Hit { distance, .. } => {
                 assert_approx_eq!(distance, 1.0);
             }
-            _ => assert!(false),
+            _ => panic!(),
         }
     }
 
@@ -243,17 +236,10 @@ mod tests {
         let hit_result = sphere.hit(&ray, 0.0, core::f64::MAX);
 
         match hit_result {
-            HitResult::Hit {
-                distance,
-                point: _,
-                ray: _,
-                surface_normal: _,
-                material: _,
-                texture_coords: _,
-            } => {
+            HitResult::Hit { distance, .. } => {
                 assert_approx_eq!(distance, 1.0);
             }
-            _ => assert!(false),
+            _ => panic!(),
         }
     }
 
@@ -271,17 +257,10 @@ mod tests {
         let hit_result = sphere.hit(&ray, 0.0, core::f64::MAX);
 
         match hit_result {
-            HitResult::Hit {
-                distance: _,
-                point: _,
-                ray: _,
-                surface_normal,
-                material: _,
-                texture_coords: _,
-            } => {
+            HitResult::Hit { surface_normal, .. } => {
                 assert_eq!(surface_normal, Vector::new(-1.0, 0.0, 0.0));
             }
-            _ => assert!(false),
+            _ => panic!(),
         }
     }
 
@@ -299,17 +278,10 @@ mod tests {
         let hit_result = sphere.hit(&ray, 0.0, core::f64::MAX);
 
         match hit_result {
-            HitResult::Hit {
-                distance: _,
-                point: _,
-                ray: _,
-                surface_normal,
-                material: _,
-                texture_coords: _,
-            } => {
+            HitResult::Hit { surface_normal, .. } => {
                 assert_eq!(surface_normal, Vector::new(1.0, 0.0, 0.0));
             }
-            _ => assert!(false),
+            _ => panic!(),
         }
     }
 

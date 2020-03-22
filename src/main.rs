@@ -131,7 +131,7 @@ fn progress_bar(config: &Config) -> ProgressBar {
         .progress_chars("##-");
     let bar_size = u64::from(config.height() * config.width());
     let progress_bar = ProgressBar::new(bar_size);
-    progress_bar.set_style(progress_style.clone());
+    progress_bar.set_style(progress_style);
     progress_bar.tick();
     progress_bar.set_draw_delta(bar_size / 1000);
 
