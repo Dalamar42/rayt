@@ -1,5 +1,7 @@
 pub mod axis_aligned_bounding_box;
 pub mod bounding_volume_hierarchy;
+pub mod flip_normals;
+pub mod rectangle;
 pub mod sphere;
 
 use camera::Ray;
