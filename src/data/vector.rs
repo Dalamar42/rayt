@@ -1,3 +1,4 @@
+use std::f64::consts::PI;
 use std::ops;
 
 #[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
@@ -33,7 +34,7 @@ impl Vector {
     }
 
     pub fn unit_vector(&self) -> Vector {
-        let k = 1.0 / &self.len();
+        let k = 1.0 / self.len();
         Vector {
             x: self.x * k,
             y: self.y * k,
@@ -50,6 +51,58 @@ impl Vector {
             x: lhs.y * rhs.z - lhs.z * rhs.y,
             y: -(lhs.x * rhs.z - lhs.z * rhs.x),
             z: lhs.x * rhs.y - lhs.y * rhs.x,
+        }
+    }
+
+    pub fn min(&self, vector: &Vector) -> Vector {
+        Vector {
+            x: if vector.x() < self.x() {
+                vector.x()
+            } else {
+                self.x()
+            },
+            y: if vector.y() < self.y() {
+                vector.y()
+            } else {
+                self.y()
+            },
+            z: if vector.z() < self.z() {
+                vector.z()
+            } else {
+                self.z()
+            },
+        }
+    }
+
+    pub fn max(&self, vector: &Vector) -> Vector {
+        Vector {
+            x: if vector.x() > self.x() {
+                vector.x()
+            } else {
+                self.x()
+            },
+            y: if vector.y() > self.y() {
+                vector.y()
+            } else {
+                self.y()
+            },
+            z: if vector.z() > self.z() {
+                vector.z()
+            } else {
+                self.z()
+            },
+        }
+    }
+
+    pub fn rotate_y(&self, angle: f64) -> Vector {
+        let radians = (PI / 180.0) * angle;
+        let sin_theta = radians.sin();
+        let cos_theta = radians.cos();
+
+        Vector {
+            x: cos_theta * self.x + sin_theta * self.z,
+            y: self.y,
+            z: -sin_theta * self.x + cos_theta * self.z,
         }
     }
 }
@@ -458,5 +511,40 @@ mod tests {
         };
 
         assert_eq!(Vector::cross(&vector_a, &vector_b), expected_result);
+    }
+
+    #[test]
+    fn test_vector_min() {
+        let vector_a = Vector::new(1.0, 2.0, 3.0);
+        let vector_b = Vector::new(1.0, 1.0, 4.0);
+
+        let expected_result = Vector::new(1.0, 1.0, 3.0);
+
+        assert_eq!(vector_a.min(&vector_b), expected_result);
+    }
+
+    #[test]
+    fn test_vector_max() {
+        let vector_a = Vector::new(1.0, 2.0, 3.0);
+        let vector_b = Vector::new(1.0, 1.0, 4.0);
+
+        let expected_result = Vector::new(1.0, 2.0, 4.0);
+
+        assert_eq!(vector_a.max(&vector_b), expected_result);
+    }
+
+    #[test]
+    fn test_rotate_y() {
+        let vector = Vector::new(3.0, 0.5, 0.5);
+
+        let rotated = vector.rotate_y(90.0);
+        assert_approx_eq!(rotated.x(), 0.5);
+        assert_approx_eq!(rotated.y(), 0.5);
+        assert_approx_eq!(rotated.z(), -3.0);
+
+        let rotated = vector.rotate_y(-90.0);
+        assert_approx_eq!(rotated.x(), -0.5);
+        assert_approx_eq!(rotated.y(), 0.5);
+        assert_approx_eq!(rotated.z(), 3.0);
     }
 }

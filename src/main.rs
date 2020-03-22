@@ -118,7 +118,7 @@ fn run_generate(scene: &Scene, config_path: &ConfigPath) -> Result<(), Error> {
     let mut step_logger = StepLogger::new(2);
 
     step_logger.log("Generating scene");
-    let config_save = build_scene_config(scene);
+    let config_save = build_scene_config(scene)?;
 
     step_logger.log("Writing image yaml");
     save_config(config_path, config_save)?;

@@ -2,6 +2,7 @@ use camera::{CameraSave, Lens};
 use config::ConfigSave;
 use data::colour::Colour;
 use data::vector::Vector;
+use failure::Error;
 use rand::prelude::*;
 use world::background::Background;
 use world::geometry::cube::Cube;
@@ -27,7 +28,7 @@ arg_enum! {
     }
 }
 
-pub fn build_scene_config(scene: &Scene) -> ConfigSave {
+pub fn build_scene_config(scene: &Scene) -> Result<ConfigSave, Error> {
     match scene {
         Scene::Basic => build_basic_config(),
         Scene::Cover => build_book_cover_config(false, false),
@@ -40,7 +41,7 @@ pub fn build_scene_config(scene: &Scene) -> ConfigSave {
     }
 }
 
-fn build_basic_config() -> ConfigSave {
+fn build_basic_config() -> Result<ConfigSave, Error> {
     let aspect = 2.0;
 
     let camera = CameraSave::new(
@@ -95,10 +96,10 @@ fn build_basic_config() -> ConfigSave {
 
     let world = WorldSave::new(background, geometries);
 
-    ConfigSave::new(aspect, camera, world)
+    Ok(ConfigSave::new(aspect, camera, world))
 }
 
-fn build_book_cover_config(motion_blur: bool, checker_texture: bool) -> ConfigSave {
+fn build_book_cover_config(motion_blur: bool, checker_texture: bool) -> Result<ConfigSave, Error> {
     let aspect = 1.5;
 
     let camera = CameraSave::new(
@@ -241,10 +242,10 @@ fn build_book_cover_config(motion_blur: bool, checker_texture: bool) -> ConfigSa
 
     let world = WorldSave::new(background, geometries);
 
-    ConfigSave::new(aspect, camera, world)
+    Ok(ConfigSave::new(aspect, camera, world))
 }
 
-fn build_perlin_demo_config() -> ConfigSave {
+fn build_perlin_demo_config() -> Result<ConfigSave, Error> {
     let aspect = 1.5;
 
     let camera = CameraSave::new(
@@ -290,10 +291,10 @@ fn build_perlin_demo_config() -> ConfigSave {
 
     let world = WorldSave::new(background, geometries);
 
-    ConfigSave::new(aspect, camera, world)
+    Ok(ConfigSave::new(aspect, camera, world))
 }
 
-fn build_planets_config() -> ConfigSave {
+fn build_planets_config() -> Result<ConfigSave, Error> {
     let aspect = 2.0;
 
     let camera = CameraSave::new(
@@ -359,10 +360,10 @@ fn build_planets_config() -> ConfigSave {
 
     let world = WorldSave::new(background, geometries);
 
-    ConfigSave::new(aspect, camera, world)
+    Ok(ConfigSave::new(aspect, camera, world))
 }
 
-fn build_simple_light_config() -> ConfigSave {
+fn build_simple_light_config() -> Result<ConfigSave, Error> {
     let aspect = 1.5;
 
     let camera = CameraSave::new(
@@ -426,10 +427,10 @@ fn build_simple_light_config() -> ConfigSave {
 
     let world = WorldSave::new(background, geometries);
 
-    ConfigSave::new(aspect, camera, world)
+    Ok(ConfigSave::new(aspect, camera, world))
 }
 
-fn build_cornell_box_config() -> ConfigSave {
+fn build_cornell_box_config() -> Result<ConfigSave, Error> {
     let aspect = 1.0;
 
     let camera = CameraSave::new(
@@ -484,21 +485,29 @@ fn build_cornell_box_config() -> ConfigSave {
     geometries.push(Box::new(
         XyRect::new((0.0, 555.0), (0.0, 555.0), 555.0, white.clone()).flip(),
     ));
-    geometries.push(Box::new(Cube::new(
-        Vector::new(130.0, 0.0, 65.0),
-        Vector::new(295.0, 165.0, 230.0),
-        white.clone(),
-    )));
-    geometries.push(Box::new(Cube::new(
-        Vector::new(265.0, 0.0, 295.0),
-        Vector::new(430.0, 330.0, 460.0),
-        white,
-    )));
+    geometries.push(Box::new(
+        Cube::new(
+            Vector::new(0.0, 0.0, 0.0),
+            Vector::new(165.0, 165.0, 165.0),
+            white.clone(),
+        )
+        .rotate_y(-18.0)?
+        .translate(Vector::new(130.0, 0.0, 65.0)),
+    ));
+    geometries.push(Box::new(
+        Cube::new(
+            Vector::new(0.0, 0.0, 0.0),
+            Vector::new(165.0, 330.0, 165.0),
+            white,
+        )
+        .rotate_y(15.0)?
+        .translate(Vector::new(265.0, 0.0, 295.0)),
+    ));
 
     let black = Colour::new(0.0, 0.0, 0.0);
     let background = Background::new(black, black);
 
     let world = WorldSave::new(background, geometries);
 
-    ConfigSave::new(aspect, camera, world)
+    Ok(ConfigSave::new(aspect, camera, world))
 }

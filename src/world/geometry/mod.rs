@@ -3,6 +3,7 @@ pub mod bounding_volume_hierarchy;
 pub mod cube;
 pub mod flip_normals;
 pub mod rectangle;
+pub mod rotate;
 pub mod sphere;
 pub mod translate;
 
@@ -13,6 +14,7 @@ use failure::Error;
 use std::cmp::Ordering;
 use world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
 use world::geometry::flip_normals::FlipNormals;
+use world::geometry::rotate::RotateY;
 use world::geometry::translate::Translate;
 use world::materials::Material;
 
@@ -50,6 +52,14 @@ pub trait Geometry: Sync {
         Self: 'static + Sized,
     {
         Translate::new(Box::new(self), offset)
+    }
+
+    fn rotate_y(self, angle: f64) -> Result<RotateY, Error>
+    where
+        Self: 'static + Sized,
+    {
+        let rotate = RotateY::new(Box::new(self), angle)?;
+        Ok(rotate)
     }
 }
 
