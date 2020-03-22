@@ -31,7 +31,7 @@ use console::style;
 use data::assets::Assets;
 use failure::Error;
 use generator::{build_scene_config, Scene};
-use indicatif::{HumanDuration, ProgressBar, ProgressStyle};
+use indicatif::{FormattedDuration, ProgressBar, ProgressStyle};
 use io::{load_config, save_config};
 use renderer::render;
 use std::process;
@@ -109,7 +109,7 @@ fn run_render(
     step_logger.log("Printing image");
     io::write_image(image, output_path)?;
 
-    println!("Done in {}", HumanDuration(started.elapsed()));
+    println!("Done in {}", FormattedDuration(started.elapsed()));
 
     Ok(())
 }
