@@ -4,6 +4,7 @@ use data::colour::Colour;
 use data::vector::Vector;
 use rand::prelude::*;
 use world::background::Background;
+use world::geometry::cube::Cube;
 use world::geometry::flip_normals::FlipNormals;
 use world::geometry::rectangle::{XyRect, XzRect, YzRect};
 use world::geometry::sphere::{MovingSphere, Sphere};
@@ -442,7 +443,7 @@ fn build_cornell_box_config() -> ConfigSave {
         1.0,
     );
 
-    let mut geometries: Vec<Box<dyn Geometry>> = Vec::with_capacity(6);
+    let mut geometries: Vec<Box<dyn Geometry>> = Vec::with_capacity(8);
 
     let red = Material::Lambertian {
         albedo: Texture::Constant {
@@ -494,8 +495,18 @@ fn build_cornell_box_config() -> ConfigSave {
         (0.0, 555.0),
         (0.0, 555.0),
         555.0,
-        white,
+        white.clone(),
     )))));
+    geometries.push(Box::new(Cube::new(
+        Vector::new(130.0, 0.0, 65.0),
+        Vector::new(295.0, 165.0, 230.0),
+        white.clone(),
+    )));
+    geometries.push(Box::new(Cube::new(
+        Vector::new(265.0, 0.0, 295.0),
+        Vector::new(430.0, 330.0, 460.0),
+        white,
+    )));
 
     let black = Colour::new(0.0, 0.0, 0.0);
     let background = Background::new(black, black);
