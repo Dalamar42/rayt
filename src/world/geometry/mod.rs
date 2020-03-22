@@ -4,6 +4,7 @@ pub mod cube;
 pub mod flip_normals;
 pub mod rectangle;
 pub mod sphere;
+pub mod translate;
 
 use camera::Ray;
 use data::assets::Assets;
@@ -12,6 +13,7 @@ use failure::Error;
 use std::cmp::Ordering;
 use world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
 use world::geometry::flip_normals::FlipNormals;
+use world::geometry::translate::Translate;
 use world::materials::Material;
 
 #[allow(clippy::large_enum_variant)]
@@ -41,6 +43,13 @@ pub trait Geometry: Sync {
         Self: 'static + Sized,
     {
         FlipNormals::new(Box::new(self))
+    }
+
+    fn translate(self, offset: Vector) -> Translate
+    where
+        Self: 'static + Sized,
+    {
+        Translate::new(Box::new(self), offset)
     }
 }
 

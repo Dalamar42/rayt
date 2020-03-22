@@ -30,6 +30,14 @@ impl Ray {
     pub fn time(&self) -> f64 {
         self.time
     }
+
+    pub fn offset(&self, offset: Vector) -> Ray {
+        Ray {
+            a: self.origin() - offset,
+            b: *self.direction(),
+            time: self.time(),
+        }
+    }
 }
 
 #[derive(Debug)]
