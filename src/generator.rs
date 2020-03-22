@@ -5,7 +5,6 @@ use data::vector::Vector;
 use rand::prelude::*;
 use world::background::Background;
 use world::geometry::cube::Cube;
-use world::geometry::flip_normals::FlipNormals;
 use world::geometry::rectangle::{XyRect, XzRect, YzRect};
 use world::geometry::sphere::{MovingSphere, Sphere};
 use world::geometry::Geometry;
@@ -466,37 +465,25 @@ fn build_cornell_box_config() -> ConfigSave {
         },
     };
 
-    geometries.push(Box::new(FlipNormals::new(Box::new(YzRect::new(
-        (0.0, 555.0),
-        (0.0, 555.0),
-        555.0,
-        green,
-    )))));
+    geometries.push(Box::new(
+        YzRect::new((0.0, 555.0), (0.0, 555.0), 555.0, green).flip(),
+    ));
     geometries.push(Box::new(YzRect::new((0.0, 555.0), (0.0, 555.0), 0.0, red)));
-    geometries.push(Box::new(FlipNormals::new(Box::new(XzRect::new(
-        (213.0, 343.0),
-        (227.0, 332.0),
-        554.0,
-        light,
-    )))));
-    geometries.push(Box::new(FlipNormals::new(Box::new(XzRect::new(
-        (0.0, 555.0),
-        (0.0, 555.0),
-        555.0,
-        white.clone(),
-    )))));
+    geometries.push(Box::new(
+        XzRect::new((213.0, 343.0), (227.0, 332.0), 554.0, light).flip(),
+    ));
+    geometries.push(Box::new(
+        XzRect::new((0.0, 555.0), (0.0, 555.0), 555.0, white.clone()).flip(),
+    ));
     geometries.push(Box::new(XzRect::new(
         (0.0, 555.0),
         (0.0, 555.0),
         0.0,
         white.clone(),
     )));
-    geometries.push(Box::new(FlipNormals::new(Box::new(XyRect::new(
-        (0.0, 555.0),
-        (0.0, 555.0),
-        555.0,
-        white.clone(),
-    )))));
+    geometries.push(Box::new(
+        XyRect::new((0.0, 555.0), (0.0, 555.0), 555.0, white.clone()).flip(),
+    ));
     geometries.push(Box::new(Cube::new(
         Vector::new(130.0, 0.0, 65.0),
         Vector::new(295.0, 165.0, 230.0),

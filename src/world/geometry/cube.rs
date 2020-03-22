@@ -4,7 +4,6 @@ use data::vector::Vector;
 use failure::Error;
 use itertools::Itertools;
 use world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
-use world::geometry::flip_normals::FlipNormals;
 use world::geometry::rectangle::{XyRect, XzRect, YzRect};
 use world::geometry::{Geometry, HitResult};
 use world::materials::Material;
@@ -26,36 +25,45 @@ impl Cube {
             pmax.z(),
             material.clone(),
         )));
-        rectangles.push(Box::new(FlipNormals::new(Box::new(XyRect::new(
-            (pmin.x(), pmax.x()),
-            (pmin.y(), pmax.y()),
-            pmin.z(),
-            material.clone(),
-        )))));
+        rectangles.push(Box::new(
+            XyRect::new(
+                (pmin.x(), pmax.x()),
+                (pmin.y(), pmax.y()),
+                pmin.z(),
+                material.clone(),
+            )
+            .flip(),
+        ));
         rectangles.push(Box::new(XzRect::new(
             (pmin.x(), pmax.x()),
             (pmin.z(), pmax.z()),
             pmax.y(),
             material.clone(),
         )));
-        rectangles.push(Box::new(FlipNormals::new(Box::new(XzRect::new(
-            (pmin.x(), pmax.x()),
-            (pmin.z(), pmax.z()),
-            pmin.y(),
-            material.clone(),
-        )))));
+        rectangles.push(Box::new(
+            XzRect::new(
+                (pmin.x(), pmax.x()),
+                (pmin.z(), pmax.z()),
+                pmin.y(),
+                material.clone(),
+            )
+            .flip(),
+        ));
         rectangles.push(Box::new(YzRect::new(
             (pmin.y(), pmax.y()),
             (pmin.z(), pmax.z()),
             pmax.x(),
             material.clone(),
         )));
-        rectangles.push(Box::new(FlipNormals::new(Box::new(YzRect::new(
-            (pmin.y(), pmax.y()),
-            (pmin.z(), pmax.z()),
-            pmin.x(),
-            material,
-        )))));
+        rectangles.push(Box::new(
+            YzRect::new(
+                (pmin.y(), pmax.y()),
+                (pmin.z(), pmax.z()),
+                pmin.x(),
+                material,
+            )
+            .flip(),
+        ));
 
         Cube {
             rectangles,

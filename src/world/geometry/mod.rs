@@ -11,6 +11,7 @@ use data::vector::Vector;
 use failure::Error;
 use std::cmp::Ordering;
 use world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
+use world::geometry::flip_normals::FlipNormals;
 use world::materials::Material;
 
 #[allow(clippy::large_enum_variant)]
@@ -34,6 +35,13 @@ pub trait Geometry: Sync {
     fn bounding_box(&self, time_start: f64, time_end: f64) -> Option<AxisAlignedBoundingBox>;
 
     fn validate(&self, assets: &Assets) -> Result<(), Error>;
+
+    fn flip(self) -> FlipNormals
+    where
+        Self: 'static + Sized,
+    {
+        FlipNormals::new(Box::new(self))
+    }
 }
 
 impl Ord for HitResult {
