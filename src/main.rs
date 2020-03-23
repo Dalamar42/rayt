@@ -20,6 +20,7 @@ mod camera;
 mod cli;
 mod config;
 mod data;
+mod float;
 mod generator;
 mod io;
 mod renderer;

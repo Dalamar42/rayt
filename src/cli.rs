@@ -138,6 +138,7 @@ pub fn get_cli_config() -> Result<CliConfig, Error> {
                         .takes_value(true)
                         .required(true)
                         .possible_values(&Scene::variants())
+                        .case_insensitive(true)
                         .help("the name of the scene to generate"),
                 ),
         ])

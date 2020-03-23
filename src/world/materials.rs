@@ -42,6 +42,9 @@ pub enum Material {
     DiffuseLight {
         texture: Texture,
     },
+    Isotropic {
+        albedo: Texture,
+    },
 }
 
 impl Material {
@@ -62,22 +65,16 @@ impl Material {
                 texture_coords,
                 assets,
             ),
-            Material::Metal { albedo, fuzz } => scatter_metal(
-                &albedo,
-                *fuzz,
-                ray,
-                hit_point,
-                surface_normal,
-                texture_coords,
-            ),
-            Material::Dielectric { refractive_index } => scatter_dielectric(
-                *refractive_index,
-                ray,
-                hit_point,
-                surface_normal,
-                texture_coords,
-            ),
+            Material::Metal { albedo, fuzz } => {
+                scatter_metal(&albedo, *fuzz, ray, hit_point, surface_normal)
+            }
+            Material::Dielectric { refractive_index } => {
+                scatter_dielectric(*refractive_index, ray, hit_point, surface_normal)
+            }
             Material::DiffuseLight { .. } => None,
+            Material::Isotropic { albedo } => {
+                scatter_isotropic(&albedo, ray, hit_point, texture_coords, assets)
+            }
         }
     }
 
@@ -166,7 +163,6 @@ fn scatter_metal(
     ray: &Ray,
     hit_point: &Vector,
     surface_normal: &Vector,
-    _texture_coords: (f64, f64),
 ) -> Option<ScatterResult> {
     let unit_vector = ray.direction().unit_vector();
     let reflected = reflect(&unit_vector, &surface_normal);
@@ -201,7 +197,6 @@ fn scatter_dielectric(
     ray: &Ray,
     hit_point: &Vector,
     surface_normal: &Vector,
-    _texture_coords: (f64, f64),
 ) -> Option<ScatterResult> {
     let unit_vector = ray.direction().unit_vector();
     let reflected = reflect(&unit_vector, &surface_normal);
@@ -242,4 +237,16 @@ fn scatter_dielectric(
             DIELECTRIC_ATTENUATION[2],
         ),
     })
+}
+
+fn scatter_isotropic(
+    albedo: &Texture,
+    ray: &Ray,
+    hit_point: &Vector,
+    texture_coords: (f64, f64),
+    assets: &Assets,
+) -> Option<ScatterResult> {
+    let scattered = Ray::new(hit_point.clone(), random_point_in_unit_sphere(), ray.time());
+    let attenuation = albedo.value(texture_coords, hit_point, assets);
+    Some(ScatterResult::new(scattered, attenuation))
 }

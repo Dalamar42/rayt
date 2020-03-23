@@ -1,3 +1,4 @@
+use float;
 use std::f64::consts::PI;
 use std::ops;
 
@@ -56,41 +57,17 @@ impl Vector {
 
     pub fn min(&self, vector: &Vector) -> Vector {
         Vector {
-            x: if vector.x() < self.x() {
-                vector.x()
-            } else {
-                self.x()
-            },
-            y: if vector.y() < self.y() {
-                vector.y()
-            } else {
-                self.y()
-            },
-            z: if vector.z() < self.z() {
-                vector.z()
-            } else {
-                self.z()
-            },
+            x: float::min(vector.x(), self.x()),
+            y: float::min(vector.y(), self.y()),
+            z: float::min(vector.z(), self.z()),
         }
     }
 
     pub fn max(&self, vector: &Vector) -> Vector {
         Vector {
-            x: if vector.x() > self.x() {
-                vector.x()
-            } else {
-                self.x()
-            },
-            y: if vector.y() > self.y() {
-                vector.y()
-            } else {
-                self.y()
-            },
-            z: if vector.z() > self.z() {
-                vector.z()
-            } else {
-                self.z()
-            },
+            x: float::max(vector.x(), self.x()),
+            y: float::max(vector.y(), self.y()),
+            z: float::max(vector.z(), self.z()),
         }
     }
 
