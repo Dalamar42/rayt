@@ -24,6 +24,7 @@ pub fn min(left: f64, right: f64) -> f64 {
 mod tests {
     use super::*;
 
+    #[allow(clippy::float_cmp)]
     #[test]
     pub fn test_max() {
         assert_eq!(max(1.0, 2.0), 2.0);
@@ -34,6 +35,7 @@ mod tests {
         assert!(max(std::f64::NAN, std::f64::NAN).is_nan());
     }
 
+    #[allow(clippy::float_cmp)]
     #[test]
     pub fn test_min() {
         assert_eq!(min(1.0, 2.0), 1.0);

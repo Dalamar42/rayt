@@ -40,7 +40,7 @@ pub enum Material {
         refractive_index: f64,
     },
     DiffuseLight {
-        texture: Texture,
+        emit: Texture,
     },
     Isotropic {
         albedo: Texture,
@@ -80,7 +80,7 @@ impl Material {
 
     pub fn emitted(&self, texture_coords: (f64, f64), point: &Vector, assets: &Assets) -> Colour {
         match self {
-            Material::DiffuseLight { texture } => texture.value(texture_coords, point, assets),
+            Material::DiffuseLight { emit } => emit.value(texture_coords, point, assets),
             _ => Colour::new(0.0, 0.0, 0.0),
         }
     }
@@ -246,7 +246,7 @@ fn scatter_isotropic(
     texture_coords: (f64, f64),
     assets: &Assets,
 ) -> Option<ScatterResult> {
-    let scattered = Ray::new(hit_point.clone(), random_point_in_unit_sphere(), ray.time());
+    let scattered = Ray::new(*hit_point, random_point_in_unit_sphere(), ray.time());
     let attenuation = albedo.value(texture_coords, hit_point, assets);
     Some(ScatterResult::new(scattered, attenuation))
 }

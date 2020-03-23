@@ -409,7 +409,7 @@ fn build_simple_light_config() -> Result<ConfigSave, Error> {
         Vector::new(0.0, 7.0, 0.0),
         2.0,
         Material::DiffuseLight {
-            texture: Texture::Constant {
+            emit: Texture::Constant {
                 colour: Colour::new(4.0, 4.0, 4.0),
             },
         },
@@ -419,7 +419,7 @@ fn build_simple_light_config() -> Result<ConfigSave, Error> {
         (1.0, 3.0),
         -2.0,
         Material::DiffuseLight {
-            texture: Texture::Constant {
+            emit: Texture::Constant {
                 colour: Colour::new(4.0, 4.0, 4.0),
             },
         },
@@ -464,7 +464,7 @@ fn build_cornell_box_config() -> Result<ConfigSave, Error> {
         },
     };
     let light = Material::DiffuseLight {
-        texture: Texture::Constant {
+        emit: Texture::Constant {
             colour: Colour::new(15.0, 15.0, 15.0),
         },
     };
@@ -546,7 +546,7 @@ fn build_cornell_smoke_config() -> Result<ConfigSave, Error> {
         },
     };
     let light = Material::DiffuseLight {
-        texture: Texture::Constant {
+        emit: Texture::Constant {
             colour: Colour::new(7.0, 7.0, 7.0),
         },
     };
