@@ -70,7 +70,7 @@ world:
         k: 554.0
         material:
           DiffuseLight:
-            texture:
+            emit:
               Constant:
                 colour:
                   r: 7.0
