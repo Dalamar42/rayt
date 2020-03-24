@@ -26,11 +26,16 @@ fn sphere_hit(ray: &Ray, centre: &Vector, radius: f64, tmin: f64, tmax: f64) -> 
     }
 
     let t = (-b - discriminant.sqrt()) / (2.0 * a);
-    if t < tmin || t > tmax {
-        return Option::None;
+    if tmin <= t && t <= tmax {
+        return Some(t)
     }
 
-    Option::Some(t)
+    let t = (-b + discriminant.sqrt()) / (2.0 * a);
+    if tmin <= t && t <= tmax {
+        return Some(t)
+    }
+
+    None
 }
 
 fn sphere_bounding_box(centre: &Vector, radius: f64) -> Option<AxisAlignedBoundingBox> {
@@ -59,7 +64,7 @@ fn sphere_texture_coords(hit_point: &Vector, centre: &Vector, radius: f64) -> (f
     (row, col)
 }
 
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
 pub struct Sphere {
     centre: Vector,
     radius: f64,
@@ -204,6 +209,21 @@ mod tests {
 
         let hit_result = sphere.hit(&ray, 0.0, core::f64::MAX).unwrap();
         assert_approx_eq!(hit_result.distance, 1.0);
+    }
+
+    #[test]
+    fn test_sphere_interior_hit() {
+        let sphere = Sphere {
+            centre: Vector::new(0.0, 0.0, 0.0),
+            radius: 1.0,
+            material: Material::Dielectric {
+                refractive_index: 1.5,
+            },
+        };
+        let ray = Ray::new(Vector::new(-2.0, 0.0, 0.0), Vector::new(1.0, 0.0, 0.0), 0.0);
+
+        let hit_result = sphere.hit(&ray, 1.0001, core::f64::MAX).unwrap();
+        assert_approx_eq!(hit_result.distance, 3.0);
     }
 
     #[test]
