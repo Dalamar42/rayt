@@ -27,12 +27,12 @@ fn sphere_hit(ray: &Ray, centre: &Vector, radius: f64, tmin: f64, tmax: f64) -> 
 
     let t = (-b - discriminant.sqrt()) / (2.0 * a);
     if tmin <= t && t <= tmax {
-        return Some(t)
+        return Some(t);
     }
 
     let t = (-b + discriminant.sqrt()) / (2.0 * a);
     if tmin <= t && t <= tmax {
-        return Some(t)
+        return Some(t);
     }
 
     None

@@ -21,9 +21,9 @@ mod cli;
 mod config;
 mod data;
 mod float;
-mod generator;
 mod io;
 mod renderer;
+mod scenes;
 mod world;
 
 use cli::{get_cli_config, CliCommand, ConfigPath, ImagePath, OutputPath};
@@ -31,10 +31,10 @@ use config::Config;
 use console::style;
 use data::assets::Assets;
 use failure::Error;
-use generator::{build_scene_config, Scene};
 use indicatif::{FormattedDuration, ProgressBar, ProgressStyle};
 use io::{load_config, save_config};
 use renderer::render;
+use scenes::{build_scene_config, Scene};
 use std::process;
 use std::time::Instant;
 
