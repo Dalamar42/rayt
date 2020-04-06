@@ -11,10 +11,10 @@ extern crate clap;
 extern crate serde_yaml;
 #[macro_use]
 extern crate serde_derive;
-extern crate typetag;
-#[macro_use]
-extern crate failure;
+extern crate anyhow;
 extern crate image;
+extern crate thiserror;
+extern crate typetag;
 
 mod camera;
 mod cli;
@@ -30,7 +30,6 @@ use cli::{get_cli_config, CliCommand, ConfigPath, ImagePath, OutputPath};
 use config::Config;
 use console::style;
 use data::assets::Assets;
-use failure::Error;
 use indicatif::{FormattedDuration, ProgressBar, ProgressStyle};
 use io::{load_config, save_config};
 use renderer::render;
@@ -47,7 +46,7 @@ fn main() {
     }
 }
 
-fn run() -> Result<(), Error> {
+fn run() -> Result<(), anyhow::Error> {
     let cli_config = get_cli_config()?;
 
     match cli_config.command() {
@@ -82,7 +81,7 @@ fn run_render(
     num_of_rays: u64,
     num_of_threads: usize,
     asset_paths: &[ImagePath],
-) -> Result<(), Error> {
+) -> Result<(), anyhow::Error> {
     rayon::ThreadPoolBuilder::new()
         .num_threads(num_of_threads)
         .build_global()?;
@@ -115,7 +114,7 @@ fn run_render(
     Ok(())
 }
 
-fn run_generate(scene: &Scene, config_path: &ConfigPath) -> Result<(), Error> {
+fn run_generate(scene: &Scene, config_path: &ConfigPath) -> Result<(), anyhow::Error> {
     let mut step_logger = StepLogger::new(2);
 
     step_logger.log("Generating scene");

@@ -1,7 +1,6 @@
 use camera::Ray;
 use data::assets::Assets;
 use data::vector::Vector;
-use failure::Error;
 use world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
 use world::geometry::rectangle::{XyRect, XzRect, YzRect};
 use world::geometry::{Geometry, HitResult};
@@ -85,7 +84,7 @@ impl Geometry for Cube {
         Some(AxisAlignedBoundingBox::new(self.pmin, self.pmax))
     }
 
-    fn validate(&self, assets: &Assets) -> Result<(), Error> {
+    fn validate(&self, assets: &Assets) -> Result<(), anyhow::Error> {
         for rectangle in &self.rectangles {
             rectangle.validate(assets)?
         }

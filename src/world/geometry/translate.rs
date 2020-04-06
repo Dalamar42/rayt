@@ -1,7 +1,6 @@
 use camera::Ray;
 use data::assets::Assets;
 use data::vector::Vector;
-use failure::Error;
 use world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
 use world::geometry::{Geometry, HitResult};
 
@@ -39,7 +38,7 @@ impl Geometry for Translate {
         }
     }
 
-    fn validate(&self, assets: &Assets) -> Result<(), Error> {
+    fn validate(&self, assets: &Assets) -> Result<(), anyhow::Error> {
         self.geometry.validate(assets)
     }
 }

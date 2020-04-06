@@ -1,5 +1,4 @@
 use data::assets::Assets;
-use failure::Error;
 use world::background::Background;
 use world::geometry::Geometry;
 
@@ -34,7 +33,7 @@ impl WorldSave {
         self.geometries.drain(range).collect()
     }
 
-    pub fn validate(&self, assets: &Assets) -> Result<(), Error> {
+    pub fn validate(&self, assets: &Assets) -> Result<(), anyhow::Error> {
         for geometry in &self.geometries {
             geometry.validate(assets)?
         }

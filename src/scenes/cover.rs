@@ -2,7 +2,6 @@ use camera::{CameraSave, Lens};
 use config::ConfigSave;
 use data::colour::Colour;
 use data::vector::Vector;
-use failure::Error;
 use rand::prelude::*;
 use world::background::Background;
 use world::geometry::sphere::{MovingSphere, Sphere};
@@ -11,7 +10,7 @@ use world::materials::Material;
 use world::texture::Texture;
 use world::WorldSave;
 
-pub fn build(motion_blur: bool, checker_texture: bool) -> Result<ConfigSave, Error> {
+pub fn build(motion_blur: bool, checker_texture: bool) -> Result<ConfigSave, anyhow::Error> {
     let aspect = 1.5;
 
     let camera = CameraSave::new(

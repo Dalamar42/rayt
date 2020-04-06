@@ -4,7 +4,6 @@ use data::assets::Assets;
 use data::colour::Colour;
 use data::image::Image;
 use data::vector::Vector;
-use failure::Error;
 use world::texture::perlin::{perlin_turbulence, NoiseConfig};
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -47,7 +46,7 @@ impl Texture {
         }
     }
 
-    pub fn validate(&self, assets: &Assets) -> Result<(), Error> {
+    pub fn validate(&self, assets: &Assets) -> Result<(), anyhow::Error> {
         match self {
             Texture::Image { asset_name } => {
                 assets.validate(&asset_name)?;

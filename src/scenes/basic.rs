@@ -2,7 +2,6 @@ use camera::{CameraSave, Lens};
 use config::ConfigSave;
 use data::colour::Colour;
 use data::vector::Vector;
-use failure::Error;
 use world::background::Background;
 use world::geometry::sphere::Sphere;
 use world::geometry::Geometry;
@@ -10,7 +9,7 @@ use world::materials::Material;
 use world::texture::Texture;
 use world::WorldSave;
 
-pub fn build() -> Result<ConfigSave, Error> {
+pub fn build() -> Result<ConfigSave, anyhow::Error> {
     let aspect = 2.0;
 
     let camera = CameraSave::new(

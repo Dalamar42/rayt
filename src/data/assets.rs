@@ -1,12 +1,12 @@
 use cli::ImagePath;
 use data::image::Image;
-use failure::Error;
 use io::load_image;
 use std::collections::HashMap;
+use thiserror::Error;
 
-#[derive(Debug, Fail)]
+#[derive(Debug, Error)]
 pub enum AssetValidationError {
-    #[fail(display = "asset with name <{}> has not been loaded", asset_name)]
+    #[error("asset with name <{asset_name}> has not been loaded")]
     MissingAsset { asset_name: String },
 }
 
@@ -15,7 +15,7 @@ pub struct Assets {
 }
 
 impl Assets {
-    pub fn new(asset_paths: &[ImagePath]) -> Result<Assets, Error> {
+    pub fn new(asset_paths: &[ImagePath]) -> Result<Assets, anyhow::Error> {
         let mut assets: HashMap<String, Image> = HashMap::new();
         for asset_path in asset_paths {
             assets.insert(

@@ -11,7 +11,6 @@ pub mod translate;
 use camera::Ray;
 use data::assets::Assets;
 use data::vector::Vector;
-use failure::Error;
 use std::cmp::Ordering;
 use world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
 use world::geometry::flip_normals::FlipNormals;
@@ -35,7 +34,7 @@ pub trait Geometry: Sync {
 
     fn bounding_box(&self, time_start: f64, time_end: f64) -> Option<AxisAlignedBoundingBox>;
 
-    fn validate(&self, assets: &Assets) -> Result<(), Error>;
+    fn validate(&self, assets: &Assets) -> Result<(), anyhow::Error>;
 
     fn flip(self) -> FlipNormals
     where
@@ -51,7 +50,7 @@ pub trait Geometry: Sync {
         Translate::new(Box::new(self), offset)
     }
 
-    fn rotate_y(self, angle: f64) -> Result<RotateY, Error>
+    fn rotate_y(self, angle: f64) -> Result<RotateY, anyhow::Error>
     where
         Self: 'static + Sized,
     {

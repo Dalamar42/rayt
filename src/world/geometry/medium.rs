@@ -1,7 +1,6 @@
 use camera::Ray;
 use data::assets::Assets;
 use data::vector::Vector;
-use failure::Error;
 use float;
 use rand::prelude::*;
 use world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
@@ -74,7 +73,7 @@ impl Geometry for ConstantMedium {
         self.boundary.bounding_box(time_start, time_end)
     }
 
-    fn validate(&self, assets: &Assets) -> Result<(), Error> {
+    fn validate(&self, assets: &Assets) -> Result<(), anyhow::Error> {
         self.material.validate(assets)?;
         self.boundary.validate(assets)?;
         Ok(())

@@ -1,7 +1,6 @@
 use camera::Ray;
 use data::assets::Assets;
 use data::vector::Vector;
-use failure::Error;
 use world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
 use world::geometry::{Geometry, HitResult};
 use world::materials::Material;
@@ -72,7 +71,7 @@ impl Geometry for XyRect {
         ))
     }
 
-    fn validate(&self, assets: &Assets) -> Result<(), Error> {
+    fn validate(&self, assets: &Assets) -> Result<(), anyhow::Error> {
         Ok(self.material.validate(assets)?)
     }
 }
@@ -143,7 +142,7 @@ impl Geometry for XzRect {
         ))
     }
 
-    fn validate(&self, assets: &Assets) -> Result<(), Error> {
+    fn validate(&self, assets: &Assets) -> Result<(), anyhow::Error> {
         Ok(self.material.validate(assets)?)
     }
 }
@@ -214,7 +213,7 @@ impl Geometry for YzRect {
         ))
     }
 
-    fn validate(&self, assets: &Assets) -> Result<(), Error> {
+    fn validate(&self, assets: &Assets) -> Result<(), anyhow::Error> {
         Ok(self.material.validate(assets)?)
     }
 }

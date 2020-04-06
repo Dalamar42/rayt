@@ -1,6 +1,5 @@
 use camera::Ray;
 use data::assets::Assets;
-use failure::Error;
 use itertools::Itertools;
 use rand::prelude::*;
 use std::cmp::Ordering;
@@ -185,7 +184,7 @@ impl Geometry for BoundingVolumeHierarchyNode {
         Some(self.bounding_box.clone())
     }
 
-    fn validate(&self, assets: &Assets) -> Result<(), Error> {
+    fn validate(&self, assets: &Assets) -> Result<(), anyhow::Error> {
         if let Some(geometry) = &self.left {
             geometry.validate(assets)?;
         }

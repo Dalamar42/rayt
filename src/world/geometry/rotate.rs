@@ -1,13 +1,13 @@
 use camera::Ray;
 use data::assets::Assets;
 use data::vector::Vector;
-use failure::Error;
+use thiserror::Error;
 use world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
 use world::geometry::{Geometry, HitResult};
 
-#[derive(Debug, Fail)]
+#[derive(Debug, Error)]
 pub enum GeometryError {
-    #[fail(display = "rotation is only supported for geometries have have bounding boxes")]
+    #[error("rotation is only supported for geometries have have bounding boxes")]
     RotationUnsupported(),
 }
 
@@ -71,7 +71,7 @@ impl Geometry for RotateY {
         }
     }
 
-    fn validate(&self, assets: &Assets) -> Result<(), Error> {
+    fn validate(&self, assets: &Assets) -> Result<(), anyhow::Error> {
         self.geometry.validate(assets)
     }
 }

@@ -1,5 +1,4 @@
 use config::ConfigSave;
-use failure::Error;
 
 mod basic;
 mod cornell_box;
@@ -26,7 +25,7 @@ arg_enum! {
     }
 }
 
-pub fn build_scene_config(scene: &Scene) -> Result<ConfigSave, Error> {
+pub fn build_scene_config(scene: &Scene) -> Result<ConfigSave, anyhow::Error> {
     match scene {
         Scene::Basic => basic::build(),
         Scene::Cover => cover::build(false, false),

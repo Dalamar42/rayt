@@ -2,7 +2,6 @@ use camera::Ray;
 use data::assets::Assets;
 use data::colour::Colour;
 use data::vector::Vector;
-use failure::Error;
 use rand::prelude::*;
 use world::texture::Texture;
 
@@ -85,7 +84,7 @@ impl Material {
         }
     }
 
-    pub fn validate(&self, assets: &Assets) -> Result<(), Error> {
+    pub fn validate(&self, assets: &Assets) -> Result<(), anyhow::Error> {
         match self {
             Material::Lambertian { albedo } => {
                 albedo.validate(assets)?;

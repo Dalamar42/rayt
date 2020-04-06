@@ -1,6 +1,5 @@
 use camera::{Camera, CameraSave};
 use data::assets::Assets;
-use failure::Error;
 use world::background::Background;
 use world::geometry::bounding_volume_hierarchy::BoundingVolumeHierarchyNode;
 use world::WorldSave;
@@ -82,7 +81,7 @@ impl ConfigSave {
         }
     }
 
-    pub fn validate(&self, assets: &Assets) -> Result<(), Error> {
+    pub fn validate(&self, assets: &Assets) -> Result<(), anyhow::Error> {
         self.world.validate(assets)
     }
 }

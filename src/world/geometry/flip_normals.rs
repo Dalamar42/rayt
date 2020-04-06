@@ -1,6 +1,5 @@
 use camera::Ray;
 use data::assets::Assets;
-use failure::Error;
 use world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
 use world::geometry::{Geometry, HitResult};
 
@@ -28,7 +27,7 @@ impl Geometry for FlipNormals {
         self.geometry.bounding_box(time_start, time_end)
     }
 
-    fn validate(&self, assets: &Assets) -> Result<(), Error> {
+    fn validate(&self, assets: &Assets) -> Result<(), anyhow::Error> {
         self.geometry.validate(assets)
     }
 }

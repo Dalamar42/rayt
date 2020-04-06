@@ -1,8 +1,8 @@
 use clap::{App, AppSettings, Arg, ArgMatches, SubCommand};
-use failure::Error;
 use io::SUPPORTED_IMAGE_EXT;
 use scenes::Scene;
 use std::str::FromStr;
+use thiserror::Error;
 
 pub struct ConfigPath(String);
 pub struct OutputPath(String);
@@ -58,13 +58,21 @@ impl CliConfig {
     }
 }
 
-#[derive(Debug, Fail)]
+#[allow(clippy::enum_variant_names)]
+#[derive(Debug, Error)]
 enum CliParsingError {
-    #[fail(display = "invalid value <{}> for arg <{}>", value, arg)]
+    #[error("invalid value <{value}> for arg <{arg}>")]
     InvalidValue { arg: String, value: String },
+    #[error("Config path <{0}> must end in .yaml")]
+    InvalidConfigPath(String),
+    #[error("Output path <{output_path}> must end in one of {supported_extensions:?}")]
+    InvalidOutputPath {
+        output_path: String,
+        supported_extensions: Vec<String>,
+    },
 }
 
-pub fn get_cli_config() -> Result<CliConfig, Error> {
+pub fn get_cli_config() -> Result<CliConfig, anyhow::Error> {
     let matches = App::new("Ray tracer")
         .setting(AppSettings::SubcommandRequiredElseHelp)
         .setting(AppSettings::VersionlessSubcommands)
@@ -145,11 +153,8 @@ pub fn get_cli_config() -> Result<CliConfig, Error> {
         .get_matches();
 
     let config_path = String::from(matches.value_of("config").unwrap());
-    ensure!(
-        config_path.ends_with(".yaml"),
-        "Config path <{}> must end in .yaml",
-        config_path,
-    );
+
+    validate_config_path(&config_path)?;
 
     if let Some(subcommand) = matches.subcommand_matches("render") {
         let width = parse::<u32>(subcommand, "width")?;
@@ -162,14 +167,7 @@ pub fn get_cli_config() -> Result<CliConfig, Error> {
             .map(|path| ImagePath(String::from(path)))
             .collect();
 
-        ensure!(
-            SUPPORTED_IMAGE_EXT
-                .iter()
-                .any(|ext| output_path.ends_with(ext)),
-            "Output path <{}> must end in one of {:?}",
-            output_path,
-            SUPPORTED_IMAGE_EXT,
-        );
+        validate_output_path(&output_path)?;
 
         return Ok(CliConfig {
             command: CliCommand::RENDER {
@@ -193,6 +191,29 @@ pub fn get_cli_config() -> Result<CliConfig, Error> {
 
     // Clap should have errored before we get here
     panic!("Unable to parse CLI args")
+}
+
+fn validate_config_path(config_path: &str) -> Result<(), CliParsingError> {
+    if !config_path.ends_with(".yaml") {
+        return Err(CliParsingError::InvalidConfigPath(config_path.to_string()));
+    }
+    Ok(())
+}
+
+fn validate_output_path(output_path: &str) -> Result<(), CliParsingError> {
+    if !SUPPORTED_IMAGE_EXT
+        .iter()
+        .any(|ext| output_path.ends_with(ext))
+    {
+        return Err(CliParsingError::InvalidOutputPath {
+            output_path: output_path.to_string(),
+            supported_extensions: SUPPORTED_IMAGE_EXT
+                .iter()
+                .map(|ext| (*ext).to_string())
+                .collect(),
+        });
+    }
+    Ok(())
 }
 
 fn parse<T: FromStr>(matches: &ArgMatches, arg: &str) -> Result<T, CliParsingError> {
