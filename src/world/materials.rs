@@ -2,7 +2,7 @@ use camera::Ray;
 use data::assets::Assets;
 use data::colour::Colour;
 use data::vector::Vector;
-use rand::prelude::*;
+use sampling::{random_point_in_unit_sphere, uniform};
 use world::texture::Texture;
 
 #[derive(Debug)]
@@ -91,18 +91,6 @@ impl Material {
                 Ok(())
             }
             _ => Ok(()),
-        }
-    }
-}
-
-fn random_point_in_unit_sphere() -> Vector {
-    let mut rng = rand::thread_rng();
-    let centre = Vector::new(1.0, 1.0, 1.0);
-
-    loop {
-        let point = 2.0 * Vector::new(rng.gen(), rng.gen(), rng.gen()) - centre;
-        if point.len_squared() < 1.0 {
-            return point;
         }
     }
 }
@@ -200,8 +188,6 @@ fn scatter_dielectric(
     let unit_vector = ray.direction().unit_vector();
     let reflected = reflect(&unit_vector, &surface_normal);
 
-    let mut rng = rand::thread_rng();
-
     let uvn = Vector::dot(&unit_vector, &surface_normal);
 
     // Determine whether we are going from air to the geometry or vv
@@ -214,7 +200,7 @@ fn scatter_dielectric(
 
     let cosine = -sign * uvn;
     let reflect_prob = reflectivity_schlick_approx(cosine, n_i, n_t);
-    let reflect_rand: f64 = rng.gen();
+    let reflect_rand: f64 = uniform();
     let should_reflect = reflect_rand < reflect_prob;
 
     let maybe_refracted = if should_reflect {

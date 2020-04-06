@@ -1,6 +1,6 @@
 use data::colour::Colour;
 use data::vector::Vector;
-use rand::prelude::*;
+use sampling::uniform;
 
 const RAN_SIZE: usize = 256;
 
@@ -107,14 +107,12 @@ pub fn build_noise_config() -> NoiseConfig {
 }
 
 fn perlin_generate_ran() -> [Colour; RAN_SIZE] {
-    let mut rng = rand::thread_rng();
-
     let mut ran = [Colour::new(0.0, 0.0, 0.0); RAN_SIZE];
     for item in ran.iter_mut() {
         *item = Colour::new(
-            -1.0 + 2.0 * rng.gen::<f64>(),
-            -1.0 + 2.0 * rng.gen::<f64>(),
-            -1.0 + 2.0 * rng.gen::<f64>(),
+            -1.0 + 2.0 * uniform::<f64>(),
+            -1.0 + 2.0 * uniform::<f64>(),
+            -1.0 + 2.0 * uniform::<f64>(),
         )
         .unit_vector();
     }
@@ -123,10 +121,8 @@ fn perlin_generate_ran() -> [Colour; RAN_SIZE] {
 }
 
 fn permute(perm: &mut [usize; RAN_SIZE]) {
-    let mut rng = rand::thread_rng();
-
     for i in (0..RAN_SIZE).rev() {
-        let target = rng.gen::<usize>() % (i + 1);
+        let target = uniform::<usize>() % (i + 1);
         perm.swap(i, target);
     }
 }

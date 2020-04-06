@@ -2,7 +2,7 @@ use camera::{CameraSave, Lens};
 use config::ConfigSave;
 use data::colour::Colour;
 use data::vector::Vector;
-use rand::prelude::*;
+use sampling::uniform;
 use world::background::Background;
 use world::geometry::sphere::{MovingSphere, Sphere};
 use world::geometry::Geometry;
@@ -76,15 +76,13 @@ pub fn build(motion_blur: bool, checker_texture: bool) -> Result<ConfigSave, any
         },
     )));
 
-    let mut rng = rand::thread_rng();
-
     for a in -11..11 {
         for b in -11..11 {
-            let choose_mat: f64 = rng.gen();
+            let choose_mat: f64 = uniform();
             let centre = Vector::new(
-                f64::from(a) + 0.9 * rng.gen::<f64>(),
+                f64::from(a) + 0.9 * uniform::<f64>(),
                 0.2,
-                f64::from(b) + 0.9 * rng.gen::<f64>(),
+                f64::from(b) + 0.9 * uniform::<f64>(),
             );
 
             if (centre - Vector::new(4.0, 0.2, 0.0)).len() > 0.9 {
@@ -93,15 +91,15 @@ pub fn build(motion_blur: bool, checker_texture: bool) -> Result<ConfigSave, any
                         geometries.push(Box::from(MovingSphere::new(
                             centre,
                             0.0,
-                            centre + Vector::new(0.0, 0.5 * rng.gen::<f64>(), 0.0),
+                            centre + Vector::new(0.0, 0.5 * uniform::<f64>(), 0.0),
                             1.0,
                             0.2,
                             Material::Lambertian {
                                 albedo: Texture::Constant {
                                     colour: Colour::new(
-                                        rng.gen::<f64>() * rng.gen::<f64>(),
-                                        rng.gen::<f64>() * rng.gen::<f64>(),
-                                        rng.gen::<f64>() * rng.gen::<f64>(),
+                                        uniform::<f64>() * uniform::<f64>(),
+                                        uniform::<f64>() * uniform::<f64>(),
+                                        uniform::<f64>() * uniform::<f64>(),
                                     ),
                                 },
                             },
@@ -113,9 +111,9 @@ pub fn build(motion_blur: bool, checker_texture: bool) -> Result<ConfigSave, any
                             Material::Lambertian {
                                 albedo: Texture::Constant {
                                     colour: Colour::new(
-                                        rng.gen::<f64>() * rng.gen::<f64>(),
-                                        rng.gen::<f64>() * rng.gen::<f64>(),
-                                        rng.gen::<f64>() * rng.gen::<f64>(),
+                                        uniform::<f64>() * uniform::<f64>(),
+                                        uniform::<f64>() * uniform::<f64>(),
+                                        uniform::<f64>() * uniform::<f64>(),
                                     ),
                                 },
                             },
@@ -127,11 +125,11 @@ pub fn build(motion_blur: bool, checker_texture: bool) -> Result<ConfigSave, any
                         0.2,
                         Material::Metal {
                             albedo: Colour::new(
-                                0.5 * (1.0 + rng.gen::<f64>()),
-                                0.5 * (1.0 + rng.gen::<f64>()),
-                                0.5 * (1.0 + rng.gen::<f64>()),
+                                0.5 * (1.0 + uniform::<f64>()),
+                                0.5 * (1.0 + uniform::<f64>()),
+                                0.5 * (1.0 + uniform::<f64>()),
                             ),
-                            fuzz: 0.5 * rng.gen::<f64>(),
+                            fuzz: 0.5 * uniform::<f64>(),
                         },
                     )));
                 } else {

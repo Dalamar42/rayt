@@ -1,7 +1,7 @@
 use camera::Ray;
 use data::assets::Assets;
 use itertools::Itertools;
-use rand::prelude::*;
+use sampling::uniform;
 use std::cmp::Ordering;
 use world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
 use world::geometry::{Geometry, HitResult};
@@ -88,8 +88,7 @@ impl BoundingVolumeHierarchyNode {
         time_start: f64,
         time_end: f64,
     ) -> BoundingVolumeHierarchyNode {
-        let mut rng = rand::thread_rng();
-        let axis_choice = rng.gen::<u8>() % 3;
+        let axis_choice = uniform::<u8>() % 3;
         let sorter = match axis_choice {
             0 => compare_box_by_x_axis,
             1 => compare_box_by_y_axis,

@@ -2,7 +2,7 @@ use camera::Ray;
 use data::assets::Assets;
 use data::vector::Vector;
 use float;
-use rand::prelude::*;
+use sampling::uniform;
 use world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
 use world::geometry::{Geometry, HitResult};
 use world::materials::Material;
@@ -28,8 +28,6 @@ impl ConstantMedium {
 #[typetag::serde]
 impl Geometry for ConstantMedium {
     fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<HitResult> {
-        let mut rng = rand::thread_rng();
-
         self.boundary
             .hit(ray, std::f64::MIN, std::f64::MAX)
             .and_then(|first_hit| {
@@ -50,7 +48,7 @@ impl Geometry for ConstantMedium {
                 d1 = float::max(d1, 0.0);
 
                 let distance_inside_boundary = (d2 - d1) * ray.direction().len();
-                let hit_distance = -(1.0 / self.density) * rng.gen::<f64>().ln();
+                let hit_distance = -(1.0 / self.density) * uniform::<f64>().ln();
 
                 if hit_distance >= distance_inside_boundary {
                     return None;

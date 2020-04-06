@@ -1,6 +1,6 @@
 use config::Config;
 use data::vector::Vector;
-use rand::prelude::*;
+use sampling::uniform;
 use std::f64::consts::PI;
 
 #[derive(Debug, Clone)]
@@ -154,9 +154,8 @@ impl Camera {
 
         (0..config.num_of_rays())
             .map(|_| {
-                let mut rng = rand::thread_rng();
-                let row_fuzz: f64 = rng.gen();
-                let col_fuzz: f64 = rng.gen();
+                let row_fuzz: f64 = uniform();
+                let col_fuzz: f64 = uniform();
 
                 let v = f64::from(row) + row_fuzz;
                 let h = f64::from(col) + col_fuzz;
@@ -169,8 +168,7 @@ impl Camera {
     fn ray(&self, h: f64, v: f64) -> Ray {
         let rd = self.lens_radius * random_point_in_unit_disk();
         let lens_offset = self.u * rd.x() + self.v * rd.y();
-        let mut rng = rand::thread_rng();
-        let time = self.time_start + rng.gen::<f64>() * (self.time_end - self.time_start);
+        let time = self.time_start + uniform::<f64>() * (self.time_end - self.time_start);
         Ray {
             a: self.origin + lens_offset,
             b: self.lower_left_corner + h * self.horizontal + v * self.vertical
@@ -190,11 +188,10 @@ impl Camera {
 }
 
 fn random_point_in_unit_disk() -> Vector {
-    let mut rng = rand::thread_rng();
     let centre = Vector::new(1.0, 1.0, 0.0);
 
     loop {
-        let point = 2.0 * Vector::new(rng.gen(), rng.gen(), 0.0) - centre;
+        let point = 2.0 * Vector::new(uniform(), uniform(), 0.0) - centre;
         if Vector::dot(&point, &point) < 1.0 {
             return point;
         }

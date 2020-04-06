@@ -23,6 +23,7 @@ mod data;
 mod float;
 mod io;
 mod renderer;
+mod sampling;
 mod scenes;
 mod world;
 

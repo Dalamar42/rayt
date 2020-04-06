@@ -2,7 +2,7 @@ use camera::{CameraSave, Lens};
 use config::ConfigSave;
 use data::colour::Colour;
 use data::vector::Vector;
-use rand::prelude::*;
+use sampling::uniform;
 use world::background::Background;
 use world::geometry::bounding_volume_hierarchy::BoundingVolumeHierarchyNode;
 use world::geometry::cube::Cube;
@@ -67,8 +67,6 @@ pub fn build() -> Result<ConfigSave, anyhow::Error> {
 }
 
 fn ground_boxes() -> Vec<Box<dyn Geometry>> {
-    let mut rng = rand::thread_rng();
-
     let ground = Material::Lambertian {
         albedo: Texture::Constant {
             colour: Colour::new(0.48, 0.83, 0.53),
@@ -83,7 +81,7 @@ fn ground_boxes() -> Vec<Box<dyn Geometry>> {
             let z0 = -1000.0 + (j as f64) * w;
             let y0 = 0.0;
             let x1 = x0 + w;
-            let y1 = 100.0 * (rng.gen::<f64>() + 0.01);
+            let y1 = 100.0 * (uniform::<f64>() + 0.01);
             let z1 = z0 + w;
             boxlist.push(Box::new(Cube::new(
                 Vector::new(x0, y0, z0),
@@ -194,8 +192,6 @@ fn perlin() -> Sphere {
 }
 
 fn sphere_cube() -> Vec<Box<dyn Geometry>> {
-    let mut rng = rand::thread_rng();
-
     let white = Material::Lambertian {
         albedo: Texture::Constant {
             colour: Colour::new(0.73, 0.73, 0.73),
@@ -207,9 +203,9 @@ fn sphere_cube() -> Vec<Box<dyn Geometry>> {
     for _ in 0..1000 {
         boxlist.push(Box::new(Sphere::new(
             Vector::new(
-                165.0 * rng.gen::<f64>(),
-                165.0 * rng.gen::<f64>(),
-                165.0 * rng.gen::<f64>(),
+                165.0 * uniform::<f64>(),
+                165.0 * uniform::<f64>(),
+                165.0 * uniform::<f64>(),
             ),
             10.0,
             white.clone(),
