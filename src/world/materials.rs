@@ -3,17 +3,23 @@ use data::assets::Assets;
 use data::colour::Colour;
 use data::vector::Vector;
 use sampling::{random_point_in_unit_sphere, uniform};
+use std::f64::consts::PI;
 use world::texture::Texture;
 
 #[derive(Debug)]
 pub struct ScatterResult {
     ray: Ray,
     attenuation: Colour,
+    pdf: f64,
 }
 
 impl ScatterResult {
-    pub fn new(ray: Ray, attenuation: Colour) -> ScatterResult {
-        ScatterResult { ray, attenuation }
+    pub fn new(ray: Ray, attenuation: Colour, pdf: f64) -> ScatterResult {
+        ScatterResult {
+            ray,
+            attenuation,
+            pdf,
+        }
     }
 
     pub fn ray(&self) -> &Ray {
@@ -22,6 +28,10 @@ impl ScatterResult {
 
     pub fn attenuation(&self) -> &Colour {
         &self.attenuation
+    }
+
+    pub fn pdf(&self) -> f64 {
+        self.pdf
     }
 }
 
@@ -47,6 +57,13 @@ pub enum Material {
 }
 
 impl Material {
+    pub fn scattering_pdf(&self, surface_normal: &Vector, scattered: &Ray) -> f64 {
+        match self {
+            Material::Lambertian { .. } => scattering_pdf_lambertian(surface_normal, scattered),
+            _ => 1.0,
+        }
+    }
+
     pub fn scatter(
         &self,
         ray: &Ray,
@@ -125,6 +142,14 @@ fn refract(
     None
 }
 
+fn scattering_pdf_lambertian(surface_normal: &Vector, scattered: &Ray) -> f64 {
+    let mut cosine = Vector::dot(surface_normal, &scattered.direction().unit_vector());
+    if cosine < 0.0 {
+        cosine = 0.0;
+    }
+    cosine / PI
+}
+
 fn scatter_lambertian(
     albedo: &Texture,
     ray: &Ray,
@@ -137,11 +162,13 @@ fn scatter_lambertian(
     let target = hit_point + surface_normal + diffuse;
 
     let ray = Ray::new(*hit_point, target - hit_point, ray.time());
+    let pdf = Vector::dot(surface_normal, &ray.direction().unit_vector()) / PI;
 
-    Some(ScatterResult {
+    Some(ScatterResult::new(
         ray,
-        attenuation: albedo.value(texture_coords, &hit_point, &assets),
-    })
+        albedo.value(texture_coords, &hit_point, &assets),
+        pdf,
+    ))
 }
 
 fn scatter_metal(
@@ -164,10 +191,7 @@ fn scatter_metal(
         return None;
     }
 
-    Some(ScatterResult {
-        ray,
-        attenuation: *albedo,
-    })
+    Some(ScatterResult::new(ray, *albedo, 1.0))
 }
 
 const REFRACTIVE_INDEX_OF_AIR: f64 = 1.0;
@@ -214,14 +238,15 @@ fn scatter_dielectric(
         None => Ray::new(*hit_point, reflected, ray.time()),
     };
 
-    Some(ScatterResult {
+    Some(ScatterResult::new(
         ray,
-        attenuation: Colour::new(
+        Colour::new(
             DIELECTRIC_ATTENUATION[0],
             DIELECTRIC_ATTENUATION[1],
             DIELECTRIC_ATTENUATION[2],
         ),
-    })
+        1.0,
+    ))
 }
 
 fn scatter_isotropic(
@@ -233,5 +258,5 @@ fn scatter_isotropic(
 ) -> Option<ScatterResult> {
     let scattered = Ray::new(*hit_point, random_point_in_unit_sphere(), ray.time());
     let attenuation = albedo.value(texture_coords, hit_point, assets);
-    Some(ScatterResult::new(scattered, attenuation))
+    Some(ScatterResult::new(scattered, attenuation, 1.0))
 }

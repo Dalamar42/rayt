@@ -56,7 +56,14 @@ fn colour(ray: &Ray, config: &Config, depth: u64) -> Colour {
                     &config.assets(),
                 )
                 .map(|scatter| {
-                    emitted + scatter.attenuation() * colour(&scatter.ray(), &config, depth + 1)
+                    let scattering_pdf = hit
+                        .material
+                        .scattering_pdf(&hit.surface_normal, &scatter.ray());
+                    let scatter_colour = scatter.attenuation()
+                        * scattering_pdf
+                        * colour(&scatter.ray(), &config, depth + 1)
+                        / scatter.pdf();
+                    emitted + scatter_colour
                 })
                 .unwrap_or(emitted)
         })
