@@ -34,6 +34,7 @@ pub fn random_point_in_unit_sphere() -> Vector {
     }
 }
 
+#[allow(dead_code)]
 pub fn random_point_in_unit_hemisphere(surface_normal: &Vector) -> Vector {
     let point = random_point_in_unit_sphere();
 
@@ -56,7 +57,6 @@ pub fn random_point_on_unit_sphere() -> Vector {
     }
 }
 
-#[allow(dead_code)]
 pub fn random_cosine_direction() -> Vector {
     // PDF p(direction = cosθ / π
     let r1 = uniform::<f64>();

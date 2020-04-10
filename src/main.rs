@@ -11,6 +11,7 @@ mod config;
 mod data;
 mod float;
 mod io;
+mod onb;
 mod renderer;
 mod sampling;
 mod scenes;
