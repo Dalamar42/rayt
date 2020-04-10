@@ -1,4 +1,4 @@
-use data::colour::Colour;
+use crate::data::colour::Colour;
 use image::{DynamicImage, ImageBuffer, RgbImage};
 
 pub struct Pixel {

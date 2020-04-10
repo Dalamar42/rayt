@@ -1,5 +1,5 @@
-use camera::Ray;
-use data::vector::Vector;
+use crate::camera::Ray;
+use crate::data::vector::Vector;
 use std::f64::{INFINITY, NEG_INFINITY};
 
 #[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]

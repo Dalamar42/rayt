@@ -1,10 +1,10 @@
-use camera::Ray;
-use config::Config;
-use data::colour::Colour;
-use data::image::{Image, Pixel};
+use crate::camera::Ray;
+use crate::config::Config;
+use crate::data::colour::Colour;
+use crate::data::image::{Image, Pixel};
+use crate::world::geometry::Geometry;
 use indicatif::ProgressBar;
 use rayon::prelude::*;
-use world::geometry::Geometry;
 
 const MAX_SCATTER_DEPTH: u64 = 50;
 

@@ -1,19 +1,19 @@
-use camera::{CameraSave, Lens};
-use config::ConfigSave;
-use data::colour::Colour;
-use data::vector::Vector;
-use sampling::uniform;
-use world::background::Background;
-use world::geometry::bounding_volume_hierarchy::BoundingVolumeHierarchyNode;
-use world::geometry::cube::Cube;
-use world::geometry::medium::ConstantMedium;
-use world::geometry::rectangle::XzRect;
-use world::geometry::sphere::{MovingSphere, Sphere};
-use world::geometry::Geometry;
-use world::materials::Material;
-use world::texture::perlin::build_noise_config;
-use world::texture::Texture;
-use world::WorldSave;
+use crate::camera::{CameraSave, Lens};
+use crate::config::ConfigSave;
+use crate::data::colour::Colour;
+use crate::data::vector::Vector;
+use crate::sampling::uniform;
+use crate::world::background::Background;
+use crate::world::geometry::bounding_volume_hierarchy::BoundingVolumeHierarchyNode;
+use crate::world::geometry::cube::Cube;
+use crate::world::geometry::medium::ConstantMedium;
+use crate::world::geometry::rectangle::XzRect;
+use crate::world::geometry::sphere::{MovingSphere, Sphere};
+use crate::world::geometry::Geometry;
+use crate::world::materials::Material;
+use crate::world::texture::perlin::build_noise_config;
+use crate::world::texture::Texture;
+use crate::world::WorldSave;
 
 pub fn build() -> Result<ConfigSave, anyhow::Error> {
     let aspect = 1.0;

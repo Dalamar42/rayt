@@ -1,4 +1,4 @@
-use data::colour::Colour;
+use crate::data::colour::Colour;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Background {

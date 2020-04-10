@@ -1,9 +1,9 @@
-use camera::Ray;
-use data::assets::Assets;
-use data::vector::Vector;
-use world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
-use world::geometry::{Geometry, HitResult};
-use world::materials::Material;
+use crate::camera::Ray;
+use crate::data::assets::Assets;
+use crate::data::vector::Vector;
+use crate::world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
+use crate::world::geometry::{Geometry, HitResult};
+use crate::world::materials::Material;
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct XyRect {

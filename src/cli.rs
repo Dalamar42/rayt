@@ -1,6 +1,6 @@
+use crate::io::SUPPORTED_IMAGE_EXT;
+use crate::scenes::Scene;
 use clap::{App, AppSettings, Arg, ArgMatches, SubCommand};
-use io::SUPPORTED_IMAGE_EXT;
-use scenes::Scene;
 use std::str::FromStr;
 use thiserror::Error;
 

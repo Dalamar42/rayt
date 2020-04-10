@@ -2,6 +2,7 @@
 name = "rayt"
 version = "0.1.0"
 authors = ["Thomas Maroulis <thomasmaroulis@gmail.com>"]
+edition = "2018"
 
 [dependencies]
 assert_approx_eq = "1.1.0"

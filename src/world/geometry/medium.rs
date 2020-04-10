@@ -1,12 +1,12 @@
-use camera::Ray;
-use data::assets::Assets;
-use data::vector::Vector;
-use float;
-use sampling::uniform;
-use world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
-use world::geometry::{Geometry, HitResult};
-use world::materials::Material;
-use world::texture::Texture;
+use crate::camera::Ray;
+use crate::data::assets::Assets;
+use crate::data::vector::Vector;
+use crate::float;
+use crate::sampling::uniform;
+use crate::world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
+use crate::world::geometry::{Geometry, HitResult};
+use crate::world::materials::Material;
+use crate::world::texture::Texture;
 
 #[derive(Serialize, Deserialize)]
 pub struct ConstantMedium {

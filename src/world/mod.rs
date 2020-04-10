@@ -1,6 +1,6 @@
-use data::assets::Assets;
-use world::background::Background;
-use world::geometry::Geometry;
+use crate::data::assets::Assets;
+use crate::world::background::Background;
+use crate::world::geometry::Geometry;
 
 pub mod background;
 pub mod geometry;

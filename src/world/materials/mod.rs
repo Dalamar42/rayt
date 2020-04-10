@@ -1,8 +1,8 @@
-use camera::Ray;
-use data::assets::Assets;
-use data::colour::Colour;
-use data::vector::Vector;
-use world::texture::Texture;
+use crate::camera::Ray;
+use crate::data::assets::Assets;
+use crate::data::colour::Colour;
+use crate::data::vector::Vector;
+use crate::world::texture::Texture;
 
 mod dielectric;
 mod isotropic;

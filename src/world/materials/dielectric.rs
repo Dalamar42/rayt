@@ -1,8 +1,8 @@
-use camera::Ray;
-use data::colour::Colour;
-use data::vector::Vector;
-use sampling::uniform;
-use world::materials::ScatterResult;
+use crate::camera::Ray;
+use crate::data::colour::Colour;
+use crate::data::vector::Vector;
+use crate::sampling::uniform;
+use crate::world::materials::ScatterResult;
 
 const REFRACTIVE_INDEX_OF_AIR: f64 = 1.0;
 const DIELECTRIC_ATTENUATION: [f64; 3] = [1.0, 1.0, 1.0];

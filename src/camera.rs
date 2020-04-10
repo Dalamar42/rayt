@@ -1,6 +1,6 @@
-use config::Config;
-use data::vector::Vector;
-use sampling::uniform;
+use crate::config::Config;
+use crate::data::vector::Vector;
+use crate::sampling::uniform;
 use std::f64::consts::PI;
 
 #[derive(Debug, Clone)]

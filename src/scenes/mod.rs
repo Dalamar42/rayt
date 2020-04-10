@@ -1,4 +1,4 @@
-use config::ConfigSave;
+use crate::config::ConfigSave;
 
 mod basic;
 mod cornell_box;

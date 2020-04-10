@@ -8,15 +8,15 @@ pub mod rotate;
 pub mod sphere;
 pub mod translate;
 
-use camera::Ray;
-use data::assets::Assets;
-use data::vector::Vector;
+use crate::camera::Ray;
+use crate::data::assets::Assets;
+use crate::data::vector::Vector;
+use crate::world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
+use crate::world::geometry::flip_normals::FlipNormals;
+use crate::world::geometry::rotate::RotateY;
+use crate::world::geometry::translate::Translate;
+use crate::world::materials::Material;
 use std::cmp::Ordering;
-use world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
-use world::geometry::flip_normals::FlipNormals;
-use world::geometry::rotate::RotateY;
-use world::geometry::translate::Translate;
-use world::materials::Material;
 
 #[derive(Debug, Clone)]
 pub struct HitResult {

@@ -10,7 +10,7 @@
 //! - r1 = integral_0_φ ( (1/2π) * dt )
 //! - r1 = integral_0_θ ( 2π * f(t) * sin(t) * dt )
 
-use data::vector::Vector;
+use crate::data::vector::Vector;
 use rand::distributions::Standard;
 use rand::prelude::*;
 use std::f64::consts::PI;

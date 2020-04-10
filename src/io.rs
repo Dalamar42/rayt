@@ -1,6 +1,6 @@
-use cli::{ConfigPath, ImagePath, OutputPath};
-use config::ConfigSave;
-use data::image::Image;
+use crate::cli::{ConfigPath, ImagePath, OutputPath};
+use crate::config::ConfigSave;
+use crate::data::image::Image;
 use std;
 
 pub const SUPPORTED_IMAGE_EXT: [&str; 4] = [".ppm", ".jpeg", ".jpg", ".png"];

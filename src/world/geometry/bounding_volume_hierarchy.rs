@@ -1,10 +1,10 @@
-use camera::Ray;
-use data::assets::Assets;
+use crate::camera::Ray;
+use crate::data::assets::Assets;
+use crate::sampling::uniform;
+use crate::world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
+use crate::world::geometry::{Geometry, HitResult};
 use itertools::Itertools;
-use sampling::uniform;
 use std::cmp::Ordering;
-use world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
-use world::geometry::{Geometry, HitResult};
 
 #[derive(Serialize, Deserialize)]
 pub struct BoundingVolumeHierarchyNode {

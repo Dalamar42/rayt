@@ -1,14 +1,14 @@
-use camera::{CameraSave, Lens};
-use config::ConfigSave;
-use data::colour::Colour;
-use data::vector::Vector;
-use world::background::Background;
-use world::geometry::sphere::Sphere;
-use world::geometry::Geometry;
-use world::materials::Material;
-use world::texture::perlin::build_noise_config;
-use world::texture::Texture;
-use world::WorldSave;
+use crate::camera::{CameraSave, Lens};
+use crate::config::ConfigSave;
+use crate::data::colour::Colour;
+use crate::data::vector::Vector;
+use crate::world::background::Background;
+use crate::world::geometry::sphere::Sphere;
+use crate::world::geometry::Geometry;
+use crate::world::materials::Material;
+use crate::world::texture::perlin::build_noise_config;
+use crate::world::texture::Texture;
+use crate::world::WorldSave;
 
 pub fn build() -> Result<ConfigSave, anyhow::Error> {
     let aspect = 1.5;

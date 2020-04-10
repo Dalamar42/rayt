@@ -1,8 +1,8 @@
-use camera::Ray;
-use data::assets::Assets;
-use data::vector::Vector;
-use world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
-use world::geometry::{Geometry, HitResult};
+use crate::camera::Ray;
+use crate::data::assets::Assets;
+use crate::data::vector::Vector;
+use crate::world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
+use crate::world::geometry::{Geometry, HitResult};
 
 #[derive(Serialize, Deserialize)]
 pub struct Translate {
@@ -46,9 +46,9 @@ impl Geometry for Translate {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::world::geometry::cube::Cube;
+    use crate::world::materials::Material;
     use assert_approx_eq::assert_approx_eq;
-    use world::geometry::cube::Cube;
-    use world::materials::Material;
 
     #[test]
     fn test_translate_hit() {

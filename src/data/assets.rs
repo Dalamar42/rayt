@@ -1,6 +1,6 @@
-use cli::ImagePath;
-use data::image::Image;
-use io::load_image;
+use crate::cli::ImagePath;
+use crate::data::image::Image;
+use crate::io::load_image;
 use std::collections::HashMap;
 use thiserror::Error;
 

@@ -1,20 +1,9 @@
-extern crate assert_approx_eq;
-extern crate core;
 #[macro_use]
 extern crate itertools;
-extern crate console;
-extern crate indicatif;
-extern crate rand;
-extern crate rayon;
 #[macro_use]
 extern crate clap;
-extern crate serde_yaml;
 #[macro_use]
 extern crate serde_derive;
-extern crate anyhow;
-extern crate image;
-extern crate thiserror;
-extern crate typetag;
 
 mod camera;
 mod cli;
@@ -27,14 +16,14 @@ mod sampling;
 mod scenes;
 mod world;
 
-use cli::{get_cli_config, CliCommand, ConfigPath, ImagePath, OutputPath};
-use config::Config;
+use crate::cli::{get_cli_config, CliCommand, ConfigPath, ImagePath, OutputPath};
+use crate::config::Config;
+use crate::data::assets::Assets;
+use crate::io::{load_config, save_config};
+use crate::renderer::render;
+use crate::scenes::{build_scene_config, Scene};
 use console::style;
-use data::assets::Assets;
 use indicatif::{FormattedDuration, ProgressBar, ProgressStyle};
-use io::{load_config, save_config};
-use renderer::render;
-use scenes::{build_scene_config, Scene};
 use std::process;
 use std::time::Instant;
 

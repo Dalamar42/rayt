@@ -1,8 +1,8 @@
-use camera::Ray;
-use data::colour::Colour;
-use data::vector::Vector;
-use sampling::random_point_in_unit_sphere;
-use world::materials::ScatterResult;
+use crate::camera::Ray;
+use crate::data::colour::Colour;
+use crate::data::vector::Vector;
+use crate::sampling::random_point_in_unit_sphere;
+use crate::world::materials::ScatterResult;
 
 pub fn scatter(
     albedo: &Colour,

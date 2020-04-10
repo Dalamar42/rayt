@@ -1,10 +1,10 @@
-use camera::Ray;
-use data::assets::Assets;
-use data::vector::Vector;
-use sampling::random_point_in_unit_hemisphere;
+use crate::camera::Ray;
+use crate::data::assets::Assets;
+use crate::data::vector::Vector;
+use crate::sampling::random_point_in_unit_hemisphere;
+use crate::world::materials::ScatterResult;
+use crate::world::texture::Texture;
 use std::f64::consts::PI;
-use world::materials::ScatterResult;
-use world::texture::Texture;
 
 pub fn scattering_pdf(surface_normal: &Vector, scattered: &Ray) -> f64 {
     // Using s(direction) = cos(θ) / π, where θ is the angle relative to the surface normal

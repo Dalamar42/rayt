@@ -1,6 +1,6 @@
-use data::colour::Colour;
-use data::vector::Vector;
-use sampling::uniform;
+use crate::data::colour::Colour;
+use crate::data::vector::Vector;
+use crate::sampling::uniform;
 
 const RAN_SIZE: usize = 256;
 

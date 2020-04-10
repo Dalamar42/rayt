@@ -1,8 +1,8 @@
-use camera::{Camera, CameraSave};
-use data::assets::Assets;
-use world::background::Background;
-use world::geometry::bounding_volume_hierarchy::BoundingVolumeHierarchyNode;
-use world::WorldSave;
+use crate::camera::{Camera, CameraSave};
+use crate::data::assets::Assets;
+use crate::world::background::Background;
+use crate::world::geometry::bounding_volume_hierarchy::BoundingVolumeHierarchyNode;
+use crate::world::WorldSave;
 
 pub struct Config {
     width: u32,
@@ -89,13 +89,13 @@ impl ConfigSave {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use camera::Lens;
-    use data::colour::Colour;
-    use data::vector::Vector;
-    use world::background::Background;
-    use world::geometry::sphere::Sphere;
-    use world::materials::Material;
-    use world::texture::Texture;
+    use crate::camera::Lens;
+    use crate::data::colour::Colour;
+    use crate::data::vector::Vector;
+    use crate::world::background::Background;
+    use crate::world::geometry::sphere::Sphere;
+    use crate::world::materials::Material;
+    use crate::world::texture::Texture;
 
     #[test]
     fn test_serialise_roundtrip_camera() {

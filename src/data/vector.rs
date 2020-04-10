@@ -1,4 +1,4 @@
-use float;
+use crate::float;
 use std::f64::consts::PI;
 use std::ops;
 

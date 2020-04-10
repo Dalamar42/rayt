@@ -1,10 +1,10 @@
 pub mod perlin;
 
-use data::assets::Assets;
-use data::colour::Colour;
-use data::image::Image;
-use data::vector::Vector;
-use world::texture::perlin::{perlin_turbulence, NoiseConfig};
+use crate::data::assets::Assets;
+use crate::data::colour::Colour;
+use crate::data::image::Image;
+use crate::data::vector::Vector;
+use crate::world::texture::perlin::{perlin_turbulence, NoiseConfig};
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum Texture {
