@@ -28,6 +28,12 @@ pub struct HitResult {
     pub texture_coords: (f64, f64),
 }
 
+impl HitResult {
+    pub fn front_face(&self) -> bool {
+        Vector::dot(self.ray.direction(), &self.surface_normal) < 0.0
+    }
+}
+
 #[typetag::serde(tag = "type")]
 pub trait Geometry: Sync {
     fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<HitResult>;

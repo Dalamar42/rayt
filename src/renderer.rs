@@ -39,9 +39,12 @@ fn colour(ray: &Ray, config: &Config, depth: u64) -> Colour {
         .bvh()
         .hit(&ray, 0.001, core::f64::MAX)
         .map(|hit| {
-            let emitted = hit
-                .material
-                .emitted(hit.texture_coords, &hit.point, &config.assets());
+            let emitted = hit.material.emitted(
+                hit.front_face(),
+                hit.texture_coords,
+                &hit.point,
+                &config.assets(),
+            );
 
             if depth >= MAX_SCATTER_DEPTH {
                 return emitted;

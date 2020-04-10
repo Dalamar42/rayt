@@ -97,7 +97,17 @@ impl Material {
         }
     }
 
-    pub fn emitted(&self, texture_coords: (f64, f64), point: &Vector, assets: &Assets) -> Colour {
+    pub fn emitted(
+        &self,
+        front_face: bool,
+        texture_coords: (f64, f64),
+        point: &Vector,
+        assets: &Assets,
+    ) -> Colour {
+        if !front_face {
+            return Colour::new(0.0, 0.0, 0.0);
+        }
+
         match self {
             Material::DiffuseLight { emit } => emit.value(texture_coords, point, assets),
             _ => Colour::new(0.0, 0.0, 0.0),
