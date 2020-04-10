@@ -29,7 +29,7 @@ impl ScatterResult {
         &self.ray
     }
 
-    pub fn attenuation(&self) -> &Colour {
+    pub fn albedo(&self) -> &Colour {
         &self.attenuation
     }
 

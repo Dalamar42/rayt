@@ -59,7 +59,7 @@ fn colour(ray: &Ray, config: &Config, depth: u64) -> Colour {
                     let scattering_pdf = hit
                         .material
                         .scattering_pdf(&hit.surface_normal, &scatter.ray());
-                    let scatter_colour = scatter.attenuation()
+                    let scatter_colour = scatter.albedo()
                         * scattering_pdf
                         * colour(&scatter.ray(), &config, depth + 1)
                         / scatter.pdf();
