@@ -3,7 +3,7 @@ use crate::data::vector::Vector;
 use crate::sampling::uniform;
 use std::f64::consts::PI;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 pub struct Ray {
     a: Vector,
     b: Vector,

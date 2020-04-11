@@ -53,7 +53,7 @@ impl Hittable for XyRect {
 
         Some(HitResult {
             distance,
-            ray: ray.clone(),
+            ray: *ray,
             point: ray.point(distance),
             surface_normal: Vector::new(0.0, 0.0, 1.0),
             material: self.material.clone(),
@@ -150,7 +150,7 @@ impl Hittable for XzRect {
 
         Some(HitResult {
             distance,
-            ray: ray.clone(),
+            ray: *ray,
             point: ray.point(distance),
             surface_normal: Vector::new(0.0, 1.0, 0.0),
             material: self.material.clone(),
@@ -247,7 +247,7 @@ impl Hittable for YzRect {
 
         Some(HitResult {
             distance,
-            ray: ray.clone(),
+            ray: *ray,
             point: ray.point(distance),
             surface_normal: Vector::new(1.0, 0.0, 0.0),
             material: self.material.clone(),

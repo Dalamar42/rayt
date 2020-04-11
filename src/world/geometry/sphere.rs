@@ -96,7 +96,7 @@ impl Hittable for Sphere {
 
             HitResult {
                 distance,
-                ray: ray.clone(),
+                ray: *ray,
                 point,
                 surface_normal,
                 material: self.material.clone(),
@@ -171,7 +171,7 @@ impl Hittable for MovingSphere {
 
             HitResult {
                 distance,
-                ray: ray.clone(),
+                ray: *ray,
                 point,
                 surface_normal,
                 material: self.material.clone(),

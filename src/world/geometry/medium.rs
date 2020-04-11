@@ -57,7 +57,7 @@ impl Hittable for ConstantMedium {
 
                 Some(HitResult {
                     distance,
-                    ray: ray.clone(),
+                    ray: *ray,
                     point: ray.point(distance),
                     surface_normal: Vector::new(1.0, 0.0, 0.0), // Arbitrary,
                     material: self.material.clone(),
