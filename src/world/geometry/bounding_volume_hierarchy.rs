@@ -2,20 +2,20 @@ use crate::camera::Ray;
 use crate::data::assets::Assets;
 use crate::sampling::uniform;
 use crate::world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
-use crate::world::geometry::{Geometry, HitResult};
+use crate::world::geometry::{Geometry, HitResult, Hittable};
 use itertools::Itertools;
 use std::cmp::Ordering;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct BoundingVolumeHierarchyNode {
-    left: Option<Box<dyn Geometry>>,
-    right: Option<Box<dyn Geometry>>,
+    left: Option<Box<Geometry>>,
+    right: Option<Box<Geometry>>,
     bounding_box: AxisAlignedBoundingBox,
 }
 
 fn compare_setup(
-    left: &dyn Geometry,
-    right: &dyn Geometry,
+    left: &Geometry,
+    right: &Geometry,
     time_start: f64,
     time_end: f64,
 ) -> (AxisAlignedBoundingBox, AxisAlignedBoundingBox) {
@@ -35,8 +35,8 @@ fn compare_setup(
 }
 
 fn compare_box_by_x_axis(
-    left: &dyn Geometry,
-    right: &dyn Geometry,
+    left: &Geometry,
+    right: &Geometry,
     time_start: f64,
     time_end: f64,
 ) -> Ordering {
@@ -51,8 +51,8 @@ fn compare_box_by_x_axis(
 }
 
 fn compare_box_by_y_axis(
-    left: &dyn Geometry,
-    right: &dyn Geometry,
+    left: &Geometry,
+    right: &Geometry,
     time_start: f64,
     time_end: f64,
 ) -> Ordering {
@@ -67,8 +67,8 @@ fn compare_box_by_y_axis(
 }
 
 fn compare_box_by_z_axis(
-    left: &dyn Geometry,
-    right: &dyn Geometry,
+    left: &Geometry,
+    right: &Geometry,
     time_start: f64,
     time_end: f64,
 ) -> Ordering {
@@ -83,11 +83,7 @@ fn compare_box_by_z_axis(
 }
 
 impl BoundingVolumeHierarchyNode {
-    pub fn new(
-        geometries: Vec<Box<dyn Geometry>>,
-        time_start: f64,
-        time_end: f64,
-    ) -> BoundingVolumeHierarchyNode {
+    pub fn build(geometries: Vec<Geometry>, time_start: f64, time_end: f64) -> Geometry {
         let axis_choice = uniform::<u8>() % 3;
         let sorter = match axis_choice {
             0 => compare_box_by_x_axis,
@@ -95,29 +91,32 @@ impl BoundingVolumeHierarchyNode {
             _ => compare_box_by_z_axis,
         };
 
-        let mut geometries: Vec<Box<dyn Geometry>> = geometries
+        let mut geometries: Vec<Geometry> = geometries
             .into_iter()
-            .sorted_by(|left, right| sorter(left.as_ref(), right.as_ref(), time_start, time_end))
+            .sorted_by(|left, right| sorter(left, right, time_start, time_end))
             .collect();
 
         let size = geometries.len();
 
         let (left, right) = match size {
             0 => (None, None),
-            1 => (Some(geometries.remove(0)), None),
-            2 => (Some(geometries.remove(0)), Some(geometries.remove(0))),
+            1 => (Some(Box::from(geometries.remove(0))), None),
+            2 => (
+                Some(Box::from(geometries.remove(0))),
+                Some(Box::from(geometries.remove(0))),
+            ),
             _ => {
                 let mid = size / 2;
 
-                let left_geometries: Vec<Box<dyn Geometry>> = geometries.drain(0..mid).collect();
+                let left_geometries: Vec<Geometry> = geometries.drain(0..mid).collect();
                 let right_geometries = geometries;
 
-                let left: Box<dyn Geometry> = Box::from(BoundingVolumeHierarchyNode::new(
+                let left = Box::from(BoundingVolumeHierarchyNode::build(
                     left_geometries,
                     time_start,
                     time_end,
                 ));
-                let right: Box<dyn Geometry> = Box::from(BoundingVolumeHierarchyNode::new(
+                let right = Box::from(BoundingVolumeHierarchyNode::build(
                     right_geometries,
                     time_start,
                     time_end,
@@ -141,16 +140,15 @@ impl BoundingVolumeHierarchyNode {
             None => panic!("Geometries with no bounding boxes are not supported"),
         };
 
-        BoundingVolumeHierarchyNode {
+        Geometry::Bvh(Box::from(BoundingVolumeHierarchyNode {
             left,
             right,
             bounding_box,
-        }
+        }))
     }
 }
 
-#[typetag::serde]
-impl Geometry for BoundingVolumeHierarchyNode {
+impl Hittable for BoundingVolumeHierarchyNode {
     fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<HitResult> {
         if !self.bounding_box.intersection(&ray, tmin, tmax) {
             return None;

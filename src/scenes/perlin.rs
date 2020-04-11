@@ -23,9 +23,9 @@ pub fn build() -> Result<ConfigSave, anyhow::Error> {
         1.0,
     );
 
-    let mut geometries: Vec<Box<dyn Geometry>> = Vec::with_capacity(2);
+    let mut geometries: Vec<Geometry> = Vec::with_capacity(2);
 
-    geometries.push(Box::from(Sphere::new(
+    geometries.push(Sphere::build(
         Vector::new(0.0, -1000.0, 0.0),
         1000.0,
         Material::Lambertian {
@@ -36,8 +36,8 @@ pub fn build() -> Result<ConfigSave, anyhow::Error> {
                 noise_config: build_noise_config(),
             },
         },
-    )));
-    geometries.push(Box::from(Sphere::new(
+    ));
+    geometries.push(Sphere::build(
         Vector::new(0.0, 2.0, 0.0),
         2.0,
         Material::Lambertian {
@@ -48,7 +48,7 @@ pub fn build() -> Result<ConfigSave, anyhow::Error> {
                 noise_config: build_noise_config(),
             },
         },
-    )));
+    ));
 
     let white = Colour::new(1.0, 1.0, 1.0);
     let blue = Colour::new(0.5, 0.7, 1.0);

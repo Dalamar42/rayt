@@ -1,6 +1,6 @@
 use crate::data::assets::Assets;
 use crate::world::background::Background;
-use crate::world::geometry::Geometry;
+use crate::world::geometry::{Geometry, Hittable};
 
 pub mod background;
 pub mod geometry;
@@ -10,11 +10,11 @@ pub mod texture;
 #[derive(Serialize, Deserialize)]
 pub struct WorldSave {
     background: Background,
-    geometries: Vec<Box<dyn Geometry>>,
+    geometries: Vec<Geometry>,
 }
 
 impl WorldSave {
-    pub fn new(background: Background, geometries: Vec<Box<dyn Geometry>>) -> WorldSave {
+    pub fn new(background: Background, geometries: Vec<Geometry>) -> WorldSave {
         WorldSave {
             background,
             geometries,
@@ -25,7 +25,7 @@ impl WorldSave {
         &self.background
     }
 
-    pub fn drain_geometries(&mut self) -> Vec<Box<dyn Geometry>> {
+    pub fn drain_geometries(&mut self) -> Vec<Geometry> {
         if self.geometries.is_empty() {
             panic!("Geometries have already been drained")
         }

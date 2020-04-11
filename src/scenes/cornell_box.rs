@@ -23,7 +23,7 @@ pub fn build() -> Result<ConfigSave, anyhow::Error> {
         1.0,
     );
 
-    let mut geometries: Vec<Box<dyn Geometry>> = Vec::with_capacity(8);
+    let mut geometries: Vec<Geometry> = Vec::with_capacity(8);
 
     let red = Material::Lambertian {
         albedo: Texture::Constant {
@@ -46,43 +46,35 @@ pub fn build() -> Result<ConfigSave, anyhow::Error> {
         },
     };
 
-    geometries.push(Box::new(
-        YzRect::new((0.0, 555.0), (0.0, 555.0), 555.0, green).flip(),
-    ));
-    geometries.push(Box::new(YzRect::new((0.0, 555.0), (0.0, 555.0), 0.0, red)));
-    geometries.push(Box::new(
-        XzRect::new((213.0, 343.0), (227.0, 332.0), 554.0, light).flip(),
-    ));
-    geometries.push(Box::new(
-        XzRect::new((0.0, 555.0), (0.0, 555.0), 555.0, white.clone()).flip(),
-    ));
-    geometries.push(Box::new(XzRect::new(
+    geometries.push(YzRect::build((0.0, 555.0), (0.0, 555.0), 555.0, green).flip());
+    geometries.push(YzRect::build((0.0, 555.0), (0.0, 555.0), 0.0, red));
+    geometries.push(XzRect::build((213.0, 343.0), (227.0, 332.0), 554.0, light).flip());
+    geometries.push(XzRect::build((0.0, 555.0), (0.0, 555.0), 555.0, white.clone()).flip());
+    geometries.push(XzRect::build(
         (0.0, 555.0),
         (0.0, 555.0),
         0.0,
         white.clone(),
-    )));
-    geometries.push(Box::new(
-        XyRect::new((0.0, 555.0), (0.0, 555.0), 555.0, white.clone()).flip(),
     ));
-    geometries.push(Box::new(
-        Cube::new(
+    geometries.push(XyRect::build((0.0, 555.0), (0.0, 555.0), 555.0, white.clone()).flip());
+    geometries.push(
+        Cube::build(
             Vector::new(0.0, 0.0, 0.0),
             Vector::new(165.0, 165.0, 165.0),
             white.clone(),
         )
         .rotate_y(-18.0)?
         .translate(Vector::new(130.0, 0.0, 65.0)),
-    ));
-    geometries.push(Box::new(
-        Cube::new(
+    );
+    geometries.push(
+        Cube::build(
             Vector::new(0.0, 0.0, 0.0),
             Vector::new(165.0, 330.0, 165.0),
             white,
         )
         .rotate_y(15.0)?
         .translate(Vector::new(265.0, 0.0, 295.0)),
-    ));
+    );
 
     let black = Colour::new(0.0, 0.0, 0.0);
     let background = Background::new(black, black);

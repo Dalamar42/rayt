@@ -2,7 +2,7 @@ use crate::camera::Ray;
 use crate::data::assets::Assets;
 use crate::data::vector::Vector;
 use crate::world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
-use crate::world::geometry::{Geometry, HitResult};
+use crate::world::geometry::{Geometry, HitResult, Hittable};
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -11,23 +11,25 @@ pub enum GeometryError {
     RotationUnsupported(),
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct RotateY {
-    geometry: Box<dyn Geometry>,
+    geometry: Box<Geometry>,
     angle: f64,
 }
 
 impl RotateY {
-    pub fn new(geometry: Box<dyn Geometry>, angle: f64) -> Result<RotateY, GeometryError> {
+    pub fn build(geometry: Geometry, angle: f64) -> Result<Geometry, GeometryError> {
         if geometry.bounding_box(0.0, 0.0).is_none() {
             return Err(GeometryError::RotationUnsupported());
         }
-        Ok(RotateY { geometry, angle })
+        Ok(Geometry::RotateY(Box::from(RotateY {
+            geometry: Box::from(geometry),
+            angle,
+        })))
     }
 }
 
-#[typetag::serde]
-impl Geometry for RotateY {
+impl Hittable for RotateY {
     fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<HitResult> {
         let origin = ray.origin().rotate_y(-self.angle);
         let direction = ray.direction().rotate_y(-self.angle);
@@ -85,7 +87,7 @@ mod tests {
 
     #[test]
     fn test_rotate_hit() {
-        let cube = Cube::new(
+        let cube = Cube::build(
             Vector::new(0.0, 0.0, 0.0),
             Vector::new(2.0, 1.0, 1.0),
             Material::Dielectric {
@@ -105,7 +107,7 @@ mod tests {
 
     #[test]
     fn test_rotate_surface_normal() {
-        let cube = Cube::new(
+        let cube = Cube::build(
             Vector::new(0.0, 0.0, 0.0),
             Vector::new(2.0, 1.0, 1.0),
             Material::Dielectric {
@@ -129,7 +131,7 @@ mod tests {
 
     #[test]
     fn test_rotate_bounding_box() {
-        let cube = Cube::new(
+        let cube = Cube::build(
             Vector::new(0.0, 0.0, 0.0),
             Vector::new(2.0, 1.0, 1.0),
             Material::Dielectric {
@@ -159,7 +161,7 @@ mod tests {
 
     #[test]
     fn test_rotate_texture_coords() {
-        let cube = Cube::new(
+        let cube = Cube::build(
             Vector::new(0.0, 0.0, 0.0),
             Vector::new(2.0, 1.0, 1.0),
             Material::Dielectric {

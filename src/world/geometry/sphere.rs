@@ -2,7 +2,7 @@ use crate::camera::Ray;
 use crate::data::assets::Assets;
 use crate::data::vector::Vector;
 use crate::world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
-use crate::world::geometry::{Geometry, HitResult};
+use crate::world::geometry::{Geometry, HitResult, Hittable};
 use crate::world::materials::Material;
 use std::f64::consts::PI;
 
@@ -71,12 +71,12 @@ pub struct Sphere {
 }
 
 impl Sphere {
-    pub fn new(centre: Vector, radius: f64, material: Material) -> Sphere {
-        Sphere {
+    pub fn build(centre: Vector, radius: f64, material: Material) -> Geometry {
+        Geometry::Sphere(Box::from(Sphere {
             centre,
             radius,
             material,
-        }
+        }))
     }
 
     fn surface_normal(&self, ray: &Ray, distance: f64) -> Vector {
@@ -86,8 +86,7 @@ impl Sphere {
     }
 }
 
-#[typetag::serde]
-impl Geometry for Sphere {
+impl Hittable for Sphere {
     fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<HitResult> {
         sphere_hit(ray, &self.centre, self.radius, tmin, tmax).map(|distance| {
             let point = ray.point(distance);
@@ -115,7 +114,7 @@ impl Geometry for Sphere {
     }
 }
 
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
 pub struct MovingSphere {
     centre_start: Vector,
     time_start: f64,
@@ -126,22 +125,22 @@ pub struct MovingSphere {
 }
 
 impl MovingSphere {
-    pub fn new(
+    pub fn build(
         centre_start: Vector,
         time_start: f64,
         centre_end: Vector,
         time_end: f64,
         radius: f64,
         material: Material,
-    ) -> MovingSphere {
-        MovingSphere {
+    ) -> Geometry {
+        Geometry::MovingSphere(Box::from(MovingSphere {
             centre_start,
             time_start,
             centre_end,
             time_end,
             radius,
             material,
-        }
+        }))
     }
 
     fn centre(&self, time: f64) -> Vector {
@@ -157,8 +156,7 @@ impl MovingSphere {
     }
 }
 
-#[typetag::serde]
-impl Geometry for MovingSphere {
+impl Hittable for MovingSphere {
     fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<HitResult> {
         let centre = self.centre(ray.time());
         sphere_hit(ray, &centre, self.radius, tmin, tmax).map(|distance| {

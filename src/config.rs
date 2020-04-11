@@ -2,6 +2,7 @@ use crate::camera::{Camera, CameraSave};
 use crate::data::assets::Assets;
 use crate::world::background::Background;
 use crate::world::geometry::bounding_volume_hierarchy::BoundingVolumeHierarchyNode;
+use crate::world::geometry::Geometry;
 use crate::world::WorldSave;
 
 pub struct Config {
@@ -9,7 +10,7 @@ pub struct Config {
     height: u32,
     camera: Camera,
     background: Background,
-    bvh: BoundingVolumeHierarchyNode,
+    bvh: Geometry,
     num_of_rays: u64,
     assets: Assets,
 }
@@ -42,7 +43,7 @@ impl Config {
         &self.background
     }
 
-    pub fn bvh(&self) -> &BoundingVolumeHierarchyNode {
+    pub fn bvh(&self) -> &Geometry {
         &self.bvh
     }
 
@@ -68,7 +69,7 @@ impl ConfigSave {
 
         let geometries = self.world.drain_geometries();
 
-        let bvh = BoundingVolumeHierarchyNode::new(geometries, time_start, time_end);
+        let bvh = BoundingVolumeHierarchyNode::build(geometries, time_start, time_end);
 
         Config {
             width,
@@ -120,7 +121,7 @@ mod tests {
         let mut world = WorldSave::new(
             Background::new(Colour::new(1.0, 1.0, 1.0), Colour::new(0.5, 0.0, 0.0)),
             vec![
-                Box::from(Sphere::new(
+                Sphere::build(
                     Vector::new(0.0, 0.0, -1.0),
                     0.5,
                     Material::Lambertian {
@@ -128,8 +129,8 @@ mod tests {
                             colour: Colour::new(0.1, 0.2, 0.5),
                         },
                     },
-                )),
-                Box::from(Sphere::new(
+                ),
+                Sphere::build(
                     Vector::new(0.0, -100.5, -1.0),
                     100.0,
                     Material::Lambertian {
@@ -137,22 +138,22 @@ mod tests {
                             colour: Colour::new(0.8, 0.8, 0.0),
                         },
                     },
-                )),
-                Box::from(Sphere::new(
+                ),
+                Sphere::build(
                     Vector::new(1.0, 0.0, -1.0),
                     0.5,
                     Material::Metal {
                         albedo: Colour::new(0.8, 0.6, 0.2),
                         fuzz: 0.1,
                     },
-                )),
-                Box::from(Sphere::new(
+                ),
+                Sphere::build(
                     Vector::new(-1.0, 0.0, -1.0),
                     -0.45,
                     Material::Dielectric {
                         refractive_index: 1.5,
                     },
-                )),
+                ),
             ],
         );
 
@@ -178,7 +179,7 @@ mod tests {
         );
         let world = WorldSave::new(
             Background::new(Colour::new(1.0, 1.0, 1.0), Colour::new(0.5, 0.0, 0.0)),
-            vec![Box::from(Sphere::new(
+            vec![Sphere::build(
                 Vector::new(0.0, 0.0, -1.0),
                 0.5,
                 Material::Lambertian {
@@ -186,7 +187,7 @@ mod tests {
                         colour: Colour::new(0.1, 0.2, 0.5),
                     },
                 },
-            ))],
+            )],
         );
         let saved_config = ConfigSave {
             aspect: 1.5,

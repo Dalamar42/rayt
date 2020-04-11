@@ -30,60 +30,74 @@ world:
       g: 0.0
       b: 0.0
   geometries:
-    - type: FlipNormals
-      geometry:
-        type: YzRect
+    - Flip:
+        geometry:
+          YzRect:
+            y0: 0.0
+            y1: 555.0
+            z0: 0.0
+            z1: 555.0
+            k: 555.0
+            material:
+              Lambertian:
+                albedo:
+                  Constant:
+                    colour:
+                      r: 0.12
+                      g: 0.45
+                      b: 0.15
+    - YzRect:
         y0: 0.0
         y1: 555.0
         z0: 0.0
         z1: 555.0
-        k: 555.0
+        k: 0.0
         material:
           Lambertian:
             albedo:
               Constant:
                 colour:
-                  r: 0.12
-                  g: 0.45
-                  b: 0.15
-    - type: YzRect
-      y0: 0.0
-      y1: 555.0
-      z0: 0.0
-      z1: 555.0
-      k: 0.0
-      material:
-        Lambertian:
-          albedo:
-            Constant:
-              colour:
-                r: 0.65
-                g: 0.05
-                b: 0.05
-    - type: FlipNormals
-      geometry:
-        type: XzRect
-        x0: 113.0
-        x1: 443.0
-        z0: 127.0
-        z1: 332.0
-        k: 554.0
-        material:
-          DiffuseLight:
-            emit:
-              Constant:
-                colour:
-                  r: 7.0
-                  g: 7.0
-                  b: 7.0
-    - type: FlipNormals
-      geometry:
-        type: XzRect
+                  r: 0.65
+                  g: 0.05
+                  b: 0.05
+    - Flip:
+        geometry:
+          XzRect:
+            x0: 113.0
+            x1: 443.0
+            z0: 127.0
+            z1: 332.0
+            k: 554.0
+            material:
+              DiffuseLight:
+                emit:
+                  Constant:
+                    colour:
+                      r: 7.0
+                      g: 7.0
+                      b: 7.0
+    - Flip:
+        geometry:
+          XzRect:
+            x0: 0.0
+            x1: 555.0
+            z0: 0.0
+            z1: 555.0
+            k: 555.0
+            material:
+              Lambertian:
+                albedo:
+                  Constant:
+                    colour:
+                      r: 0.73
+                      g: 0.73
+                      b: 0.73
+    - XzRect:
         x0: 0.0
         x1: 555.0
         z0: 0.0
         z1: 555.0
-        k: 555.0
+        k: 0.0
         material:
           Lambertian:
             albedo:
@@ -92,273 +106,259 @@ world:
                   r: 0.73
                   g: 0.73
                   b: 0.73
-    - type: XzRect
-      x0: 0.0
-      x1: 555.0
-      z0: 0.0
-      z1: 555.0
-      k: 0.0
-      material:
-        Lambertian:
-          albedo:
-            Constant:
-              colour:
-                r: 0.73
-                g: 0.73
-                b: 0.73
-    - type: FlipNormals
-      geometry:
-        type: XyRect
-        x0: 0.0
-        x1: 555.0
-        y0: 0.0
-        y1: 555.0
-        k: 555.0
+    - Flip:
+        geometry:
+          XyRect:
+            x0: 0.0
+            x1: 555.0
+            y0: 0.0
+            y1: 555.0
+            k: 555.0
+            material:
+              Lambertian:
+                albedo:
+                  Constant:
+                    colour:
+                      r: 0.73
+                      g: 0.73
+                      b: 0.73
+    - ConstantMedium:
+        boundary:
+          Translate:
+            geometry:
+              RotateY:
+                geometry:
+                  Cube:
+                    rectangles:
+                      - XyRect:
+                          x0: 0.0
+                          x1: 165.0
+                          y0: 0.0
+                          y1: 165.0
+                          k: 165.0
+                          material:
+                            Lambertian:
+                              albedo:
+                                Constant:
+                                  colour:
+                                    r: 0.73
+                                    g: 0.73
+                                    b: 0.73
+                      - Flip:
+                          geometry:
+                            XyRect:
+                              x0: 0.0
+                              x1: 165.0
+                              y0: 0.0
+                              y1: 165.0
+                              k: 0.0
+                              material:
+                                Lambertian:
+                                  albedo:
+                                    Constant:
+                                      colour:
+                                        r: 0.73
+                                        g: 0.73
+                                        b: 0.73
+                      - XzRect:
+                          x0: 0.0
+                          x1: 165.0
+                          z0: 0.0
+                          z1: 165.0
+                          k: 165.0
+                          material:
+                            Lambertian:
+                              albedo:
+                                Constant:
+                                  colour:
+                                    r: 0.73
+                                    g: 0.73
+                                    b: 0.73
+                      - Flip:
+                          geometry:
+                            XzRect:
+                              x0: 0.0
+                              x1: 165.0
+                              z0: 0.0
+                              z1: 165.0
+                              k: 0.0
+                              material:
+                                Lambertian:
+                                  albedo:
+                                    Constant:
+                                      colour:
+                                        r: 0.73
+                                        g: 0.73
+                                        b: 0.73
+                      - YzRect:
+                          y0: 0.0
+                          y1: 165.0
+                          z0: 0.0
+                          z1: 165.0
+                          k: 165.0
+                          material:
+                            Lambertian:
+                              albedo:
+                                Constant:
+                                  colour:
+                                    r: 0.73
+                                    g: 0.73
+                                    b: 0.73
+                      - Flip:
+                          geometry:
+                            YzRect:
+                              y0: 0.0
+                              y1: 165.0
+                              z0: 0.0
+                              z1: 165.0
+                              k: 0.0
+                              material:
+                                Lambertian:
+                                  albedo:
+                                    Constant:
+                                      colour:
+                                        r: 0.73
+                                        g: 0.73
+                                        b: 0.73
+                    pmin:
+                      x: 0.0
+                      y: 0.0
+                      z: 0.0
+                    pmax:
+                      x: 165.0
+                      y: 165.0
+                      z: 165.0
+                angle: -18.0
+            offset:
+              x: 130.0
+              y: 0.0
+              z: 65.0
+        density: 0.01
         material:
-          Lambertian:
+          Isotropic:
             albedo:
               Constant:
                 colour:
-                  r: 0.73
-                  g: 0.73
-                  b: 0.73
-    - type: ConstantMedium
-      boundary:
-        type: Translate
-        geometry:
-          type: RotateY
-          geometry:
-            type: Cube
-            rectangles:
-              - type: XyRect
-                x0: 0.0
-                x1: 165.0
-                y0: 0.0
-                y1: 165.0
-                k: 165.0
-                material:
-                  Lambertian:
-                    albedo:
-                      Constant:
-                        colour:
-                          r: 0.73
-                          g: 0.73
-                          b: 0.73
-              - type: FlipNormals
+                  r: 1.0
+                  g: 1.0
+                  b: 1.0
+    - ConstantMedium:
+        boundary:
+          Translate:
+            geometry:
+              RotateY:
                 geometry:
-                  type: XyRect
-                  x0: 0.0
-                  x1: 165.0
-                  y0: 0.0
-                  y1: 165.0
-                  k: 0.0
-                  material:
-                    Lambertian:
-                      albedo:
-                        Constant:
-                          colour:
-                            r: 0.73
-                            g: 0.73
-                            b: 0.73
-              - type: XzRect
-                x0: 0.0
-                x1: 165.0
-                z0: 0.0
-                z1: 165.0
-                k: 165.0
-                material:
-                  Lambertian:
-                    albedo:
-                      Constant:
-                        colour:
-                          r: 0.73
-                          g: 0.73
-                          b: 0.73
-              - type: FlipNormals
-                geometry:
-                  type: XzRect
-                  x0: 0.0
-                  x1: 165.0
-                  z0: 0.0
-                  z1: 165.0
-                  k: 0.0
-                  material:
-                    Lambertian:
-                      albedo:
-                        Constant:
-                          colour:
-                            r: 0.73
-                            g: 0.73
-                            b: 0.73
-              - type: YzRect
-                y0: 0.0
-                y1: 165.0
-                z0: 0.0
-                z1: 165.0
-                k: 165.0
-                material:
-                  Lambertian:
-                    albedo:
-                      Constant:
-                        colour:
-                          r: 0.73
-                          g: 0.73
-                          b: 0.73
-              - type: FlipNormals
-                geometry:
-                  type: YzRect
-                  y0: 0.0
-                  y1: 165.0
-                  z0: 0.0
-                  z1: 165.0
-                  k: 0.0
-                  material:
-                    Lambertian:
-                      albedo:
-                        Constant:
-                          colour:
-                            r: 0.73
-                            g: 0.73
-                            b: 0.73
-            pmin:
-              x: 0.0
+                  Cube:
+                    rectangles:
+                      - XyRect:
+                          x0: 0.0
+                          x1: 165.0
+                          y0: 0.0
+                          y1: 330.0
+                          k: 165.0
+                          material:
+                            Lambertian:
+                              albedo:
+                                Constant:
+                                  colour:
+                                    r: 0.73
+                                    g: 0.73
+                                    b: 0.73
+                      - Flip:
+                          geometry:
+                            XyRect:
+                              x0: 0.0
+                              x1: 165.0
+                              y0: 0.0
+                              y1: 330.0
+                              k: 0.0
+                              material:
+                                Lambertian:
+                                  albedo:
+                                    Constant:
+                                      colour:
+                                        r: 0.73
+                                        g: 0.73
+                                        b: 0.73
+                      - XzRect:
+                          x0: 0.0
+                          x1: 165.0
+                          z0: 0.0
+                          z1: 165.0
+                          k: 330.0
+                          material:
+                            Lambertian:
+                              albedo:
+                                Constant:
+                                  colour:
+                                    r: 0.73
+                                    g: 0.73
+                                    b: 0.73
+                      - Flip:
+                          geometry:
+                            XzRect:
+                              x0: 0.0
+                              x1: 165.0
+                              z0: 0.0
+                              z1: 165.0
+                              k: 0.0
+                              material:
+                                Lambertian:
+                                  albedo:
+                                    Constant:
+                                      colour:
+                                        r: 0.73
+                                        g: 0.73
+                                        b: 0.73
+                      - YzRect:
+                          y0: 0.0
+                          y1: 330.0
+                          z0: 0.0
+                          z1: 165.0
+                          k: 165.0
+                          material:
+                            Lambertian:
+                              albedo:
+                                Constant:
+                                  colour:
+                                    r: 0.73
+                                    g: 0.73
+                                    b: 0.73
+                      - Flip:
+                          geometry:
+                            YzRect:
+                              y0: 0.0
+                              y1: 330.0
+                              z0: 0.0
+                              z1: 165.0
+                              k: 0.0
+                              material:
+                                Lambertian:
+                                  albedo:
+                                    Constant:
+                                      colour:
+                                        r: 0.73
+                                        g: 0.73
+                                        b: 0.73
+                    pmin:
+                      x: 0.0
+                      y: 0.0
+                      z: 0.0
+                    pmax:
+                      x: 165.0
+                      y: 330.0
+                      z: 165.0
+                angle: 15.0
+            offset:
+              x: 265.0
               y: 0.0
-              z: 0.0
-            pmax:
-              x: 165.0
-              y: 165.0
-              z: 165.0
-          angle: -18.0
-        offset:
-          x: 130.0
-          y: 0.0
-          z: 65.0
-      density: 0.01
-      material:
-        Isotropic:
-          albedo:
-            Constant:
-              colour:
-                r: 1.0
-                g: 1.0
-                b: 1.0
-    - type: ConstantMedium
-      boundary:
-        type: Translate
-        geometry:
-          type: RotateY
-          geometry:
-            type: Cube
-            rectangles:
-              - type: XyRect
-                x0: 0.0
-                x1: 165.0
-                y0: 0.0
-                y1: 330.0
-                k: 165.0
-                material:
-                  Lambertian:
-                    albedo:
-                      Constant:
-                        colour:
-                          r: 0.73
-                          g: 0.73
-                          b: 0.73
-              - type: FlipNormals
-                geometry:
-                  type: XyRect
-                  x0: 0.0
-                  x1: 165.0
-                  y0: 0.0
-                  y1: 330.0
-                  k: 0.0
-                  material:
-                    Lambertian:
-                      albedo:
-                        Constant:
-                          colour:
-                            r: 0.73
-                            g: 0.73
-                            b: 0.73
-              - type: XzRect
-                x0: 0.0
-                x1: 165.0
-                z0: 0.0
-                z1: 165.0
-                k: 330.0
-                material:
-                  Lambertian:
-                    albedo:
-                      Constant:
-                        colour:
-                          r: 0.73
-                          g: 0.73
-                          b: 0.73
-              - type: FlipNormals
-                geometry:
-                  type: XzRect
-                  x0: 0.0
-                  x1: 165.0
-                  z0: 0.0
-                  z1: 165.0
-                  k: 0.0
-                  material:
-                    Lambertian:
-                      albedo:
-                        Constant:
-                          colour:
-                            r: 0.73
-                            g: 0.73
-                            b: 0.73
-              - type: YzRect
-                y0: 0.0
-                y1: 330.0
-                z0: 0.0
-                z1: 165.0
-                k: 165.0
-                material:
-                  Lambertian:
-                    albedo:
-                      Constant:
-                        colour:
-                          r: 0.73
-                          g: 0.73
-                          b: 0.73
-              - type: FlipNormals
-                geometry:
-                  type: YzRect
-                  y0: 0.0
-                  y1: 330.0
-                  z0: 0.0
-                  z1: 165.0
-                  k: 0.0
-                  material:
-                    Lambertian:
-                      albedo:
-                        Constant:
-                          colour:
-                            r: 0.73
-                            g: 0.73
-                            b: 0.73
-            pmin:
-              x: 0.0
-              y: 0.0
-              z: 0.0
-            pmax:
-              x: 165.0
-              y: 330.0
-              z: 165.0
-          angle: 15.0
-        offset:
-          x: 265.0
-          y: 0.0
-          z: 295.0
-      density: 0.01
-      material:
-        Isotropic:
-          albedo:
-            Constant:
-              colour:
-                r: 0.0
-                g: 0.0
-                b: 0.0
+              z: 295.0
+        density: 0.01
+        material:
+          Isotropic:
+            albedo:
+              Constant:
+                colour:
+                  r: 0.0
+                  g: 0.0
+                  b: 0.0

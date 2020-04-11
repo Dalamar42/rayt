@@ -2,22 +2,24 @@ use crate::camera::Ray;
 use crate::data::assets::Assets;
 use crate::data::vector::Vector;
 use crate::world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
-use crate::world::geometry::{Geometry, HitResult};
+use crate::world::geometry::{Geometry, HitResult, Hittable};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct Translate {
-    geometry: Box<dyn Geometry>,
+    geometry: Box<Geometry>,
     offset: Vector,
 }
 
 impl Translate {
-    pub fn new(geometry: Box<dyn Geometry>, offset: Vector) -> Translate {
-        Translate { geometry, offset }
+    pub fn build(geometry: Geometry, offset: Vector) -> Geometry {
+        Geometry::Translate(Box::from(Translate {
+            geometry: Box::from(geometry),
+            offset,
+        }))
     }
 }
 
-#[typetag::serde]
-impl Geometry for Translate {
+impl Hittable for Translate {
     fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<HitResult> {
         let moved_ray = ray.offset(self.offset);
         self.geometry
@@ -52,7 +54,7 @@ mod tests {
 
     #[test]
     fn test_translate_hit() {
-        let cube = Cube::new(
+        let cube = Cube::build(
             Vector::new(0.0, 0.0, 0.0),
             Vector::new(1.0, 1.0, 1.0),
             Material::Dielectric {
@@ -68,7 +70,7 @@ mod tests {
 
     #[test]
     fn test_translate_surface_normal() {
-        let cube = Cube::new(
+        let cube = Cube::build(
             Vector::new(0.0, 0.0, 0.0),
             Vector::new(1.0, 1.0, 1.0),
             Material::Dielectric {
@@ -84,7 +86,7 @@ mod tests {
 
     #[test]
     fn test_translate_bounding_box() {
-        let cube = Cube::new(
+        let cube = Cube::build(
             Vector::new(0.0, 0.0, 0.0),
             Vector::new(1.0, 1.0, 1.0),
             Material::Dielectric {
@@ -101,7 +103,7 @@ mod tests {
 
     #[test]
     fn test_translate_texture_coords() {
-        let cube = Cube::new(
+        let cube = Cube::build(
             Vector::new(0.0, 0.0, 0.0),
             Vector::new(1.0, 1.0, 1.0),
             Material::Dielectric {

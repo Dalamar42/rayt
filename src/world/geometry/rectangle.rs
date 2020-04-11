@@ -2,10 +2,10 @@ use crate::camera::Ray;
 use crate::data::assets::Assets;
 use crate::data::vector::Vector;
 use crate::world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
-use crate::world::geometry::{Geometry, HitResult};
+use crate::world::geometry::{Geometry, HitResult, Hittable};
 use crate::world::materials::Material;
 
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
 pub struct XyRect {
     x0: f64,
     x1: f64,
@@ -16,27 +16,26 @@ pub struct XyRect {
 }
 
 impl XyRect {
-    pub fn new(
+    pub fn build(
         x_lines: (f64, f64),
         y_lines: (f64, f64),
         z_plane: f64,
         material: Material,
-    ) -> XyRect {
+    ) -> Geometry {
         let (x0, x1) = x_lines;
         let (y0, y1) = y_lines;
-        XyRect {
+        Geometry::XyRect(Box::from(XyRect {
             x0,
             x1,
             y0,
             y1,
             k: z_plane,
             material,
-        }
+        }))
     }
 }
 
-#[typetag::serde]
-impl Geometry for XyRect {
+impl Hittable for XyRect {
     fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<HitResult> {
         let distance = (self.k - ray.origin().z()) / ray.direction().z();
 
@@ -76,7 +75,7 @@ impl Geometry for XyRect {
     }
 }
 
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
 pub struct XzRect {
     x0: f64,
     x1: f64,
@@ -87,27 +86,26 @@ pub struct XzRect {
 }
 
 impl XzRect {
-    pub fn new(
+    pub fn build(
         x_lines: (f64, f64),
         z_lines: (f64, f64),
         y_plane: f64,
         material: Material,
-    ) -> XzRect {
+    ) -> Geometry {
         let (x0, x1) = x_lines;
         let (z0, z1) = z_lines;
-        XzRect {
+        Geometry::XzRect(Box::from(XzRect {
             x0,
             x1,
             z0,
             z1,
             k: y_plane,
             material,
-        }
+        }))
     }
 }
 
-#[typetag::serde]
-impl Geometry for XzRect {
+impl Hittable for XzRect {
     fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<HitResult> {
         let distance = (self.k - ray.origin().y()) / ray.direction().y();
 
@@ -147,7 +145,7 @@ impl Geometry for XzRect {
     }
 }
 
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
 pub struct YzRect {
     y0: f64,
     y1: f64,
@@ -158,27 +156,26 @@ pub struct YzRect {
 }
 
 impl YzRect {
-    pub fn new(
+    pub fn build(
         y_lines: (f64, f64),
         z_lines: (f64, f64),
         x_plane: f64,
         material: Material,
-    ) -> YzRect {
+    ) -> Geometry {
         let (y0, y1) = y_lines;
         let (z0, z1) = z_lines;
-        YzRect {
+        Geometry::YzRect(Box::from(YzRect {
             y0,
             y1,
             z0,
             z1,
             k: x_plane,
             material,
-        }
+        }))
     }
 }
 
-#[typetag::serde]
-impl Geometry for YzRect {
+impl Hittable for YzRect {
     fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<HitResult> {
         let distance = (self.k - ray.origin().x()) / ray.direction().x();
 

@@ -22,9 +22,9 @@ pub fn build() -> Result<ConfigSave, anyhow::Error> {
         1.0,
     );
 
-    let mut geometries: Vec<Box<dyn Geometry>> = Vec::with_capacity(4);
+    let mut geometries: Vec<Geometry> = Vec::with_capacity(4);
 
-    geometries.push(Box::from(Sphere::new(
+    geometries.push(Sphere::build(
         Vector::new(0.0, 0.0, -1.0),
         0.5,
         Material::Lambertian {
@@ -32,8 +32,8 @@ pub fn build() -> Result<ConfigSave, anyhow::Error> {
                 colour: Colour::new(0.1, 0.2, 0.5),
             },
         },
-    )));
-    geometries.push(Box::from(Sphere::new(
+    ));
+    geometries.push(Sphere::build(
         Vector::new(0.0, -100.5, -1.0),
         100.0,
         Material::Lambertian {
@@ -41,22 +41,22 @@ pub fn build() -> Result<ConfigSave, anyhow::Error> {
                 colour: Colour::new(0.8, 0.8, 0.0),
             },
         },
-    )));
-    geometries.push(Box::from(Sphere::new(
+    ));
+    geometries.push(Sphere::build(
         Vector::new(1.0, 0.0, -1.0),
         0.5,
         Material::Metal {
             albedo: Colour::new(0.8, 0.6, 0.2),
             fuzz: 0.1,
         },
-    )));
-    geometries.push(Box::from(Sphere::new(
+    ));
+    geometries.push(Sphere::build(
         Vector::new(-1.0, 0.0, -1.0),
         -0.45,
         Material::Dielectric {
             refractive_index: 1.5,
         },
-    )));
+    ));
 
     let white = Colour::new(1.0, 1.0, 1.0);
     let blue = Colour::new(0.5, 0.7, 1.0);

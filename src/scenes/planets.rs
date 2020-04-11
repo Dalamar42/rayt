@@ -22,9 +22,9 @@ pub fn build() -> Result<ConfigSave, anyhow::Error> {
         1.0,
     );
 
-    let mut geometries: Vec<Box<dyn Geometry>> = Vec::with_capacity(4);
+    let mut geometries: Vec<Geometry> = Vec::with_capacity(4);
 
-    geometries.push(Box::from(Sphere::new(
+    geometries.push(Sphere::build(
         Vector::new(-1.0, 0.0, -6.0),
         4.0,
         Material::Lambertian {
@@ -32,8 +32,8 @@ pub fn build() -> Result<ConfigSave, anyhow::Error> {
                 asset_name: String::from("jupiter.jpg"),
             },
         },
-    )));
-    geometries.push(Box::from(Sphere::new(
+    ));
+    geometries.push(Sphere::build(
         Vector::new(2.0, 1.0, -1.0),
         1.0,
         Material::Lambertian {
@@ -41,8 +41,8 @@ pub fn build() -> Result<ConfigSave, anyhow::Error> {
                 asset_name: String::from("earth.jpg"),
             },
         },
-    )));
-    geometries.push(Box::from(Sphere::new(
+    ));
+    geometries.push(Sphere::build(
         Vector::new(3.5, 0.7, -1.0),
         0.3,
         Material::Lambertian {
@@ -50,8 +50,8 @@ pub fn build() -> Result<ConfigSave, anyhow::Error> {
                 asset_name: String::from("moon.jpg"),
             },
         },
-    )));
-    geometries.push(Box::from(Sphere::new(
+    ));
+    geometries.push(Sphere::build(
         Vector::new(-1.5, -1.0, -1.0),
         0.8,
         Material::Lambertian {
@@ -59,8 +59,8 @@ pub fn build() -> Result<ConfigSave, anyhow::Error> {
                 asset_name: String::from("mars.jpg"),
             },
         },
-    )));
-    geometries.push(Box::from(Sphere::new(
+    ));
+    geometries.push(Sphere::build(
         Vector::new(1.7, -1.3, -1.0),
         0.7,
         Material::Lambertian {
@@ -68,7 +68,7 @@ pub fn build() -> Result<ConfigSave, anyhow::Error> {
                 asset_name: String::from("earth_night.jpg"),
             },
         },
-    )));
+    ));
 
     let background_colour = Colour::new(1.0, 1.0, 1.0);
     let background = Background::new(background_colour, background_colour);

@@ -2,7 +2,7 @@ use crate::camera::Ray;
 use crate::config::Config;
 use crate::data::colour::Colour;
 use crate::data::image::{Image, Pixel};
-use crate::world::geometry::Geometry;
+use crate::world::geometry::Hittable;
 use indicatif::ProgressBar;
 use rayon::prelude::*;
 

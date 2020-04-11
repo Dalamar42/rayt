@@ -24,9 +24,9 @@ pub fn build() -> Result<ConfigSave, anyhow::Error> {
         1.0,
     );
 
-    let mut geometries: Vec<Box<dyn Geometry>> = Vec::with_capacity(4);
+    let mut geometries: Vec<Geometry> = Vec::with_capacity(4);
 
-    geometries.push(Box::from(Sphere::new(
+    geometries.push(Sphere::build(
         Vector::new(0.0, -1000.0, 0.0),
         1000.0,
         Material::Lambertian {
@@ -37,8 +37,8 @@ pub fn build() -> Result<ConfigSave, anyhow::Error> {
                 noise_config: build_noise_config(),
             },
         },
-    )));
-    geometries.push(Box::from(Sphere::new(
+    ));
+    geometries.push(Sphere::build(
         Vector::new(0.0, 2.0, 0.0),
         2.0,
         Material::Lambertian {
@@ -49,8 +49,8 @@ pub fn build() -> Result<ConfigSave, anyhow::Error> {
                 noise_config: build_noise_config(),
             },
         },
-    )));
-    geometries.push(Box::from(Sphere::new(
+    ));
+    geometries.push(Sphere::build(
         Vector::new(0.0, 7.0, 0.0),
         2.0,
         Material::DiffuseLight {
@@ -58,8 +58,8 @@ pub fn build() -> Result<ConfigSave, anyhow::Error> {
                 colour: Colour::new(4.0, 4.0, 4.0),
             },
         },
-    )));
-    geometries.push(Box::from(XyRect::new(
+    ));
+    geometries.push(XyRect::build(
         (3.0, 5.0),
         (1.0, 3.0),
         -2.0,
@@ -68,7 +68,7 @@ pub fn build() -> Result<ConfigSave, anyhow::Error> {
                 colour: Colour::new(4.0, 4.0, 4.0),
             },
         },
-    )));
+    ));
 
     let black = Colour::new(0.0, 0.0, 0.0);
     let background = Background::new(black, black);

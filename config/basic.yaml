@@ -30,53 +30,53 @@ world:
       g: 1.0
       b: 1.0
   geometries:
-    - type: Sphere
-      centre:
-        x: 0.0
-        y: 0.0
-        z: -1.0
-      radius: 0.5
-      material:
-        Lambertian:
-          albedo:
-            Constant:
-              colour:
-                r: 0.1
-                g: 0.2
-                b: 0.5
-    - type: Sphere
-      centre:
-        x: 0.0
-        y: -100.5
-        z: -1.0
-      radius: 100.0
-      material:
-        Lambertian:
-          albedo:
-            Constant:
-              colour:
-                r: 0.8
-                g: 0.8
-                b: 0.0
-    - type: Sphere
-      centre:
-        x: 1.0
-        y: 0.0
-        z: -1.0
-      radius: 0.5
-      material:
-        Metal:
-          albedo:
-            r: 0.8
-            g: 0.6
-            b: 0.2
-          fuzz: 0.1
-    - type: Sphere
-      centre:
-        x: -1.0
-        y: 0.0
-        z: -1.0
-      radius: -0.45
-      material:
-        Dielectric:
-          refractive_index: 1.5
+    - Sphere:
+        centre:
+          x: 0.0
+          y: 0.0
+          z: -1.0
+        radius: 0.5
+        material:
+          Lambertian:
+            albedo:
+              Constant:
+                colour:
+                  r: 0.1
+                  g: 0.2
+                  b: 0.5
+    - Sphere:
+        centre:
+          x: 0.0
+          y: -100.5
+          z: -1.0
+        radius: 100.0
+        material:
+          Lambertian:
+            albedo:
+              Constant:
+                colour:
+                  r: 0.8
+                  g: 0.8
+                  b: 0.0
+    - Sphere:
+        centre:
+          x: 1.0
+          y: 0.0
+          z: -1.0
+        radius: 0.5
+        material:
+          Metal:
+            albedo:
+              r: 0.8
+              g: 0.6
+              b: 0.2
+            fuzz: 0.1
+    - Sphere:
+        centre:
+          x: -1.0
+          y: 0.0
+          z: -1.0
+        radius: -0.45
+        material:
+          Dielectric:
+            refractive_index: 1.5

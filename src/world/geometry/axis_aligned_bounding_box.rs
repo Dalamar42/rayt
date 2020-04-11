@@ -1,6 +1,5 @@
 use crate::camera::Ray;
 use crate::data::vector::Vector;
-use std::f64::{INFINITY, NEG_INFINITY};
 
 #[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
 pub struct AxisAlignedBoundingBox {
@@ -43,13 +42,6 @@ fn surrounding(
 }
 
 impl AxisAlignedBoundingBox {
-    fn default() -> AxisAlignedBoundingBox {
-        AxisAlignedBoundingBox {
-            min: Vector::new(INFINITY, INFINITY, INFINITY),
-            max: Vector::new(NEG_INFINITY, NEG_INFINITY, NEG_INFINITY),
-        }
-    }
-
     pub fn new(a: Vector, b: Vector) -> AxisAlignedBoundingBox {
         AxisAlignedBoundingBox { min: a, max: b }
     }
@@ -68,23 +60,6 @@ impl AxisAlignedBoundingBox {
         };
 
         Some(surrounding(&box_a, &box_b))
-    }
-
-    pub fn surrounding_many(
-        boxes: &[Option<AxisAlignedBoundingBox>],
-    ) -> Option<AxisAlignedBoundingBox> {
-        if boxes.is_empty() || boxes.iter().any(|maybe_box| maybe_box.is_none()) {
-            return None;
-        }
-
-        Some(
-            boxes
-                .iter()
-                .map(|maybe_box| maybe_box.as_ref().unwrap())
-                .fold(AxisAlignedBoundingBox::default(), |acc, x| {
-                    surrounding(&acc, &x)
-                }),
-        )
     }
 
     pub fn min(&self) -> &Vector {
@@ -164,37 +139,6 @@ mod tests {
         assert_eq!(
             None,
             AxisAlignedBoundingBox::surrounding(&Some(bounding_box), &None),
-        );
-    }
-
-    #[test]
-    fn test_surrounding_multiple_bounding_boxes() {
-        let box_a =
-            AxisAlignedBoundingBox::new(Vector::new(0.0, 0.0, 0.0), Vector::new(2.0, 2.0, 2.0));
-        let box_b =
-            AxisAlignedBoundingBox::new(Vector::new(0.5, 0.5, 0.5), Vector::new(4.0, 2.0, 1.0));
-        let box_c =
-            AxisAlignedBoundingBox::new(Vector::new(0.9, -1.0, 0.5), Vector::new(4.0, 2.0, 1.0));
-
-        let expected_box =
-            AxisAlignedBoundingBox::new(Vector::new(0.0, -1.0, 0.0), Vector::new(4.0, 2.0, 2.0));
-
-        assert_eq!(
-            Some(expected_box),
-            AxisAlignedBoundingBox::surrounding_many(&[Some(box_a), Some(box_b), Some(box_c),]),
-        );
-    }
-
-    #[test]
-    fn test_surrounding_multiple_bounding_boxes_when_one_is_none() {
-        let box_a =
-            AxisAlignedBoundingBox::new(Vector::new(0.0, 0.0, 0.0), Vector::new(2.0, 2.0, 2.0));
-        let box_b =
-            AxisAlignedBoundingBox::new(Vector::new(0.5, 0.5, 0.5), Vector::new(4.0, 2.0, 1.0));
-
-        assert_eq!(
-            None,
-            AxisAlignedBoundingBox::surrounding_many(&[Some(box_a), Some(box_b), None,]),
         );
     }
 }

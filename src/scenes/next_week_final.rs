@@ -28,35 +28,31 @@ pub fn build() -> Result<ConfigSave, anyhow::Error> {
         1.0,
     );
 
-    let mut geometries: Vec<Box<dyn Geometry>> = Vec::with_capacity(30);
+    let mut geometries: Vec<Geometry> = Vec::with_capacity(30);
 
-    geometries.push(Box::new(BoundingVolumeHierarchyNode::new(
-        ground_boxes(),
-        0.0,
-        1.0,
-    )));
-    geometries.push(Box::new(light()));
-    geometries.push(Box::new(moving_sphere()));
-    geometries.push(Box::new(dielectric_a()));
-    geometries.push(Box::new(metal_a()));
+    geometries.push(BoundingVolumeHierarchyNode::build(ground_boxes(), 0.0, 1.0));
+    geometries.push(light());
+    geometries.push(moving_sphere());
+    geometries.push(dielectric_a());
+    geometries.push(metal_a());
 
     let (boundary, medium) = subsurface_material_a();
-    geometries.push(Box::new(boundary));
-    geometries.push(Box::new(medium));
+    geometries.push(boundary);
+    geometries.push(medium);
 
     let (boundary, medium) = subsurface_material_b();
-    geometries.push(Box::new(boundary));
-    geometries.push(Box::new(medium));
+    geometries.push(boundary);
+    geometries.push(medium);
 
-    geometries.push(Box::new(earth()));
-    geometries.push(Box::new(perlin()));
+    geometries.push(earth());
+    geometries.push(perlin());
 
-    geometries.push(Box::new(
-        BoundingVolumeHierarchyNode::new(sphere_cube(), 0.0, 1.0)
+    geometries.push(
+        BoundingVolumeHierarchyNode::build(sphere_cube(), 0.0, 1.0)
             .rotate_y(15.0)
             .unwrap()
             .translate(Vector::new(-100.0, 270.0, 395.0)),
-    ));
+    );
 
     let black = Colour::new(0.0, 0.0, 0.0);
     let background = Background::new(black, black);
@@ -66,13 +62,13 @@ pub fn build() -> Result<ConfigSave, anyhow::Error> {
     Ok(ConfigSave::new(aspect, camera, world))
 }
 
-fn ground_boxes() -> Vec<Box<dyn Geometry>> {
+fn ground_boxes() -> Vec<Geometry> {
     let ground = Material::Lambertian {
         albedo: Texture::Constant {
             colour: Colour::new(0.48, 0.83, 0.53),
         },
     };
-    let mut boxlist: Vec<Box<dyn Geometry>> = Vec::with_capacity(10000);
+    let mut boxlist: Vec<Geometry> = Vec::with_capacity(10000);
     let nb = 20;
     for i in 0..nb {
         for j in 0..nb {
@@ -83,26 +79,26 @@ fn ground_boxes() -> Vec<Box<dyn Geometry>> {
             let x1 = x0 + w;
             let y1 = 100.0 * (uniform::<f64>() + 0.01);
             let z1 = z0 + w;
-            boxlist.push(Box::new(Cube::new(
+            boxlist.push(Cube::build(
                 Vector::new(x0, y0, z0),
                 Vector::new(x1, y1, z1),
                 ground.clone(),
-            )));
+            ));
         }
     }
     boxlist
 }
 
-fn light() -> XzRect {
+fn light() -> Geometry {
     let light = Material::DiffuseLight {
         emit: Texture::Constant {
             colour: Colour::new(7.0, 7.0, 7.0),
         },
     };
-    XzRect::new((123.0, 423.0), (147.0, 412.0), 554.0, light)
+    XzRect::build((123.0, 423.0), (147.0, 412.0), 554.0, light).flip()
 }
 
-fn moving_sphere() -> MovingSphere {
+fn moving_sphere() -> Geometry {
     let centre_start = Vector::new(400.0, 400.0, 200.0);
     let centre_end = centre_start + Vector::new(30.0, 0.0, 0.0);
     let material = Material::Lambertian {
@@ -110,11 +106,11 @@ fn moving_sphere() -> MovingSphere {
             colour: Colour::new(0.7, 0.3, 0.1),
         },
     };
-    MovingSphere::new(centre_start, 0.0, centre_end, 1.0, 50.0, material)
+    MovingSphere::build(centre_start, 0.0, centre_end, 1.0, 50.0, material)
 }
 
-fn dielectric_a() -> Sphere {
-    Sphere::new(
+fn dielectric_a() -> Geometry {
+    Sphere::build(
         Vector::new(260.0, 150.0, 45.0),
         50.0,
         Material::Dielectric {
@@ -123,8 +119,8 @@ fn dielectric_a() -> Sphere {
     )
 }
 
-fn metal_a() -> Sphere {
-    Sphere::new(
+fn metal_a() -> Geometry {
+    Sphere::build(
         Vector::new(0.0, 150.0, 145.0),
         50.0,
         Material::Metal {
@@ -134,16 +130,16 @@ fn metal_a() -> Sphere {
     )
 }
 
-fn subsurface_material_a() -> (impl Geometry, ConstantMedium) {
-    let boundary = Sphere::new(
+fn subsurface_material_a() -> (Geometry, Geometry) {
+    let boundary = Sphere::build(
         Vector::new(360.0, 150.0, 145.0),
         70.0,
         Material::Dielectric {
             refractive_index: 1.5,
         },
     );
-    let medium = ConstantMedium::new(
-        Box::new(boundary.clone()),
+    let medium = ConstantMedium::build(
+        boundary.clone(),
         0.2,
         Texture::Constant {
             colour: Colour::new(0.2, 0.4, 0.9),
@@ -152,16 +148,16 @@ fn subsurface_material_a() -> (impl Geometry, ConstantMedium) {
     (boundary, medium)
 }
 
-fn subsurface_material_b() -> (Sphere, ConstantMedium) {
-    let boundary = Sphere::new(
+fn subsurface_material_b() -> (Geometry, Geometry) {
+    let boundary = Sphere::build(
         Vector::new(0.0, 0.0, 0.0),
         5000.0,
         Material::Dielectric {
             refractive_index: 1.5,
         },
     );
-    let medium = ConstantMedium::new(
-        Box::new(boundary.clone()),
+    let medium = ConstantMedium::build(
+        boundary.clone(),
         0.0001,
         Texture::Constant {
             colour: Colour::new(1.0, 1.0, 1.0),
@@ -170,16 +166,16 @@ fn subsurface_material_b() -> (Sphere, ConstantMedium) {
     (boundary, medium)
 }
 
-fn earth() -> Sphere {
+fn earth() -> Geometry {
     let material = Material::Lambertian {
         albedo: Texture::Image {
             asset_name: String::from("earth.jpg"),
         },
     };
-    Sphere::new(Vector::new(400.0, 200.0, 400.0), 100.0, material)
+    Sphere::build(Vector::new(400.0, 200.0, 400.0), 100.0, material)
 }
 
-fn perlin() -> Sphere {
+fn perlin() -> Geometry {
     let material = Material::Lambertian {
         albedo: Texture::Noise {
             base_colour: Colour::new(1.0, 1.0, 1.0),
@@ -188,20 +184,20 @@ fn perlin() -> Sphere {
             noise_config: build_noise_config(),
         },
     };
-    Sphere::new(Vector::new(220.0, 280.0, 300.0), 80.0, material)
+    Sphere::build(Vector::new(220.0, 280.0, 300.0), 80.0, material)
 }
 
-fn sphere_cube() -> Vec<Box<dyn Geometry>> {
+fn sphere_cube() -> Vec<Geometry> {
     let white = Material::Lambertian {
         albedo: Texture::Constant {
             colour: Colour::new(0.73, 0.73, 0.73),
         },
     };
 
-    let mut boxlist: Vec<Box<dyn Geometry>> = Vec::with_capacity(1000);
+    let mut boxlist: Vec<Geometry> = Vec::with_capacity(1000);
 
     for _ in 0..1000 {
-        boxlist.push(Box::new(Sphere::new(
+        boxlist.push(Sphere::build(
             Vector::new(
                 165.0 * uniform::<f64>(),
                 165.0 * uniform::<f64>(),
@@ -209,7 +205,7 @@ fn sphere_cube() -> Vec<Box<dyn Geometry>> {
             ),
             10.0,
             white.clone(),
-        )))
+        ))
     }
 
     boxlist

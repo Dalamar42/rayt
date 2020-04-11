@@ -1,21 +1,22 @@
 use crate::camera::Ray;
 use crate::data::assets::Assets;
 use crate::world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
-use crate::world::geometry::{Geometry, HitResult};
+use crate::world::geometry::{Geometry, HitResult, Hittable};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct FlipNormals {
-    geometry: Box<dyn Geometry>,
+    geometry: Box<Geometry>,
 }
 
 impl FlipNormals {
-    pub fn new(geometry: Box<dyn Geometry>) -> FlipNormals {
-        FlipNormals { geometry }
+    pub fn build(geometry: Geometry) -> Geometry {
+        Geometry::Flip(Box::from(FlipNormals {
+            geometry: Box::from(geometry),
+        }))
     }
 }
 
-#[typetag::serde]
-impl Geometry for FlipNormals {
+impl Hittable for FlipNormals {
     fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<HitResult> {
         self.geometry.hit(ray, tmin, tmax).map(|hit| HitResult {
             surface_normal: -hit.surface_normal,

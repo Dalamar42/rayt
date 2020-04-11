@@ -4,29 +4,28 @@ use crate::data::vector::Vector;
 use crate::float;
 use crate::sampling::uniform;
 use crate::world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
-use crate::world::geometry::{Geometry, HitResult};
+use crate::world::geometry::{Geometry, HitResult, Hittable};
 use crate::world::materials::Material;
 use crate::world::texture::Texture;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct ConstantMedium {
-    boundary: Box<dyn Geometry>,
+    boundary: Box<Geometry>,
     density: f64,
     material: Material,
 }
 
 impl ConstantMedium {
-    pub fn new(boundary: Box<dyn Geometry>, density: f64, albedo: Texture) -> ConstantMedium {
-        ConstantMedium {
-            boundary,
+    pub fn build(boundary: Geometry, density: f64, albedo: Texture) -> Geometry {
+        Geometry::ConstantMedium(Box::from(ConstantMedium {
+            boundary: Box::from(boundary),
             density,
             material: Material::Isotropic { albedo },
-        }
+        }))
     }
 }
 
-#[typetag::serde]
-impl Geometry for ConstantMedium {
+impl Hittable for ConstantMedium {
     fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<HitResult> {
         self.boundary
             .hit(ray, std::f64::MIN, std::f64::MAX)

@@ -3,76 +3,75 @@ use crate::data::assets::Assets;
 use crate::data::vector::Vector;
 use crate::world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
 use crate::world::geometry::rectangle::{XyRect, XzRect, YzRect};
-use crate::world::geometry::{Geometry, HitResult};
+use crate::world::geometry::{Geometry, HitResult, Hittable};
 use crate::world::materials::Material;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct Cube {
-    rectangles: Vec<Box<dyn Geometry>>,
+    rectangles: Vec<Geometry>,
     pmin: Vector,
     pmax: Vector,
 }
 
 impl Cube {
-    pub fn new(pmin: Vector, pmax: Vector, material: Material) -> Cube {
-        let mut rectangles: Vec<Box<dyn Geometry>> = Vec::with_capacity(6);
+    pub fn build(pmin: Vector, pmax: Vector, material: Material) -> Geometry {
+        let mut rectangles: Vec<Geometry> = Vec::with_capacity(6);
 
-        rectangles.push(Box::new(XyRect::new(
+        rectangles.push(XyRect::build(
             (pmin.x(), pmax.x()),
             (pmin.y(), pmax.y()),
             pmax.z(),
             material.clone(),
-        )));
-        rectangles.push(Box::new(
-            XyRect::new(
+        ));
+        rectangles.push(
+            XyRect::build(
                 (pmin.x(), pmax.x()),
                 (pmin.y(), pmax.y()),
                 pmin.z(),
                 material.clone(),
             )
             .flip(),
-        ));
-        rectangles.push(Box::new(XzRect::new(
+        );
+        rectangles.push(XzRect::build(
             (pmin.x(), pmax.x()),
             (pmin.z(), pmax.z()),
             pmax.y(),
             material.clone(),
-        )));
-        rectangles.push(Box::new(
-            XzRect::new(
+        ));
+        rectangles.push(
+            XzRect::build(
                 (pmin.x(), pmax.x()),
                 (pmin.z(), pmax.z()),
                 pmin.y(),
                 material.clone(),
             )
             .flip(),
-        ));
-        rectangles.push(Box::new(YzRect::new(
+        );
+        rectangles.push(YzRect::build(
             (pmin.y(), pmax.y()),
             (pmin.z(), pmax.z()),
             pmax.x(),
             material.clone(),
-        )));
-        rectangles.push(Box::new(
-            YzRect::new(
+        ));
+        rectangles.push(
+            YzRect::build(
                 (pmin.y(), pmax.y()),
                 (pmin.z(), pmax.z()),
                 pmin.x(),
                 material,
             )
             .flip(),
-        ));
+        );
 
-        Cube {
+        Geometry::Cube(Box::from(Cube {
             rectangles,
             pmin,
             pmax,
-        }
+        }))
     }
 }
 
-#[typetag::serde]
-impl Geometry for Cube {
+impl Hittable for Cube {
     fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<HitResult> {
         self.rectangles
             .iter()
@@ -99,7 +98,7 @@ mod tests {
 
     #[test]
     fn test_cube_hit() {
-        let cube = Cube::new(
+        let cube = Cube::build(
             Vector::new(0.0, 0.0, 0.0),
             Vector::new(1.0, 1.0, 1.0),
             Material::Dielectric {
@@ -122,7 +121,7 @@ mod tests {
 
     #[test]
     fn test_cube_surface_normal() {
-        let cube = Cube::new(
+        let cube = Cube::build(
             Vector::new(0.0, 0.0, 0.0),
             Vector::new(1.0, 1.0, 1.0),
             Material::Dielectric {
@@ -137,7 +136,7 @@ mod tests {
 
     #[test]
     fn test_cube_bounding_box() {
-        let cube = Cube::new(
+        let cube = Cube::build(
             Vector::new(0.0, 0.0, 0.0),
             Vector::new(1.0, 1.0, 1.0),
             Material::Dielectric {
@@ -153,7 +152,7 @@ mod tests {
 
     #[test]
     fn test_cube_texture_coords() {
-        let cube = Cube::new(
+        let cube = Cube::build(
             Vector::new(0.0, 0.0, 0.0),
             Vector::new(1.0, 1.0, 1.0),
             Material::Dielectric {

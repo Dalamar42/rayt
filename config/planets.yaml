@@ -13,7 +13,7 @@ camera:
     x: 0.0
     y: 1.0
     z: 0.0
-  vertical_fov: 35.0
+  vertical_fov: 45.0
   aspect: 2.0
   aperture: 0.0
   focus_distance: 4.0
@@ -30,58 +30,58 @@ world:
       g: 1.0
       b: 1.0
   geometries:
-    - type: Sphere
-      centre:
-        x: -1.0
-        y: 0.0
-        z: -6.0
-      radius: 4.0
-      material:
-        Lambertian:
-          albedo:
-            Image:
-              asset_name: jupiter.jpg
-    - type: Sphere
-      centre:
-        x: 2.0
-        y: 1.0
-        z: -1.0
-      radius: 1.0
-      material:
-        Lambertian:
-          albedo:
-            Image:
-              asset_name: earth.jpg
-    - type: Sphere
-      centre:
-        x: 3.5
-        y: 0.7
-        z: -1.0
-      radius: 0.3
-      material:
-        Lambertian:
-          albedo:
-            Image:
-              asset_name: moon.jpg
-    - type: Sphere
-      centre:
-        x: -1.5
-        y: -1.0
-        z: -1.0
-      radius: 0.8
-      material:
-        Lambertian:
-          albedo:
-            Image:
-              asset_name: mars.jpg
-    - type: Sphere
-      centre:
-        x: 1.7
-        y: -1.3
-        z: -1.0
-      radius: 0.7
-      material:
-        Lambertian:
-          albedo:
-            Image:
-              asset_name: earth_night.jpg
+    - Sphere:
+        centre:
+          x: -1.0
+          y: 0.0
+          z: -6.0
+        radius: 4.0
+        material:
+          Lambertian:
+            albedo:
+              Image:
+                asset_name: jupiter.jpg
+    - Sphere:
+        centre:
+          x: 2.0
+          y: 1.0
+          z: -1.0
+        radius: 1.0
+        material:
+          Lambertian:
+            albedo:
+              Image:
+                asset_name: earth.jpg
+    - Sphere:
+        centre:
+          x: 3.5
+          y: 0.7
+          z: -1.0
+        radius: 0.3
+        material:
+          Lambertian:
+            albedo:
+              Image:
+                asset_name: moon.jpg
+    - Sphere:
+        centre:
+          x: -1.5
+          y: -1.0
+          z: -1.0
+        radius: 0.8
+        material:
+          Lambertian:
+            albedo:
+              Image:
+                asset_name: mars.jpg
+    - Sphere:
+        centre:
+          x: 1.7
+          y: -1.3
+          z: -1.0
+        radius: 0.7
+        material:
+          Lambertian:
+            albedo:
+              Image:
+                asset_name: earth_night.jpg
