@@ -12,8 +12,14 @@ mod lambertian;
 mod metal;
 
 pub enum ScatterResult {
-    Specular { attenuation: Colour, ray: Ray },
-    Diffuse { attenuation: Colour, pdf: Pdf },
+    Specular {
+        attenuation: Colour,
+        ray: Ray,
+    },
+    Diffuse {
+        attenuation: Colour,
+        pdf: Pdf<'static>,
+    },
 }
 
 impl ScatterResult {
@@ -21,7 +27,7 @@ impl ScatterResult {
         ScatterResult::Specular { attenuation, ray }
     }
 
-    pub fn diffuse(attenuation: Colour, pdf: Pdf) -> ScatterResult {
+    pub fn diffuse(attenuation: Colour, pdf: Pdf<'static>) -> ScatterResult {
         ScatterResult::Diffuse { attenuation, pdf }
     }
 }

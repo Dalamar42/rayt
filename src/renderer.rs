@@ -76,7 +76,7 @@ fn colour(ray: &Ray, config: &Config, depth: u64) -> Colour {
                             Pdf::Mixture(
                                 pdf.boxed(),
                                 Pdf::Geometry {
-                                    geometries: attractors,
+                                    geometries: &attractors,
                                     origin: hit.point,
                                 }
                                 .boxed(),

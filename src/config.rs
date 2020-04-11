@@ -48,9 +48,8 @@ impl Config {
         &self.bvh
     }
 
-    pub fn attractors(&self) -> Vec<Geometry> {
-        // TODO Remove clone
-        self.attractors.to_vec()
+    pub fn attractors(&self) -> &Vec<Geometry> {
+        &self.attractors
     }
 
     pub fn assets(&self) -> &Assets {

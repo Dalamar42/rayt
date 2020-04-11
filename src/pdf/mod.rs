@@ -6,16 +6,16 @@ mod cosine;
 mod geometry;
 mod mixture;
 
-pub enum Pdf {
+pub enum Pdf<'a> {
     Cosine(Onb),
     Geometry {
-        geometries: Vec<Geometry>,
+        geometries: &'a Vec<Geometry>,
         origin: Vector,
     },
-    Mixture(Box<Pdf>, Box<Pdf>),
+    Mixture(Box<Pdf<'a>>, Box<Pdf<'a>>),
 }
 
-impl Pdf {
+impl Pdf<'_> {
     pub fn boxed(self) -> Box<Self> {
         Box::from(self)
     }
