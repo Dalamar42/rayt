@@ -29,11 +29,6 @@ impl Onb {
         &self.w
     }
 
-    #[allow(dead_code)]
-    pub fn local_from_coords(&self, a: f64, b: f64, c: f64) -> Vector {
-        a * self.u + b * self.v + c * self.w
-    }
-
     pub fn local_from_vec(&self, a: &Vector) -> Vector {
         a.x() * self.u + a.y() * self.v + a.z() * self.w
     }

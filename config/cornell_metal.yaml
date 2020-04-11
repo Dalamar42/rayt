@@ -73,9 +73,9 @@ world:
                 emit:
                   Constant:
                     colour:
-                      r: 60.0
-                      g: 60.0
-                      b: 60.0
+                      r: 15.0
+                      g: 15.0
+                      b: 15.0
     - Flip:
         geometry:
           XzRect:
@@ -244,13 +244,12 @@ world:
                       y1: 330.0
                       k: 165.0
                       material:
-                        Lambertian:
+                        Metal:
                           albedo:
-                            Constant:
-                              colour:
-                                r: 0.73
-                                g: 0.73
-                                b: 0.73
+                            r: 0.8
+                            g: 0.85
+                            b: 0.88
+                          fuzz: 0.0
                   - Flip:
                       geometry:
                         XyRect:
@@ -260,13 +259,12 @@ world:
                           y1: 330.0
                           k: 0.0
                           material:
-                            Lambertian:
+                            Metal:
                               albedo:
-                                Constant:
-                                  colour:
-                                    r: 0.73
-                                    g: 0.73
-                                    b: 0.73
+                                r: 0.8
+                                g: 0.85
+                                b: 0.88
+                              fuzz: 0.0
                   - XzRect:
                       x0: 0.0
                       x1: 165.0
@@ -274,13 +272,12 @@ world:
                       z1: 165.0
                       k: 330.0
                       material:
-                        Lambertian:
+                        Metal:
                           albedo:
-                            Constant:
-                              colour:
-                                r: 0.73
-                                g: 0.73
-                                b: 0.73
+                            r: 0.8
+                            g: 0.85
+                            b: 0.88
+                          fuzz: 0.0
                   - Flip:
                       geometry:
                         XzRect:
@@ -290,13 +287,12 @@ world:
                           z1: 165.0
                           k: 0.0
                           material:
-                            Lambertian:
+                            Metal:
                               albedo:
-                                Constant:
-                                  colour:
-                                    r: 0.73
-                                    g: 0.73
-                                    b: 0.73
+                                r: 0.8
+                                g: 0.85
+                                b: 0.88
+                              fuzz: 0.0
                   - YzRect:
                       y0: 0.0
                       y1: 330.0
@@ -304,13 +300,12 @@ world:
                       z1: 165.0
                       k: 165.0
                       material:
-                        Lambertian:
+                        Metal:
                           albedo:
-                            Constant:
-                              colour:
-                                r: 0.73
-                                g: 0.73
-                                b: 0.73
+                            r: 0.8
+                            g: 0.85
+                            b: 0.88
+                          fuzz: 0.0
                   - Flip:
                       geometry:
                         YzRect:
@@ -320,13 +315,12 @@ world:
                           z1: 165.0
                           k: 0.0
                           material:
-                            Lambertian:
+                            Metal:
                               albedo:
-                                Constant:
-                                  colour:
-                                    r: 0.73
-                                    g: 0.73
-                                    b: 0.73
+                                r: 0.8
+                                g: 0.85
+                                b: 0.88
+                              fuzz: 0.0
                 pmin:
                   x: 0.0
                   y: 0.0

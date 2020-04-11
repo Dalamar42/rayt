@@ -122,115 +122,15 @@ world:
                       r: 0.73
                       g: 0.73
                       b: 0.73
-    - Translate:
-        geometry:
-          RotateY:
-            geometry:
-              Cube:
-                rectangles:
-                  - XyRect:
-                      x0: 0.0
-                      x1: 165.0
-                      y0: 0.0
-                      y1: 165.0
-                      k: 165.0
-                      material:
-                        Lambertian:
-                          albedo:
-                            Constant:
-                              colour:
-                                r: 0.73
-                                g: 0.73
-                                b: 0.73
-                  - Flip:
-                      geometry:
-                        XyRect:
-                          x0: 0.0
-                          x1: 165.0
-                          y0: 0.0
-                          y1: 165.0
-                          k: 0.0
-                          material:
-                            Lambertian:
-                              albedo:
-                                Constant:
-                                  colour:
-                                    r: 0.73
-                                    g: 0.73
-                                    b: 0.73
-                  - XzRect:
-                      x0: 0.0
-                      x1: 165.0
-                      z0: 0.0
-                      z1: 165.0
-                      k: 165.0
-                      material:
-                        Lambertian:
-                          albedo:
-                            Constant:
-                              colour:
-                                r: 0.73
-                                g: 0.73
-                                b: 0.73
-                  - Flip:
-                      geometry:
-                        XzRect:
-                          x0: 0.0
-                          x1: 165.0
-                          z0: 0.0
-                          z1: 165.0
-                          k: 0.0
-                          material:
-                            Lambertian:
-                              albedo:
-                                Constant:
-                                  colour:
-                                    r: 0.73
-                                    g: 0.73
-                                    b: 0.73
-                  - YzRect:
-                      y0: 0.0
-                      y1: 165.0
-                      z0: 0.0
-                      z1: 165.0
-                      k: 165.0
-                      material:
-                        Lambertian:
-                          albedo:
-                            Constant:
-                              colour:
-                                r: 0.73
-                                g: 0.73
-                                b: 0.73
-                  - Flip:
-                      geometry:
-                        YzRect:
-                          y0: 0.0
-                          y1: 165.0
-                          z0: 0.0
-                          z1: 165.0
-                          k: 0.0
-                          material:
-                            Lambertian:
-                              albedo:
-                                Constant:
-                                  colour:
-                                    r: 0.73
-                                    g: 0.73
-                                    b: 0.73
-                pmin:
-                  x: 0.0
-                  y: 0.0
-                  z: 0.0
-                pmax:
-                  x: 165.0
-                  y: 165.0
-                  z: 165.0
-            angle: -18.0
-        offset:
-          x: 130.0
-          y: 0.0
-          z: 65.0
+    - Sphere:
+        centre:
+          x: 190.0
+          y: 90.0
+          z: 190.0
+        radius: 90.0
+        material:
+          Dielectric:
+            refractive_index: 1.5
     - Translate:
         geometry:
           RotateY:

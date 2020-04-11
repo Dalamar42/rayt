@@ -77,6 +77,6 @@ impl Hittable for ConstantMedium {
     }
 
     fn is_attractor(&self) -> bool {
-        self.material.is_attractor()
+        false
     }
 }

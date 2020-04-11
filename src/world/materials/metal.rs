@@ -7,17 +7,12 @@ use crate::world::materials::ScatterResult;
 
 pub fn scatter(albedo: &Colour, fuzz: f64, hit: &HitResult) -> Option<ScatterResult> {
     let unit_vector = hit.ray.direction().unit_vector();
-    let reflected = reflect(&unit_vector, &hit.surface_normal);
-
+    let reflected = reflect(&unit_vector, &hit.face_normal());
     let ray = Ray::new(
         hit.point,
         reflected + fuzz * random_point_in_unit_sphere(),
         hit.ray.time(),
     );
-
-    if Vector::dot(&ray.direction(), &hit.surface_normal) <= 0.0 {
-        return None;
-    }
 
     Some(ScatterResult::specular(*albedo, ray))
 }

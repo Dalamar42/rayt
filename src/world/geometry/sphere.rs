@@ -1,6 +1,8 @@
 use crate::camera::Ray;
 use crate::data::assets::Assets;
 use crate::data::vector::Vector;
+use crate::onb::Onb;
+use crate::pdf::random_to_sphere;
 use crate::world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
 use crate::world::geometry::{Geometry, HitResult, Hittable};
 use crate::world::materials::Material;
@@ -116,6 +118,26 @@ impl Hittable for Sphere {
     fn is_attractor(&self) -> bool {
         self.material.is_attractor()
     }
+
+    fn pdf_value(&self, origin: &Vector, direction: &Vector) -> f64 {
+        let hit = self.hit(&Ray::new(*origin, *direction, 0.0), 0.001, std::f64::MAX);
+        match hit {
+            None => 0.0,
+            Some(_hit) => {
+                let cp = self.centre - origin;
+                let cos_theta_max = f64::sqrt(1.0 - self.radius.powi(2) / cp.len_squared());
+                let solid_angle = 2.0 * PI * (1.0 - cos_theta_max);
+
+                1.0 / solid_angle
+            }
+        }
+    }
+
+    fn random(&self, origin: &Vector) -> Vector {
+        let cp = self.centre - origin;
+        let onb = Onb::build_from_w(&cp);
+        onb.local_from_vec(&random_to_sphere(self.radius, &cp))
+    }
 }
 
 #[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
@@ -192,7 +214,7 @@ impl Hittable for MovingSphere {
     }
 
     fn is_attractor(&self) -> bool {
-        self.material.is_attractor()
+        false
     }
 }
 

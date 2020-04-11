@@ -91,7 +91,7 @@ impl Hittable for Cube {
     }
 
     fn is_attractor(&self) -> bool {
-        self.rectangles.iter().any(|rect| rect.is_attractor())
+        false
     }
 }
 

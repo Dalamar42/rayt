@@ -103,6 +103,7 @@ impl Material {
     pub fn is_attractor(&self) -> bool {
         match self {
             Material::DiffuseLight { .. } => true,
+            Material::Dielectric { .. } => true,
             _ => false,
         }
     }

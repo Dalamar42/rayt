@@ -1,4 +1,6 @@
-RENDER_ARGS := render --width 256 --rays 100  --threads `nproc --all`
+RAYT := target/release/rayt
+NPROCS = $(shell nproc)
+TEST_ARGS = render --width 256 --rays 100 --threads $(NPROCS)
 
 .PHONY: help
 help:				## Show this help.
@@ -17,32 +19,35 @@ regenerate-scenes:		## Renegerate all scene config
 	cargo run -- --config config/simple_light.yaml generate --scene SimpleLight
 	cargo run -- --config config/cornell_box.yaml generate --scene CornellBox
 	cargo run -- --config config/cornell_smoke.yaml generate --scene CornellSmoke
+	cargo run -- --config config/cornell_metal.yaml generate --scene CornellMetal
+	cargo run -- --config config/cornell_sphere.yaml generate --scene CornellSphere
 
 .PHONY: render-test
 render-test:			## Render all scenes in 'output/test' (low res / low number of rays)
 	cargo build --release
 	mkdir -p output/test
 
-	target/release/rayt --config config/basic.yaml ${RENDER_ARGS} --output output/test/basic.png
-	target/release/rayt --config config/cover.yaml ${RENDER_ARGS} --output output/test/cover.png
-	target/release/rayt --config config/cover_with_checker.yaml ${RENDER_ARGS} --output output/test/cover_with_checker.png
-	target/release/rayt --config config/cover_with_motion_blur.yaml ${RENDER_ARGS} --output output/test/cover_with_motion_blur.png
-	target/release/rayt --config config/next_week_final.yaml ${RENDER_ARGS} --output output/test/next_week_final.png --asset assets/earth.jpg
-	target/release/rayt --config config/perlin_demo.yaml ${RENDER_ARGS} --output output/test/perlin_demo.png
-	target/release/rayt --config config/planets.yaml ${RENDER_ARGS} --output output/test/planets.png --asset assets/*
-	target/release/rayt --config config/simple_light.yaml ${RENDER_ARGS} --output output/test/simple_light.png
-	target/release/rayt --config config/cornell_box.yaml ${RENDER_ARGS} --output output/test/cornell_box.png
-	target/release/rayt --config config/cornell_smoke.yaml ${RENDER_ARGS} --output output/test/cornell_smoke.png
+	$(RAYT) --config config/basic.yaml $(TEST_ARGS) --output output/test/basic.png
+	$(RAYT) --config config/cover.yaml $(TEST_ARGS) --output output/test/cover.png
+	$(RAYT) --config config/cover_with_checker.yaml $(TEST_ARGS) --output output/test/cover_with_checker.png
+	$(RAYT) --config config/cover_with_motion_blur.yaml $(TEST_ARGS) --output output/test/cover_with_motion_blur.png
+	$(RAYT) --config config/next_week_final.yaml $(TEST_ARGS) --output output/test/next_week_final.png --asset assets/earth.jpg
+	$(RAYT) --config config/perlin_demo.yaml $(TEST_ARGS) --output output/test/perlin_demo.png
+	$(RAYT) --config config/planets.yaml $(TEST_ARGS) --output output/test/planets.png --asset assets/*
+	$(RAYT) --config config/simple_light.yaml $(TEST_ARGS) --output output/test/simple_light.png
+	$(RAYT) --config config/cornell_box.yaml $(TEST_ARGS) --output output/test/cornell_box.png
+	$(RAYT) --config config/cornell_smoke.yaml $(TEST_ARGS) --output output/test/cornell_smoke.png
+	$(RAYT) --config config/cornell_metal.yaml $(TEST_ARGS) --output output/test/cornell_metal.png
 
 .PHONY: cornell-test
 cornell-test:			## Render cornell box in 'output/test' (low res / low number of rays)
 	cargo build --release
 	mkdir -p output/test
 
-	target/release/rayt \
+	$(RAYT) \
 		--config config/cornell_box.yaml \
 		render \
 		--width 512 \
-		--rays 200 \
-		--threads `nproc --all` \
+		--rays 1000 \
+		--threads $(NPROCS) \
 		--output output/test/cornell_box.png
