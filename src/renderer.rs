@@ -86,6 +86,12 @@ fn colour(ray: &Ray, config: &Config, depth: u64) -> Colour {
                         let scattered = Ray::new(hit.point, pdf.generate(), hit.ray.time());
                         let pdf_value = pdf.value(scattered.direction());
 
+                        if pdf_value <= 0.0 {
+                            // This means there is no valid scattered ray we should sample
+                            // Return just emitted to avoid a NaN from the division by 0
+                            return emitted;
+                        }
+
                         let scattering_pdf =
                             hit.material.scattering_pdf(&hit.face_normal(), &scattered);
                         let scatter_colour =
