@@ -1,6 +1,6 @@
 use crate::camera::Ray;
 use crate::data::assets::Assets;
-use crate::sampling::uniform;
+use crate::pdf::uniform;
 use crate::world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
 use crate::world::geometry::{Geometry, HitResult, Hittable};
 use itertools::Itertools;

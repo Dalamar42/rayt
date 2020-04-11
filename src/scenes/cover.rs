@@ -2,7 +2,7 @@ use crate::camera::{CameraSave, Lens};
 use crate::config::ConfigSave;
 use crate::data::colour::Colour;
 use crate::data::vector::Vector;
-use crate::sampling::uniform;
+use crate::pdf::uniform;
 use crate::world::background::Background;
 use crate::world::geometry::sphere::{MovingSphere, Sphere};
 use crate::world::geometry::Geometry;

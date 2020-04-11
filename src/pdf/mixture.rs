@@ -1,8 +1,7 @@
 //! Mixture of PDFs
 
 use crate::data::vector::Vector;
-use crate::pdf::Pdf;
-use crate::sampling::uniform;
+use crate::pdf::{uniform, Pdf};
 
 const MIXTURE_RATIO: f64 = 0.5;
 

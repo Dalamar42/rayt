@@ -13,6 +13,9 @@
 use crate::data::vector::Vector;
 use crate::onb::Onb;
 use crate::world::geometry::Geometry;
+use rand::distributions::uniform::SampleUniform;
+use rand::distributions::Standard;
+use rand::prelude::*;
 
 mod cosine;
 mod geometry;
@@ -48,6 +51,34 @@ impl Pdf<'_> {
             Pdf::Cosine(onb) => cosine::generate(&onb),
             Pdf::Geometry { geometries, origin } => geometry::generate(&geometries, &origin),
             Pdf::Mixture(pdf_a, pdf_b) => mixture::generate(&pdf_a, &pdf_b),
+        }
+    }
+}
+
+pub fn uniform<T>() -> T
+where
+    Standard: Distribution<T>,
+{
+    let mut rng = rand::thread_rng();
+    rng.gen::<T>()
+}
+
+pub fn uniform_between<T>(low: T, high: T) -> T
+where
+    Standard: Distribution<T>,
+    T: SampleUniform,
+{
+    let mut rng = rand::thread_rng();
+    rng.gen_range::<T, T, T>(low, high)
+}
+
+pub fn random_point_in_unit_sphere() -> Vector {
+    let centre = Vector::new(1.0, 1.0, 1.0);
+
+    loop {
+        let point = 2.0 * Vector::new(uniform(), uniform(), uniform()) - centre;
+        if point.len_squared() < 1.0 {
+            return point;
         }
     }
 }

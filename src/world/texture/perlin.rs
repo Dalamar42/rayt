@@ -1,6 +1,6 @@
 use crate::data::colour::Colour;
 use crate::data::vector::Vector;
-use crate::sampling::uniform;
+use crate::pdf::uniform;
 
 const RAN_SIZE: usize = 256;
 

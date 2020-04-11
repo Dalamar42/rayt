@@ -1,7 +1,7 @@
 //! PDF that samples towards a list of geometries
 
 use crate::data::vector::Vector;
-use crate::sampling::uniform_between;
+use crate::pdf::uniform_between;
 use crate::world::geometry::{Geometry, Hittable};
 
 pub fn value(geometries: &[Geometry], origin: &Vector, direction: &Vector) -> f64 {

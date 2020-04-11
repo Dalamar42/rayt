@@ -1,6 +1,6 @@
 use crate::config::Config;
 use crate::data::vector::Vector;
-use crate::sampling::uniform;
+use crate::pdf::uniform;
 use std::f64::consts::PI;
 
 #[derive(Debug, Clone, Copy)]

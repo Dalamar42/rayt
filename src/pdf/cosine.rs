@@ -2,7 +2,7 @@
 
 use crate::data::vector::Vector;
 use crate::onb::Onb;
-use crate::sampling::uniform;
+use crate::pdf::uniform;
 use std::f64::consts::PI;
 
 pub fn value(onb: &Onb, direction: &Vector) -> f64 {

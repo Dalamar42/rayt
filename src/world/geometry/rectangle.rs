@@ -1,7 +1,7 @@
 use crate::camera::Ray;
 use crate::data::assets::Assets;
 use crate::data::vector::Vector;
-use crate::sampling::uniform_between;
+use crate::pdf::uniform_between;
 use crate::world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
 use crate::world::geometry::{Geometry, HitResult, Hittable};
 use crate::world::materials::Material;
