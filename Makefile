@@ -33,3 +33,16 @@ render-test:			## Render all scenes in 'output/test' (low res / low number of ra
 	target/release/rayt --config config/simple_light.yaml ${RENDER_ARGS} --output output/test/simple_light.png
 	target/release/rayt --config config/cornell_box.yaml ${RENDER_ARGS} --output output/test/cornell_box.png
 	target/release/rayt --config config/cornell_smoke.yaml ${RENDER_ARGS} --output output/test/cornell_smoke.png
+
+.PHONY: cornell-test
+cornell-test:			## Render cornell box in 'output/test' (low res / low number of rays)
+	cargo build --release
+	mkdir -p output/test
+
+	target/release/rayt \
+		--config config/cornell_box.yaml \
+		render \
+		--width 512 \
+		--rays 200 \
+		--threads `nproc --all` \
+		--output output/test/cornell_box.png

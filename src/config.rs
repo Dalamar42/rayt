@@ -2,7 +2,7 @@ use crate::camera::{Camera, CameraSave};
 use crate::data::assets::Assets;
 use crate::world::background::Background;
 use crate::world::geometry::bounding_volume_hierarchy::BoundingVolumeHierarchyNode;
-use crate::world::geometry::Geometry;
+use crate::world::geometry::{Geometry, Hittable};
 use crate::world::WorldSave;
 
 pub struct Config {
@@ -11,6 +11,7 @@ pub struct Config {
     camera: Camera,
     background: Background,
     bvh: Geometry,
+    attractors: Vec<Geometry>,
     num_of_rays: u64,
     assets: Assets,
 }
@@ -47,6 +48,11 @@ impl Config {
         &self.bvh
     }
 
+    pub fn attractors(&self) -> Vec<Geometry> {
+        // TODO Remove clone
+        self.attractors.to_vec()
+    }
+
     pub fn assets(&self) -> &Assets {
         &self.assets
     }
@@ -69,6 +75,12 @@ impl ConfigSave {
 
         let geometries = self.world.drain_geometries();
 
+        let attractors = geometries
+            .iter()
+            .filter(|g| g.is_attractor())
+            .cloned()
+            .collect();
+
         let bvh = BoundingVolumeHierarchyNode::build(geometries, time_start, time_end);
 
         Config {
@@ -77,6 +89,7 @@ impl ConfigSave {
             camera,
             background: self.world.background().clone(),
             bvh,
+            attractors,
             num_of_rays,
             assets,
         }

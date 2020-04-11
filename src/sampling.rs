@@ -11,6 +11,7 @@
 //! - r1 = integral_0_θ ( 2π * f(t) * sin(t) * dt )
 
 use crate::data::vector::Vector;
+use rand::distributions::uniform::SampleUniform;
 use rand::distributions::Standard;
 use rand::prelude::*;
 use std::f64::consts::PI;
@@ -21,6 +22,15 @@ where
 {
     let mut rng = rand::thread_rng();
     rng.gen::<T>()
+}
+
+pub fn uniform_between<T>(low: T, high: T) -> T
+where
+    Standard: Distribution<T>,
+    T: SampleUniform,
+{
+    let mut rng = rand::thread_rng();
+    rng.gen_range::<T, T, T>(low, high)
 }
 
 pub fn random_point_in_unit_sphere() -> Vector {
@@ -55,21 +65,6 @@ pub fn random_point_on_unit_sphere() -> Vector {
             return point.unit_vector();
         }
     }
-}
-
-pub fn random_cosine_direction() -> Vector {
-    // PDF p(direction = cosθ / π
-    let r1 = uniform::<f64>();
-    let r2 = uniform::<f64>();
-
-    let z = f64::sqrt(1.0 - r2);
-
-    let phi = 2.0 * PI * r1;
-
-    let x = f64::cos(phi) * f64::sqrt(r2);
-    let y = f64::sin(phi) * f64::sqrt(r2);
-
-    Vector::new(x, y, z)
 }
 
 #[allow(dead_code)]

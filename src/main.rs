@@ -12,6 +12,7 @@ mod data;
 mod float;
 mod io;
 mod onb;
+mod pdf;
 mod renderer;
 mod sampling;
 mod scenes;

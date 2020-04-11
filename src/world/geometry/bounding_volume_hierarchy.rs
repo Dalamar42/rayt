@@ -6,7 +6,7 @@ use crate::world::geometry::{Geometry, HitResult, Hittable};
 use itertools::Itertools;
 use std::cmp::Ordering;
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct BoundingVolumeHierarchyNode {
     left: Option<Box<Geometry>>,
     right: Option<Box<Geometry>>,
@@ -189,5 +189,10 @@ impl Hittable for BoundingVolumeHierarchyNode {
             geometry.validate(assets)?;
         }
         Ok(())
+    }
+
+    fn is_attractor(&self) -> bool {
+        // We should not be using bounding boxes when importance sampling attractors
+        false
     }
 }

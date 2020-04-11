@@ -1,6 +1,7 @@
 use crate::camera::Ray;
 use crate::data::assets::Assets;
 use crate::data::vector::Vector;
+use crate::sampling::uniform_between;
 use crate::world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
 use crate::world::geometry::{Geometry, HitResult, Hittable};
 use crate::world::materials::Material;
@@ -39,7 +40,7 @@ impl Hittable for XyRect {
     fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<HitResult> {
         let distance = (self.k - ray.origin().z()) / ray.direction().z();
 
-        if distance < tmin || distance > tmax {
+        if distance.is_nan() || distance < tmin || distance > tmax {
             return None;
         }
 
@@ -72,6 +73,33 @@ impl Hittable for XyRect {
 
     fn validate(&self, assets: &Assets) -> Result<(), anyhow::Error> {
         Ok(self.material.validate(assets)?)
+    }
+
+    fn is_attractor(&self) -> bool {
+        self.material.is_attractor()
+    }
+
+    fn pdf_value(&self, origin: &Vector, direction: &Vector) -> f64 {
+        let hit = self.hit(&Ray::new(*origin, *direction, 0.0), 0.001, std::f64::MAX);
+        match hit {
+            None => 0.0,
+            Some(hit) => {
+                let area = (self.x1 - self.x0) * (self.y1 - self.y0);
+                let distance_squared = hit.distance.powi(2) * direction.len_squared();
+                let cosine = (Vector::dot(direction, &hit.face_normal()) / direction.len()).abs();
+
+                distance_squared / (cosine * area)
+            }
+        }
+    }
+
+    fn random(&self, origin: &Vector) -> Vector {
+        let random_point = Vector::new(
+            uniform_between(self.x0, self.x1),
+            uniform_between(self.y0, self.y1),
+            self.k,
+        );
+        random_point - origin
     }
 }
 
@@ -109,7 +137,7 @@ impl Hittable for XzRect {
     fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<HitResult> {
         let distance = (self.k - ray.origin().y()) / ray.direction().y();
 
-        if distance < tmin || distance > tmax {
+        if distance.is_nan() || distance < tmin || distance > tmax {
             return None;
         }
 
@@ -142,6 +170,33 @@ impl Hittable for XzRect {
 
     fn validate(&self, assets: &Assets) -> Result<(), anyhow::Error> {
         Ok(self.material.validate(assets)?)
+    }
+
+    fn is_attractor(&self) -> bool {
+        self.material.is_attractor()
+    }
+
+    fn pdf_value(&self, origin: &Vector, direction: &Vector) -> f64 {
+        let hit = self.hit(&Ray::new(*origin, *direction, 0.0), 0.001, std::f64::MAX);
+        match hit {
+            None => 0.0,
+            Some(hit) => {
+                let area = (self.x1 - self.x0) * (self.z1 - self.z0);
+                let distance_squared = hit.distance.powi(2) * direction.len_squared();
+                let cosine = (Vector::dot(direction, &hit.face_normal()) / direction.len()).abs();
+
+                distance_squared / (cosine * area)
+            }
+        }
+    }
+
+    fn random(&self, origin: &Vector) -> Vector {
+        let random_point = Vector::new(
+            uniform_between(self.x0, self.x1),
+            self.k,
+            uniform_between(self.z0, self.z1),
+        );
+        random_point - origin
     }
 }
 
@@ -179,7 +234,7 @@ impl Hittable for YzRect {
     fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<HitResult> {
         let distance = (self.k - ray.origin().x()) / ray.direction().x();
 
-        if distance < tmin || distance > tmax {
+        if distance.is_nan() || distance < tmin || distance > tmax {
             return None;
         }
 
@@ -212,6 +267,33 @@ impl Hittable for YzRect {
 
     fn validate(&self, assets: &Assets) -> Result<(), anyhow::Error> {
         Ok(self.material.validate(assets)?)
+    }
+
+    fn is_attractor(&self) -> bool {
+        self.material.is_attractor()
+    }
+
+    fn pdf_value(&self, origin: &Vector, direction: &Vector) -> f64 {
+        let hit = self.hit(&Ray::new(*origin, *direction, 0.0), 0.001, std::f64::MAX);
+        match hit {
+            None => 0.0,
+            Some(hit) => {
+                let area = (self.y1 - self.y0) * (self.z1 - self.z0);
+                let distance_squared = hit.distance.powi(2) * direction.len_squared();
+                let cosine = (Vector::dot(direction, &hit.face_normal()) / direction.len()).abs();
+
+                distance_squared / (cosine * area)
+            }
+        }
+    }
+
+    fn random(&self, origin: &Vector) -> Vector {
+        let random_point = Vector::new(
+            self.k,
+            uniform_between(self.y0, self.y1),
+            uniform_between(self.z0, self.z1),
+        );
+        random_point - origin
     }
 }
 

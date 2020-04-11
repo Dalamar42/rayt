@@ -1,9 +1,10 @@
 use crate::camera::Ray;
 use crate::data::assets::Assets;
+use crate::data::vector::Vector;
 use crate::world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
 use crate::world::geometry::{Geometry, HitResult, Hittable};
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct FlipNormals {
     geometry: Box<Geometry>,
 }
@@ -30,5 +31,17 @@ impl Hittable for FlipNormals {
 
     fn validate(&self, assets: &Assets) -> Result<(), anyhow::Error> {
         self.geometry.validate(assets)
+    }
+
+    fn is_attractor(&self) -> bool {
+        self.geometry.is_attractor()
+    }
+
+    fn pdf_value(&self, origin: &Vector, direction: &Vector) -> f64 {
+        self.geometry.pdf_value(origin, direction)
+    }
+
+    fn random(&self, origin: &Vector) -> Vector {
+        self.geometry.random(origin)
     }
 }

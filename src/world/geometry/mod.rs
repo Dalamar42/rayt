@@ -23,8 +23,9 @@ use crate::world::geometry::translate::Translate;
 use crate::world::materials::Material;
 use anyhow::Error;
 use std::cmp::Ordering;
+use std::fmt::Debug;
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub enum Geometry {
     Bvh(Box<BoundingVolumeHierarchyNode>),
     Sphere(Box<Sphere>),
@@ -87,6 +88,54 @@ impl Hittable for Geometry {
             Geometry::RotateY(inner) => inner.validate(assets),
         }
     }
+
+    fn is_attractor(&self) -> bool {
+        match self {
+            Geometry::Bvh(inner) => inner.is_attractor(),
+            Geometry::Sphere(inner) => inner.is_attractor(),
+            Geometry::MovingSphere(inner) => inner.is_attractor(),
+            Geometry::Cube(inner) => inner.is_attractor(),
+            Geometry::ConstantMedium(inner) => inner.is_attractor(),
+            Geometry::XyRect(inner) => inner.is_attractor(),
+            Geometry::XzRect(inner) => inner.is_attractor(),
+            Geometry::YzRect(inner) => inner.is_attractor(),
+            Geometry::Flip(inner) => inner.is_attractor(),
+            Geometry::Translate(inner) => inner.is_attractor(),
+            Geometry::RotateY(inner) => inner.is_attractor(),
+        }
+    }
+
+    fn pdf_value(&self, origin: &Vector, direction: &Vector) -> f64 {
+        match self {
+            Geometry::Bvh(inner) => inner.pdf_value(origin, direction),
+            Geometry::Sphere(inner) => inner.pdf_value(origin, direction),
+            Geometry::MovingSphere(inner) => inner.pdf_value(origin, direction),
+            Geometry::Cube(inner) => inner.pdf_value(origin, direction),
+            Geometry::ConstantMedium(inner) => inner.pdf_value(origin, direction),
+            Geometry::XyRect(inner) => inner.pdf_value(origin, direction),
+            Geometry::XzRect(inner) => inner.pdf_value(origin, direction),
+            Geometry::YzRect(inner) => inner.pdf_value(origin, direction),
+            Geometry::Flip(inner) => inner.pdf_value(origin, direction),
+            Geometry::Translate(inner) => inner.pdf_value(origin, direction),
+            Geometry::RotateY(inner) => inner.pdf_value(origin, direction),
+        }
+    }
+
+    fn random(&self, origin: &Vector) -> Vector {
+        match self {
+            Geometry::Bvh(inner) => inner.random(origin),
+            Geometry::Sphere(inner) => inner.random(origin),
+            Geometry::MovingSphere(inner) => inner.random(origin),
+            Geometry::Cube(inner) => inner.random(origin),
+            Geometry::ConstantMedium(inner) => inner.random(origin),
+            Geometry::XyRect(inner) => inner.random(origin),
+            Geometry::XzRect(inner) => inner.random(origin),
+            Geometry::YzRect(inner) => inner.random(origin),
+            Geometry::Flip(inner) => inner.random(origin),
+            Geometry::Translate(inner) => inner.random(origin),
+            Geometry::RotateY(inner) => inner.random(origin),
+        }
+    }
 }
 
 impl Geometry {
@@ -104,13 +153,22 @@ impl Geometry {
     }
 }
 
-// #[typetag::serde(tag = "type")]
-pub trait Hittable {
+pub trait Hittable: Debug {
     fn hit(&self, ray: &Ray, tmin: f64, tmax: f64) -> Option<HitResult>;
 
     fn bounding_box(&self, time_start: f64, time_end: f64) -> Option<AxisAlignedBoundingBox>;
 
     fn validate(&self, assets: &Assets) -> Result<(), anyhow::Error>;
+
+    fn is_attractor(&self) -> bool;
+
+    fn pdf_value(&self, _origin: &Vector, _direction: &Vector) -> f64 {
+        unimplemented!("{:?} is not implemented as an attractor", self)
+    }
+
+    fn random(&self, _origin: &Vector) -> Vector {
+        unimplemented!("{:?} is not implemented as an attractor", self)
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -126,6 +184,14 @@ pub struct HitResult {
 impl HitResult {
     pub fn front_face(&self) -> bool {
         Vector::dot(self.ray.direction(), &self.surface_normal) < 0.0
+    }
+
+    pub fn face_normal(&self) -> Vector {
+        if self.front_face() {
+            self.surface_normal
+        } else {
+            -self.surface_normal
+        }
     }
 }
 

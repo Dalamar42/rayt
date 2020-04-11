@@ -11,7 +11,7 @@ pub enum GeometryError {
     RotationUnsupported(),
 }
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct RotateY {
     geometry: Box<Geometry>,
     angle: f64,
@@ -75,6 +75,18 @@ impl Hittable for RotateY {
 
     fn validate(&self, assets: &Assets) -> Result<(), anyhow::Error> {
         self.geometry.validate(assets)
+    }
+
+    fn is_attractor(&self) -> bool {
+        self.geometry.is_attractor()
+    }
+
+    fn pdf_value(&self, origin: &Vector, direction: &Vector) -> f64 {
+        self.geometry.pdf_value(origin, direction)
+    }
+
+    fn random(&self, origin: &Vector) -> Vector {
+        self.geometry.random(origin)
     }
 }
 

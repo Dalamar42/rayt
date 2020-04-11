@@ -6,7 +6,7 @@ use crate::world::geometry::rectangle::{XyRect, XzRect, YzRect};
 use crate::world::geometry::{Geometry, HitResult, Hittable};
 use crate::world::materials::Material;
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Cube {
     rectangles: Vec<Geometry>,
     pmin: Vector,
@@ -88,6 +88,10 @@ impl Hittable for Cube {
             rectangle.validate(assets)?
         }
         Ok(())
+    }
+
+    fn is_attractor(&self) -> bool {
+        self.rectangles.iter().any(|rect| rect.is_attractor())
     }
 }
 

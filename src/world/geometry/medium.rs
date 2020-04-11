@@ -8,7 +8,7 @@ use crate::world::geometry::{Geometry, HitResult, Hittable};
 use crate::world::materials::Material;
 use crate::world::texture::Texture;
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct ConstantMedium {
     boundary: Box<Geometry>,
     density: f64,
@@ -74,5 +74,9 @@ impl Hittable for ConstantMedium {
         self.material.validate(assets)?;
         self.boundary.validate(assets)?;
         Ok(())
+    }
+
+    fn is_attractor(&self) -> bool {
+        self.material.is_attractor()
     }
 }

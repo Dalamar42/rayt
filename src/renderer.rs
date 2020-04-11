@@ -2,9 +2,12 @@ use crate::camera::Ray;
 use crate::config::Config;
 use crate::data::colour::Colour;
 use crate::data::image::{Image, Pixel};
+use crate::pdf::Pdf;
 use crate::world::geometry::Hittable;
+use crate::world::materials::ScatterResult;
 use indicatif::ProgressBar;
 use rayon::prelude::*;
+use std::panic;
 
 const MAX_SCATTER_DEPTH: u64 = 50;
 
@@ -24,7 +27,16 @@ pub fn render(config: &Config, progress_bar: &ProgressBar) -> Image {
 fn pixel(row: u32, col: u32, config: &Config, progress_bar: &ProgressBar) -> Pixel {
     let rays = config.camera().rays(row, col, &config);
 
-    let colour_sum: Colour = rays.iter().map(|ray| colour(&ray, &config, 0)).sum();
+    let colour_sum = panic::catch_unwind(|| rays.iter().map(|ray| colour(&ray, &config, 0)).sum());
+    let colour_sum: Colour = match colour_sum {
+        Ok(colour_sum) => colour_sum,
+        Err(err) => {
+            // A rayon parallel iter will not terminate other threads when one panics
+            eprintln!("A rendering thread panicked {:?}", err);
+            std::process::exit(1);
+        }
+    };
+
     let colour = colour_sum / (rays.len() as f64);
     let colour = colour.gamma_2();
 
@@ -51,22 +63,36 @@ fn colour(ray: &Ray, config: &Config, depth: u64) -> Colour {
             }
 
             hit.material
-                .scatter(
-                    &hit.ray,
-                    &hit.point,
-                    &hit.surface_normal,
-                    hit.texture_coords,
-                    &config.assets(),
-                )
-                .map(|scatter| {
-                    let scattering_pdf = hit
-                        .material
-                        .scattering_pdf(&hit.surface_normal, &scatter.ray());
-                    let scatter_colour = scatter.albedo()
-                        * scattering_pdf
-                        * colour(&scatter.ray(), &config, depth + 1)
-                        / scatter.pdf();
-                    emitted + scatter_colour
+                .scatter(&hit, &config.assets())
+                .map(|scatter| match scatter {
+                    ScatterResult::Specular { attenuation, ray } => {
+                        emitted + attenuation * colour(&ray, &config, depth + 1)
+                    }
+                    ScatterResult::Diffuse { attenuation, pdf } => {
+                        let attractors = config.attractors();
+                        let pdf = if attractors.is_empty() {
+                            pdf
+                        } else {
+                            Pdf::Mixture(
+                                pdf.boxed(),
+                                Pdf::Geometry {
+                                    geometries: attractors,
+                                    origin: hit.point,
+                                }
+                                .boxed(),
+                            )
+                        };
+
+                        let scattered = Ray::new(hit.point, pdf.generate(), hit.ray.time());
+                        let pdf_value = pdf.value(scattered.direction());
+
+                        let scattering_pdf =
+                            hit.material.scattering_pdf(&hit.face_normal(), &scattered);
+                        let scatter_colour =
+                            attenuation * scattering_pdf * colour(&scattered, &config, depth + 1)
+                                / pdf_value;
+                        emitted + scatter_colour
+                    }
                 })
                 .unwrap_or(emitted)
         })

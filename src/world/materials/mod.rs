@@ -2,6 +2,8 @@ use crate::camera::Ray;
 use crate::data::assets::Assets;
 use crate::data::colour::Colour;
 use crate::data::vector::Vector;
+use crate::pdf::Pdf;
+use crate::world::geometry::HitResult;
 use crate::world::texture::Texture;
 
 mod dielectric;
@@ -9,32 +11,18 @@ mod isotropic;
 mod lambertian;
 mod metal;
 
-#[derive(Debug)]
-pub struct ScatterResult {
-    ray: Ray,
-    attenuation: Colour,
-    pdf: f64,
+pub enum ScatterResult {
+    Specular { attenuation: Colour, ray: Ray },
+    Diffuse { attenuation: Colour, pdf: Pdf },
 }
 
 impl ScatterResult {
-    pub fn new(ray: Ray, attenuation: Colour, pdf: f64) -> ScatterResult {
-        ScatterResult {
-            ray,
-            attenuation,
-            pdf,
-        }
+    pub fn specular(attenuation: Colour, ray: Ray) -> ScatterResult {
+        ScatterResult::Specular { attenuation, ray }
     }
 
-    pub fn ray(&self) -> &Ray {
-        &self.ray
-    }
-
-    pub fn albedo(&self) -> &Colour {
-        &self.attenuation
-    }
-
-    pub fn pdf(&self) -> f64 {
-        self.pdf
+    pub fn diffuse(attenuation: Colour, pdf: Pdf) -> ScatterResult {
+        ScatterResult::Diffuse { attenuation, pdf }
     }
 }
 
@@ -67,33 +55,15 @@ impl Material {
         }
     }
 
-    pub fn scatter(
-        &self,
-        ray: &Ray,
-        hit_point: &Vector,
-        surface_normal: &Vector,
-        texture_coords: (f64, f64),
-        assets: &Assets,
-    ) -> Option<ScatterResult> {
+    pub fn scatter(&self, hit: &HitResult, assets: &Assets) -> Option<ScatterResult> {
         match self {
-            Material::Lambertian { albedo } => lambertian::scatter(
-                &albedo,
-                ray,
-                hit_point,
-                surface_normal,
-                texture_coords,
-                assets,
-            ),
-            Material::Metal { albedo, fuzz } => {
-                metal::scatter(&albedo, *fuzz, ray, hit_point, surface_normal)
-            }
+            Material::Lambertian { albedo } => lambertian::scatter(&albedo, hit, assets),
+            Material::Metal { albedo, fuzz } => metal::scatter(&albedo, *fuzz, hit),
             Material::Dielectric { refractive_index } => {
-                dielectric::scatter(*refractive_index, ray, hit_point, surface_normal)
+                dielectric::scatter(*refractive_index, hit)
             }
             Material::DiffuseLight { .. } => None,
-            Material::Isotropic { albedo } => {
-                isotropic::scatter(&albedo, ray, hit_point, texture_coords, assets)
-            }
+            Material::Isotropic { albedo } => isotropic::scatter(&albedo, hit, assets),
         }
     }
 
@@ -121,6 +91,13 @@ impl Material {
                 Ok(())
             }
             _ => Ok(()),
+        }
+    }
+
+    pub fn is_attractor(&self) -> bool {
+        match self {
+            Material::DiffuseLight { .. } => true,
+            _ => false,
         }
     }
 }

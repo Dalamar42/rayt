@@ -2,21 +2,17 @@ use crate::camera::Ray;
 use crate::data::colour::Colour;
 use crate::data::vector::Vector;
 use crate::sampling::uniform;
+use crate::world::geometry::HitResult;
 use crate::world::materials::ScatterResult;
 
 const REFRACTIVE_INDEX_OF_AIR: f64 = 1.0;
 const DIELECTRIC_ATTENUATION: [f64; 3] = [1.0, 1.0, 1.0];
 
-pub fn scatter(
-    refractive_index: f64,
-    ray: &Ray,
-    hit_point: &Vector,
-    surface_normal: &Vector,
-) -> Option<ScatterResult> {
-    let unit_vector = ray.direction().unit_vector();
-    let reflected = reflect(&unit_vector, &surface_normal);
+pub fn scatter(refractive_index: f64, hit: &HitResult) -> Option<ScatterResult> {
+    let unit_vector = hit.ray.direction().unit_vector();
+    let reflected = reflect(&unit_vector, &hit.surface_normal);
 
-    let uvn = Vector::dot(&unit_vector, &surface_normal);
+    let uvn = Vector::dot(&unit_vector, &hit.surface_normal);
 
     // Determine whether we are going from air to the geometry or vv
     // This current does not support refraction from inside one geometry to another
@@ -34,22 +30,21 @@ pub fn scatter(
     let maybe_refracted = if should_reflect {
         None
     } else {
-        refract(&unit_vector, &(sign * surface_normal), n_i / n_t)
+        refract(&unit_vector, &(sign * hit.surface_normal), n_i / n_t)
     };
 
     let ray = match maybe_refracted {
-        Some(refracted) => Ray::new(*hit_point, refracted, ray.time()),
-        None => Ray::new(*hit_point, reflected, ray.time()),
+        Some(refracted) => Ray::new(hit.point, refracted, hit.ray.time()),
+        None => Ray::new(hit.point, reflected, hit.ray.time()),
     };
 
-    Some(ScatterResult::new(
-        ray,
+    Some(ScatterResult::specular(
         Colour::new(
             DIELECTRIC_ATTENUATION[0],
             DIELECTRIC_ATTENUATION[1],
             DIELECTRIC_ATTENUATION[2],
         ),
-        1.0,
+        ray,
     ))
 }
 

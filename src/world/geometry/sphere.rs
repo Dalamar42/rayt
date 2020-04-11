@@ -112,6 +112,10 @@ impl Hittable for Sphere {
     fn validate(&self, assets: &Assets) -> Result<(), anyhow::Error> {
         Ok(self.material.validate(assets)?)
     }
+
+    fn is_attractor(&self) -> bool {
+        self.material.is_attractor()
+    }
 }
 
 #[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
@@ -185,6 +189,10 @@ impl Hittable for MovingSphere {
 
     fn validate(&self, assets: &Assets) -> Result<(), anyhow::Error> {
         self.material.validate(assets)
+    }
+
+    fn is_attractor(&self) -> bool {
+        self.material.is_attractor()
     }
 }
 
