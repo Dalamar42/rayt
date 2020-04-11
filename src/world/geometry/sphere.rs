@@ -2,7 +2,7 @@ use crate::camera::Ray;
 use crate::data::assets::Assets;
 use crate::data::vector::Vector;
 use crate::onb::Onb;
-use crate::pdf::random_to_sphere;
+use crate::sampling::uniform;
 use crate::world::geometry::axis_aligned_bounding_box::AxisAlignedBoundingBox;
 use crate::world::geometry::{Geometry, HitResult, Hittable};
 use crate::world::materials::Material;
@@ -125,7 +125,13 @@ impl Hittable for Sphere {
             None => 0.0,
             Some(_hit) => {
                 let cp = self.centre - origin;
-                let cos_theta_max = f64::sqrt(1.0 - self.radius.powi(2) / cp.len_squared());
+                let distance_ratio = self.radius.powi(2) / cp.len_squared();
+                if distance_ratio >= 1.0 {
+                    // This means origin is inside the sphere. Any ray will hit the sphere
+                    return 1.0;
+                }
+
+                let cos_theta_max = f64::sqrt(1.0 - distance_ratio);
                 let solid_angle = 2.0 * PI * (1.0 - cos_theta_max);
 
                 1.0 / solid_angle
@@ -135,9 +141,29 @@ impl Hittable for Sphere {
 
     fn random(&self, origin: &Vector) -> Vector {
         let cp = self.centre - origin;
+        let distance_ratio = self.radius.powi(2) / cp.len_squared();
+        if distance_ratio >= 1.0 {
+            // This means origin is inside the sphere. Any ray will hit the sphere
+            return Vector::new(uniform(), uniform(), uniform());
+        }
+
         let onb = Onb::build_from_w(&cp);
-        onb.local_from_vec(&random_to_sphere(self.radius, &cp))
+        onb.local_from_vec(&random_to_sphere(distance_ratio))
     }
+}
+
+pub fn random_to_sphere(distance_ratio: f64) -> Vector {
+    let r1 = uniform::<f64>();
+    let r2 = uniform::<f64>();
+
+    let cos_theta_max = f64::sqrt(1.0 - distance_ratio);
+    let z = 1.0 + r2 * (cos_theta_max - 1.0);
+
+    let phi = 2.0 * PI * r1;
+    let x = f64::cos(phi) * f64::sqrt(1.0 - z.powi(2));
+    let y = f64::sin(phi) * f64::sqrt(1.0 - z.powi(2));
+
+    Vector::new(x, y, z)
 }
 
 #[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]

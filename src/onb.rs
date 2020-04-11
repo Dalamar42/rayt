@@ -2,6 +2,7 @@
 
 use crate::data::vector::Vector;
 
+#[derive(Debug)]
 pub struct Onb {
     u: Vector,
     v: Vector,

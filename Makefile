@@ -1,6 +1,6 @@
 RAYT := target/release/rayt
 NPROCS = $(shell nproc)
-TEST_ARGS = render --width 256 --rays 100 --threads $(NPROCS)
+TEST_ARGS = render --width 512 --rays 1000 --threads $(NPROCS)
 
 .PHONY: help
 help:				## Show this help.
@@ -44,10 +44,4 @@ cornell-test:			## Render cornell box in 'output/test' (low res / low number of 
 	cargo build --release
 	mkdir -p output/test
 
-	$(RAYT) \
-		--config config/cornell_box.yaml \
-		render \
-		--width 512 \
-		--rays 1000 \
-		--threads $(NPROCS) \
-		--output output/test/cornell_box.png
+	$(RAYT) --config config/cornell_box.yaml $(TEST_ARGS) --output output/test/cornell_box.png

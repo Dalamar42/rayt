@@ -12,14 +12,13 @@
 
 use crate::data::vector::Vector;
 use crate::onb::Onb;
-use crate::sampling::uniform;
 use crate::world::geometry::Geometry;
-use std::f64::consts::PI;
 
 mod cosine;
 mod geometry;
 mod mixture;
 
+#[derive(Debug)]
 pub enum Pdf<'a> {
     Cosine(Onb),
     Geometry {
@@ -51,18 +50,4 @@ impl Pdf<'_> {
             Pdf::Mixture(pdf_a, pdf_b) => mixture::generate(&pdf_a, &pdf_b),
         }
     }
-}
-
-pub fn random_to_sphere(radius: f64, cp: &Vector) -> Vector {
-    let r1 = uniform::<f64>();
-    let r2 = uniform::<f64>();
-
-    let cos_theta_max = f64::sqrt(1.0 - radius.powi(2) / cp.len_squared());
-    let z = 1.0 + r2 * (cos_theta_max - 1.0);
-
-    let phi = 2.0 * PI * r1;
-    let x = f64::cos(phi) * f64::sqrt(1.0 - z.powi(2));
-    let y = f64::sin(phi) * f64::sqrt(1.0 - z.powi(2));
-
-    Vector::new(x, y, z)
 }

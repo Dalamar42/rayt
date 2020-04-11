@@ -52,9 +52,9 @@ impl Colour {
     }
 
     pub fn to_rgb(&self) -> Rgb<u8> {
-        assert!(0.0 <= self.r);
-        assert!(0.0 <= self.g);
-        assert!(0.0 <= self.b);
+        assert!(0.0 <= self.r, "Found negative r {}", self.r);
+        assert!(0.0 <= self.g, "Found negative g {}", self.g);
+        assert!(0.0 <= self.b, "Found negative b {}", self.b);
 
         let r = (RGB_MULT * self.r) as u64;
         let g = (RGB_MULT * self.g) as u64;
