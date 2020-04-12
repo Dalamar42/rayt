@@ -6,6 +6,7 @@ use crate::pdf::Pdf;
 use crate::world::geometry::{HitResult, Hittable};
 use crate::world::materials::ScatterResult;
 use indicatif::ProgressBar;
+use rand::seq::SliceRandom;
 use rayon::prelude::*;
 use std::panic;
 use std::sync::atomic::{AtomicUsize, Ordering};
@@ -19,9 +20,17 @@ pub struct RenderOutput {
 
 pub fn render(config: &Config, progress_bar: &ProgressBar) -> RenderOutput {
     let failed_rays = AtomicUsize::new(0);
-    let pixels: Vec<Pixel> = config
-        .camera()
-        .pixels(&config)
+    let mut pixel_coords = config.camera().pixels(&config);
+
+    // When pixels are processed in order patterns in the image can affect the remaining time
+    // estimate produced by the progress bar, e.g. a empty part of the image can be processed first
+    // thus producing a false low remaining time estimate while the rest of the image might have a
+    // very high number of objects and be slower to process.
+    // Shuffle pixels to break up these patterns and improve the quality of the estimate
+    let mut rng = rand::thread_rng();
+    pixel_coords.shuffle(&mut rng);
+
+    let pixels: Vec<Pixel> = pixel_coords
         .par_iter()
         .map(|(row, col)| pixel(*row, *col, &config, &progress_bar, &failed_rays))
         .collect();
@@ -132,10 +141,9 @@ fn colour_from_scatter(
 
             let scattered = Ray::new(hit.point, direction, hit.ray.time());
             let scattering_pdf = hit.material.scattering_pdf(&hit.face_normal(), &scattered);
-            let scatter_colour = attenuation
-                * scattering_pdf
-                * colour(&scattered, &config, depth + 1, failed_rays)
-                / pdf_value;
+            let scatter_colour =
+                attenuation * scattering_pdf * colour(&scattered, &config, depth + 1, failed_rays)
+                    / pdf_value;
             emitted + scatter_colour
         }
     }
