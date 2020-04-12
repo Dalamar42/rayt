@@ -79,7 +79,7 @@ fn run_render(
 
     let started = Instant::now();
 
-    let mut step_logger = StepLogger::new(6);
+    let mut step_logger = StepLogger::new(7);
 
     step_logger.log("Loading image yaml");
     let config_save = load_config(config_path)?;
@@ -95,10 +95,19 @@ fn run_render(
 
     step_logger.log("Rendering");
     let progress_bar = progress_bar(&config);
-    let image = render(&config, &progress_bar);
+    let render_output = render(&config, &progress_bar);
+
+    if render_output.failed_rays > 0 {
+        step_logger.log(&format!(
+            "Checking for errors: found {} rays with errors",
+            render_output.failed_rays
+        ));
+    } else {
+        step_logger.log("Checking for errors: no errors")
+    }
 
     step_logger.log("Printing image");
-    io::write_image(image, output_path)?;
+    io::write_image(render_output.image, output_path)?;
 
     println!("Done in {}", FormattedDuration(started.elapsed()));
 

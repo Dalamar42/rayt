@@ -140,6 +140,9 @@ impl Hittable for Sphere {
     }
 
     fn random(&self, origin: &Vector) -> Vector {
+        // If origin is on the sphere itself then most directions returned by this when evaluated by
+        // this sphere's `pdf_value` method will return 0.0
+
         let cp = self.centre - origin;
         let distance_ratio = self.radius.powi(2) / cp.len_squared();
         if distance_ratio >= 1.0 {
