@@ -73,9 +73,9 @@ world:
                 emit:
                   Constant:
                     colour:
-                      r: 60.0
-                      g: 60.0
-                      b: 60.0
+                      r: 15.0
+                      g: 15.0
+                      b: 15.0
     - Flip:
         geometry:
           XzRect:

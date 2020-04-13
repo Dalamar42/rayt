@@ -23,7 +23,7 @@ regenerate-scenes:		## Renegerate all scene config
 	cargo run -- --config config/cornell_sphere.yaml generate --scene CornellSphere
 
 .PHONY: render-test
-render-test:			## Render all scenes in 'output/test' (low res / low number of rays)
+render-test:			## Render all scenes in 'output/test' (moderate res / number of rays)
 	cargo build --release
 	mkdir -p output/test
 
@@ -38,9 +38,10 @@ render-test:			## Render all scenes in 'output/test' (low res / low number of ra
 	$(RAYT) --config config/cornell_box.yaml $(TEST_ARGS) --output output/test/cornell_box.png
 	$(RAYT) --config config/cornell_smoke.yaml $(TEST_ARGS) --output output/test/cornell_smoke.png
 	$(RAYT) --config config/cornell_metal.yaml $(TEST_ARGS) --output output/test/cornell_metal.png
+	$(RAYT) --config config/cornell_sphere.yaml $(TEST_ARGS) --output output/test/cornell_sphere.png
 
 .PHONY: cornell-test
-cornell-test:			## Render cornell box in 'output/test' (low res / low number of rays)
+cornell-test:			## Render cornell box in 'output/test' (moderate res / number of rays)
 	cargo build --release
 	mkdir -p output/test
 

@@ -42,7 +42,7 @@ pub fn build() -> Result<ConfigSave, anyhow::Error> {
     };
     let light = Material::DiffuseLight {
         emit: Texture::Constant {
-            colour: Colour::new(60.0, 60.0, 60.0),
+            colour: Colour::new(15.0, 15.0, 15.0),
         },
     };
     let metal = Material::Metal {
