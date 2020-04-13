@@ -80,13 +80,14 @@ impl Hittable for XyRect {
     }
 
     fn pdf_value(&self, origin: &Vector, direction: &Vector) -> f64 {
-        let hit = self.hit(&Ray::new(*origin, *direction, 0.0), 0.001, std::f64::MAX);
+        let direction = direction.unit_vector();
+        let hit = self.hit(&Ray::new(*origin, direction, 0.0), 0.001, std::f64::MAX);
         match hit {
             None => 0.0,
             Some(hit) => {
                 let area = (self.x1 - self.x0) * (self.y1 - self.y0);
-                let distance_squared = hit.distance.powi(2) * direction.len_squared();
-                let cosine = (Vector::dot(direction, &hit.face_normal()) / direction.len()).abs();
+                let distance_squared = hit.distance.powi(2);
+                let cosine = Vector::dot(&direction, &hit.face_normal()).abs();
 
                 distance_squared / (cosine * area)
             }
@@ -177,13 +178,14 @@ impl Hittable for XzRect {
     }
 
     fn pdf_value(&self, origin: &Vector, direction: &Vector) -> f64 {
-        let hit = self.hit(&Ray::new(*origin, *direction, 0.0), 0.001, std::f64::MAX);
+        let direction = direction.unit_vector();
+        let hit = self.hit(&Ray::new(*origin, direction, 0.0), 0.001, std::f64::MAX);
         match hit {
             None => 0.0,
             Some(hit) => {
                 let area = (self.x1 - self.x0) * (self.z1 - self.z0);
-                let distance_squared = hit.distance.powi(2) * direction.len_squared();
-                let cosine = (Vector::dot(direction, &hit.face_normal()) / direction.len()).abs();
+                let distance_squared = hit.distance.powi(2);
+                let cosine = Vector::dot(&direction, &hit.face_normal()).abs();
 
                 distance_squared / (cosine * area)
             }
@@ -274,13 +276,14 @@ impl Hittable for YzRect {
     }
 
     fn pdf_value(&self, origin: &Vector, direction: &Vector) -> f64 {
-        let hit = self.hit(&Ray::new(*origin, *direction, 0.0), 0.001, std::f64::MAX);
+        let direction = direction.unit_vector();
+        let hit = self.hit(&Ray::new(*origin, direction, 0.0), 0.001, std::f64::MAX);
         match hit {
             None => 0.0,
             Some(hit) => {
                 let area = (self.y1 - self.y0) * (self.z1 - self.z0);
-                let distance_squared = hit.distance.powi(2) * direction.len_squared();
-                let cosine = (Vector::dot(direction, &hit.face_normal()) / direction.len()).abs();
+                let distance_squared = hit.distance.powi(2);
+                let cosine = Vector::dot(&direction, &hit.face_normal()).abs();
 
                 distance_squared / (cosine * area)
             }

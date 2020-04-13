@@ -6,7 +6,7 @@ use crate::pdf::uniform;
 use std::f64::consts::PI;
 
 pub fn value(onb: &Onb, direction: &Vector) -> f64 {
-    let cosine = Vector::dot(&direction, onb.w());
+    let cosine = Vector::dot(&direction.unit_vector(), onb.w());
     if cosine <= 0.0 {
         0.0
     } else {
