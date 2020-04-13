@@ -1,6 +1,7 @@
 RAYT := target/release/rayt
 NPROCS = $(shell nproc)
 TEST_ARGS = render --width 512 --rays 1000 --threads $(NPROCS)
+SAMPLE_ARGS = render --width 1024 --rays 5000 --threads $(NPROCS)
 
 .PHONY: help
 help:				## Show this help.
@@ -46,3 +47,11 @@ cornell-test:			## Render cornell box in 'output/test' (moderate res / number of
 	mkdir -p output/test
 
 	$(RAYT) --config config/cornell_box.yaml $(TEST_ARGS) --output output/test/cornell_box.png
+
+.PHONY: regenerate-samples
+regenerate-samples:		## Render cornell box and book 2 final image in 'output/samples' (high res / number of rays)
+	cargo build --release
+	mkdir -p output/samples
+
+	$(RAYT) --config config/cornell_box.yaml $(SAMPLE_ARGS) --output output/samples/cornell_box.png
+	$(RAYT) --config config/next_week_final.yaml $(SAMPLE_ARGS) --output output/samples/next_week_final.png --asset assets/earth.jpg

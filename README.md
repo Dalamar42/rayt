@@ -64,6 +64,8 @@ A `Makefile` is included with some convenience targets:
 - `make render-test` will render all scenes using a moderate resolution and number of rays and put the
   generated images in `output/test`
 - `make cornell-test` is the same as `make render-test`, but only for the Cornell box
+- `make regenerate-samples` will create high-resolution / high-ray-count versions of the Cornell box and the
+  final image from book 2 and put them in `output/samples`
 
 ## Assets
 
