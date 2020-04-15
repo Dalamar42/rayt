@@ -15,7 +15,7 @@ and ray-tracing. I am sharing it in case it is useful to others trying to do the
 Rayt stores and reads scene data in its own format using yaml files. Those are nothing more than a yaml
 serialisation of the corresponding Rust objects.
 
-There are two modes of operation described in more detail in [How to run](#How to run)
+There are two modes of operation described in more detail in the next section.
 - `generate` which will generate the yaml file for a scene based on presets in the code
 - `render` which will render the scene in the given yaml
 
