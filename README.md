@@ -1,4 +1,10 @@
 # Rayt
+
+<p float="left">
+  <img src="/samples/cornell_box.png" width="450" />
+  <img src="/samples/next_week_final.png" width="450" />
+</p>
+
 This is a Rust implementation of the ray-tracer from Peter Shirley's excellent [books][books],
 `Ray Tracing in One Weekend`, `Ray Tracing: The Next Week`, and `Ray Tracing: The Rest of Your Life`.
 
