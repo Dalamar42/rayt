@@ -40,7 +40,7 @@ rayt --config config/cornell_box.yaml generate --scene CornellBox
 
 To render the Cornell box:
 ```bash
-raty --config config/cornell_box.yaml \
+rayt --config config/cornell_box.yaml \
     render --width 512 --rays 1000 --threads 8 --output output/cornell_box.png
 ```
 
@@ -66,6 +66,10 @@ A `Makefile` is included with some convenience targets:
 - `make cornell-test` is the same as `make render-test`, but only for the Cornell box
 - `make regenerate-samples` will create high-resolution / high-ray-count versions of the Cornell box and the
   final image from book 2 and put them in `output/samples`
+
+## Samples
+The directory `samples` contains images generated with high number of rays, specifically 5000 rays per pixel,
+to showcase what kinds of images `rayt` can render.
 
 ## Assets
 
