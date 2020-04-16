@@ -125,7 +125,7 @@ fn metal_a() -> Geometry {
         50.0,
         Material::Metal {
             albedo: Colour::new(0.8, 0.8, 0.9),
-            fuzz: 10.0,
+            fuzz: 1.0,
         },
     )
 }
