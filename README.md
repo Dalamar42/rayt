@@ -74,7 +74,7 @@ A `Makefile` is included with some convenience targets:
   final image from book 2 and put them in `output/samples`
 
 ## Samples
-The directory `samples` contains images generated with high number of rays, specifically 5000 rays per pixel,
+The directory `samples` contains images generated with a high number of rays, specifically 5000 rays per pixel,
 to showcase what kinds of images `rayt` can render.
 
 ## Assets
